@@ -130,7 +130,8 @@ public class ReporteOrdenTransporte extends HttpServlet {
                             String de = "b";
                             int siscod = usua.getInt("siscod");
                             String sisent = usua.getString("sisent");
-                            String codalminv = usua.getString("codalm_inv");
+                            //String codalminv = usua.getString("codalm_inv");
+                            String codalminv = usua.getString("codalm");
                             String grudes = usua.getString("grudes");
                             String grucod = usua.getString("grucod");
                             int codinventario = 0;
