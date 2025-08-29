@@ -1,0 +1,269 @@
+
+<div class="card">
+    <div class="card-header">
+        Información del Producto
+    </div>
+    <div class="card-body">
+            <button class="btn btn-primary" type="button" id='btnNuevoProducto'><i class="fas fa-plus-circle"></i> Nuevo Producto</button><br/><br/>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="txtcodprod">Código del Producto</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="txtcodprod">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id='btnBuscarProducto'><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6 mb-3">
+                <label for="selecttipo">Tipo</label>
+                <select class="form-control" id="selecttipo" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="txtlaboratorio">Laboratorio</label>
+                <input type="text" class="form-control" id="txtlaboratorio" disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="txtdescripcion">Descripción</label>
+                <input type="text" class="form-control" id="txtdescripcion" disabled>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="txtgenerico">Genérico</label>
+                <input type="text" class="form-control" id="txtgenerico" disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="txtdesclarga">Descripción Larga</label>
+                <input type="text" class="form-control" id="txtdesclarga" disabled>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="txtfamilia">Familia</label>
+                <input type="text" class="form-control" id="txtfamilia" disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="numfraccion">Fracción/Unidad</label>
+                <input type="number" class="form-control" id="numfraccion" disabled>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="selectaux1">Clasificación Auxiliar 1</label>
+                <select class="form-control" id="selectaux1" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="selectumedida">Unidad de Medida</label>
+                <select class="form-control" id="selectumedida" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="selectaux2">Clasificación Auxiliar 2</label>
+                <select class="form-control" id="selectaux2" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="selectpresentacion">Presentación</label>
+                <select class="form-control" id="selectpresentacion" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="selectviaadmin">Vía de Administración</label>
+                <select class="form-control" id="selectviaadmin" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="selectpaisfab">País de Fabricación</label>
+                <select class="form-control" id="selectpaisfab" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="selectcondicion">Condición</label>
+                <select class="form-control" id="selectcondicion" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="selectreposicion">T.I. Reposición</label>
+                <select class="form-control" id="selectreposicion" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Separador -->
+        <hr>
+
+        <!-- Impuesto de Venta -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Impuesto de Venta</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="selectimpvta">Afecto/Inafecto/Exonerado</label>
+                <select class="form-control" id="selectimpvta" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numimpvta">Valor (%)</label>
+                <input type="number" class="form-control" id="numimpvta" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="selectimpbolsa">Aplica Impuesto a la Bolsa</label>
+                <select class="form-control" id="selectimpbolsa" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Impuesto de Compra -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Impuesto de Compra</h5>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="selectimpcompra">Afecto/Inafecto</label>
+                <select class="form-control" id="selectimpcompra" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="numimpcompra">Valor (%)</label>
+                <input type="number" class="form-control" id="numimpcompra" disabled>
+            </div>
+        </div>
+
+        <!-- Costos -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Costos</h5>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="numcosbas">Cosbas</label>
+                <input type="number" step="0.01" class="form-control" id="numcosbas" disabled>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="numcoscon">CosCon</label>
+                <input type="number" step="0.01" class="form-control" id="numcoscon" disabled>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="numcospro">CosPro</label>
+                <input type="number" step="0.01" class="form-control" id="numcospro" disabled>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="selectmoneda">Moneda</label>
+                <select class="form-control" id="selectmoneda" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Precio/Utilidad Venta -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Precio/Utilidad Venta</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numutilvta">Utilidad Vta (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numutilvta" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numprecbase">Prec. Base</label>
+                <input type="number" step="0.01" class="form-control" id="numprecbase" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numpvp">PVP-F</label>
+                <input type="number" step="0.01" class="form-control" id="numpvp" disabled>
+            </div>
+        </div>
+
+        <!-- Precio/Utilidad Sugerida -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Precio/Utilidad Sugerida</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numutilsug">Utilidad Sug (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numutilsug" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numprecio">PVP</label>
+                <input type="number" step="0.01" class="form-control" id="numprecio" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numvff">VFF</label>
+                <input type="number" step="0.01" class="form-control" id="numvff" disabled>
+            </div>
+        </div>
+
+        <!-- Descuentos -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Descuentos</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numdsto">Dsto (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numdsto" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numdstoad">Dsto Adicional (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numdstoad" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numrecmenudeo">Rec-Menudeo (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numrecmenudeo" disabled>
+            </div>
+        </div>
+
+        <!-- Promociones -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <h5>Promociones</h5>
+            </div>
+            <!-- Mueve el checkbox fuera de la fila -->
+            <div class="col-md-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkpromo" disabled>
+                    <label class="form-check-label" for="checkpromo">
+                        Aplicar Promoción
+                    </label>
+                </div>
+            </div>
+            <!-- Alinea los elementos restantes -->
+            <div class="col-md-4 mb-3">
+                <label for="numcante">CantE</label>
+                <input type="number" class="form-control" id="numcante" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numcantf">CantF</label>
+                <input type="number" class="form-control" id="numcantf" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="numdscto">Dscto (%)</label>
+                <input type="number" step="0.01" class="form-control" id="numdscto" disabled>
+            </div>
+        </div>
+    </div>
+</div>

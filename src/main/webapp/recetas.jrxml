@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recetas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="00eb5747-bdbc-46d7-be51-a35a63566567">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.jrdax"/>
+	<parameter name="actomedico" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT *,
+    CONCAT(
+        DATEDIFF(YEAR,FechaNac, GETDATE()) - 
+        CASE 
+            WHEN (MONTH(GETDATE()) < MONTH(FechaNac)) 
+                 OR (MONTH(GETDATE()) = MONTH('1968-10-01') AND DAY(GETDATE()) < DAY(FechaNac)) 
+            THEN 1 
+            ELSE 0 
+        END, 
+        ' Años ', 
+        (12 + MONTH(GETDATE()) - MONTH(FechaNac)) % 12, 
+        ' Meses'
+    ) AS edad
+FROM "HechRecetasCli" rece
+	inner join "HechDiagnosRecetasCli" diag ON 
+	 rece."ActoMedico" = diag."ActoMedico" where rece.ActoMedico= $P{actomedico}]]>
+	</queryString>
+	<field name="OrigenAtencion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OrigenAtencion"/>
+		<property name="com.jaspersoft.studio.field.label" value="OrigenAtencion"/>
+	</field>
+	<field name="ActoMedico" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ActoMedico"/>
+		<property name="com.jaspersoft.studio.field.label" value="ActoMedico"/>
+	</field>
+	<field name="Prefactura" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Prefactura"/>
+		<property name="com.jaspersoft.studio.field.label" value="Prefactura"/>
+	</field>
+	<field name="FechaAtencion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FechaAtencion"/>
+		<property name="com.jaspersoft.studio.field.label" value="FechaAtencion"/>
+	</field>
+	<field name="Coditm" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Coditm"/>
+		<property name="com.jaspersoft.studio.field.label" value="Coditm"/>
+	</field>
+	<field name="CodproLolcli" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CodproLolcli"/>
+		<property name="com.jaspersoft.studio.field.label" value="CodproLolcli"/>
+	</field>
+	<field name="CodproLolfar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CodproLolfar"/>
+		<property name="com.jaspersoft.studio.field.label" value="CodproLolfar"/>
+	</field>
+	<field name="Producto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Producto"/>
+		<property name="com.jaspersoft.studio.field.label" value="Producto"/>
+	</field>
+	<field name="Cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="Cantidad"/>
+	</field>
+	<field name="Generico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Generico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Generico"/>
+	</field>
+	<field name="IndicProducto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="IndicProducto"/>
+		<property name="com.jaspersoft.studio.field.label" value="IndicProducto"/>
+	</field>
+	<field name="Dosis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Dosis"/>
+		<property name="com.jaspersoft.studio.field.label" value="Dosis"/>
+	</field>
+	<field name="Paciente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Paciente"/>
+		<property name="com.jaspersoft.studio.field.label" value="Paciente"/>
+	</field>
+	<field name="NumdocId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NumdocId"/>
+		<property name="com.jaspersoft.studio.field.label" value="NumdocId"/>
+	</field>
+	<field name="NumHc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NumHc"/>
+		<property name="com.jaspersoft.studio.field.label" value="NumHc"/>
+	</field>
+	<field name="FechaNac" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="FechaNac"/>
+		<property name="com.jaspersoft.studio.field.label" value="FechaNac"/>
+	</field>
+	<field name="TelfPac" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TelfPac"/>
+		<property name="com.jaspersoft.studio.field.label" value="TelfPac"/>
+	</field>
+	<field name="PlanAtencion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PlanAtencion"/>
+		<property name="com.jaspersoft.studio.field.label" value="PlanAtencion"/>
+	</field>
+	<field name="Servicio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Servicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="Servicio"/>
+	</field>
+	<field name="Medico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Medico"/>
+		<property name="com.jaspersoft.studio.field.label" value="Medico"/>
+	</field>
+	<field name="FechaRegistro" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FechaRegistro"/>
+		<property name="com.jaspersoft.studio.field.label" value="FechaRegistro"/>
+	</field>
+	<field name="medcod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medcod"/>
+		<property name="com.jaspersoft.studio.field.label" value="medcod"/>
+	</field>
+	<field name="sercod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sercod"/>
+		<property name="com.jaspersoft.studio.field.label" value="sercod"/>
+	</field>
+	<field name="check1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="check1"/>
+		<property name="com.jaspersoft.studio.field.label" value="check1"/>
+	</field>
+	<field name="COLUMN_25" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ActoMedico"/>
+		<property name="com.jaspersoft.studio.field.label" value="ActoMedico"/>
+	</field>
+	<field name="COLUMN_26" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Coditm"/>
+		<property name="com.jaspersoft.studio.field.label" value="Coditm"/>
+	</field>
+	<field name="COLUMN_27" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Prefactura"/>
+		<property name="com.jaspersoft.studio.field.label" value="Prefactura"/>
+	</field>
+	<field name="COLUMN_28" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FechaAtencion"/>
+		<property name="com.jaspersoft.studio.field.label" value="FechaAtencion"/>
+	</field>
+	<field name="DiaCod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DiaCod"/>
+		<property name="com.jaspersoft.studio.field.label" value="DiaCod"/>
+	</field>
+	<field name="Diades" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Diades"/>
+		<property name="com.jaspersoft.studio.field.label" value="Diades"/>
+	</field>
+	<field name="TipDia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TipDia"/>
+		<property name="com.jaspersoft.studio.field.label" value="TipDia"/>
+	</field>
+	<field name="PriDia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PriDia"/>
+		<property name="com.jaspersoft.studio.field.label" value="PriDia"/>
+	</field>
+	<field name="COLUMN_33" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FechaRegistro"/>
+		<property name="com.jaspersoft.studio.field.label" value="FechaRegistro"/>
+	</field>
+	<field name="chekReceta" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="chekReceta"/>
+		<property name="com.jaspersoft.studio.field.label" value="chekReceta"/>
+	</field>
+	<field name="cantimpr" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cantimpr"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantimpr"/>
+	</field>
+	<field name="edad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="edad"/>
+		<property name="com.jaspersoft.studio.field.label" value="edad"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="180" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="50" width="180" height="20" uuid="4e3c2f95-eaeb-43d2-9fc2-e7f99e93e118"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[CLINICA SAN BARTOLOME
+JR. ATAHUALPA 163 HUACHO - HUAURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="100" width="30" height="10" uuid="c7e0683b-0dbf-4193-b301-f3823a440490"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" pattern="dd/MM/yyyy">
+				<reportElement x="126" y="100" width="54" height="10" uuid="ac2b097e-8470-4ffd-9de5-5a464c5dd33d"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="0" y="70" width="100" height="10" uuid="3480f812-2a9a-4322-87cc-031e4e5a0174"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OrigenAtencion}+" -"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="100" y="70" width="80" height="10" uuid="ee97a604-f868-4e1d-8d55-c71098d9f74b"/>
+				<textElement textAlignment="Left">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ActoMedico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="80" width="180" height="10" uuid="2657403f-fcb1-4e01-9adc-e5c6e5912efb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[RECETA MEDICA]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="100" width="76" height="10" uuid="f963aabb-a92a-449f-a1ca-e4f64321ebd7"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Prefactura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="20" height="10" uuid="0796d235-8d7f-4665-8d94-3930a9e60251"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Prf:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="110" width="160" height="10" uuid="a315f347-3b5e-41f0-a8da-5658f88d5527"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Paciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="110" width="20" height="10" uuid="11326acd-c37f-4301-96bf-401891d92517"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Pac:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="30" y="120" width="60" height="10" uuid="c846ffc8-5b0f-4923-84b4-1b8847c63d38"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NumdocId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="120" width="30" height="10" uuid="1ba25d46-979b-4e4a-bb3c-fd33b256e616"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[DNI/CE:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="112" y="120" width="68" height="10" uuid="a655c18f-f695-4343-b24d-f2768cf75111"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="90" y="120" width="22" height="10" uuid="00eb8dc2-548a-4861-b4f5-7cbc00f085c9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[EDAD:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="130" width="48" height="10" uuid="6e323d52-507e-479b-ba52-caac4d331edb"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NumHc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="130" width="20" height="10" uuid="f0bd8cb4-3e3e-422c-93a6-6e773f631f23"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[HC:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="30" y="140" width="150" height="10" uuid="fef1f507-3ccf-4295-8cd7-fa6a1464e61e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PlanAtencion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="140" width="30" height="10" uuid="a793e951-7324-4aeb-a549-0e9ded9911c7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PLAN:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="90" y="130" width="90" height="10" uuid="a479cf33-3125-4359-8c71-070db18182df"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TelfPac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="130" width="22" height="10" uuid="05a2f90c-70ca-451e-b8b9-28c853c14380"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="30" y="150" width="150" height="10" uuid="ec88eced-c9ec-4662-ae4b-1b19f85efd9a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Servicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="150" width="30" height="10" uuid="683ae550-015a-4dd3-8e4d-41436b4ac326"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Servicio:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="30" y="160" width="150" height="10" uuid="359470b3-e04a-48e8-a37d-22da178d6ca1"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Medico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="160" width="30" height="10" uuid="b9961bd1-1f65-4809-a77b-163b95963772"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Medico:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="170" width="180" height="10" uuid="cd479362-abc4-48b0-8aa3-98f0e85214bc"/>
+				<subreportParameter name="actomedico">
+					<subreportParameterExpression><![CDATA[$P{actomedico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "diades.jasper"]]></subreportExpression>
+			</subreport>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="0" width="180" height="50" uuid="4441d3c3-d4c6-4986-8f14-50285d582e80"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"/img/logo4.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="20" height="10" uuid="b4843744-05cc-4e28-95c7-31a733f0c763"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RP.]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="10" width="180" height="9" uuid="408844d2-67dd-4263-959f-9e1b02579ef8"/>
+				<subreportParameter name="actomedico">
+					<subreportParameterExpression><![CDATA[$P{actomedico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rprecetas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="169" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="180" height="20" uuid="ec36d6ae-6491-4a07-bd98-3547dd360d87"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA["Esta receta no será válida después de 72 horas deemitida, según D.S. 023-2001-SA"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="180" height="10" uuid="866ea41d-f520-48ba-9072-0224f5490d0d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="180" height="10" uuid="4da3a1f7-30a4-4854-80fd-3e80a6004d0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[INDICACIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="120" width="30" height="10" uuid="18f81830-dd31-4e8b-820f-3c19aee7c9fb"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" pattern="dd/MM/yyyy">
+				<reportElement x="126" y="120" width="54" height="10" uuid="e6e2a9eb-6a00-4fdf-8bb7-83450c4d9fd1"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="120" width="76" height="10" uuid="f0147057-8595-4913-81af-91eea531cccf"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Prefactura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="120" width="20" height="10" uuid="4d28a174-bfda-47e5-a4a0-42c729ca2c30"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Prf:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="130" width="160" height="10" uuid="547f4cca-3e57-4f39-936c-c1f63070e40e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Paciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="130" width="20" height="10" uuid="f89f28d6-1385-4fa8-b590-a29b24eb60ea"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Pac:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="30" y="140" width="60" height="10" uuid="49a6bcb2-0c9c-4976-966f-0b09e149f21a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NumdocId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="140" width="30" height="10" uuid="612045ed-aba4-40aa-a72c-ef189b1c5315"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[DNI/CE:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="112" y="140" width="68" height="10" uuid="9910ac98-4314-479d-9d62-c714d7c5d570"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="90" y="140" width="22" height="10" uuid="67c9ccf3-fc64-4035-a64d-902afe6341c2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[EDAD:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="20" y="150" width="48" height="10" uuid="c67b7b5b-1fa3-469d-b285-79cd0190c7bc"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NumHc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="150" width="20" height="10" uuid="9ec1e06b-f46c-4b89-998a-b2d1205a645c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[HC:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="90" y="150" width="90" height="10" uuid="8aa6c6a6-09a1-405b-8d51-b2ee2325d5e1"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TelfPac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="68" y="150" width="22" height="10" uuid="d1d95f45-b54f-4102-ab2e-4c20efea1dc9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="160" width="180" height="9" uuid="b30ce99f-3d86-44e6-8d58-2425e93674b2"/>
+				<subreportParameter name="actomedico">
+					<subreportParameterExpression><![CDATA[$P{actomedico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rprecetasIndicaciones.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="70" splitType="Stretch"/>
+	</summary>
+</jasperReport>

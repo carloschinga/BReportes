@@ -1,0 +1,640 @@
+<style>
+    .message {
+        color: green;
+        font-weight: bold;
+    }
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+    .btn-group-actions {
+        white-space: nowrap;
+    }
+</style>
+<div class="container mt-4">
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="m-0">
+            <i class="fas fa-file-upload me-2"></i>Carga de Archivos
+        </h5>
+    </div>
+    <div class="card-body">
+        <!-- Formulario de carga -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-file-excel me-2"></i>Subir Archivo Operaciones
+                        Inalambrico (XLS/XLSX)
+                    </div>
+                    <div class="card-body">
+                        <form id="formXls">
+                            <div class="mb-3">
+                                <label for="fileXLS" class="form-label"
+                                       >Seleccione archivo</label
+                                >
+                                <input
+                                    class="form-control"
+                                    type="file"
+                                    id="fileXLS"
+                                    accept=".xls,.xlsx"
+                                    required
+                                    />
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" id="btnUploadXls">
+                                    <i class="fas fa-upload me-2"></i>Cargar Excel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-file-csv me-2"></i>Subir Archivo Operaciones
+                        Tarjeta (CSV)
+                    </div>
+                    <div class="card-body">
+                        <form id="formCsv">
+                            <div class="mb-3">
+                                <label for="fileCSV" class="form-label"
+                                       >Seleccione archivo</label
+                                >
+                                <input
+                                    class="form-control"
+                                    type="file"
+                                    id="fileCSV"
+                                    accept=".csv"
+                                    required
+                                    />
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success" id="btnUploadCsv">
+                                    <i class="fas fa-upload me-2"></i>Cargar CSV
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progreso y resultados -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-info-circle me-2"></i>Resultados de la Carga
+            </div>
+            <div class="card-body">
+                <div class="progress mb-3" style="height: 25px">
+                    <div
+                        id="uploadProgress"
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        style="width: 0%"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        >
+                        0%
+                    </div>
+                </div>
+                <div id="uploadResults" class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Seleccione y cargue los
+                    archivos para comenzar.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Modal Error -->
+<div
+    class="modal fade"
+    id="modalError"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modalErrorLabel"
+    aria-hidden="true"
+    >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalErrorLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Error en la Carga
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    ></button>
+            </div>
+            <div class="modal-body">
+                <div id="errorContenido">
+                    Ha ocurrido un error al procesar los archivos.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Configuraciones de cabeceras esperadas
+        const expectedHeaders = {
+            csv: [
+                "Codigo",
+                "Producto",
+                "Tipo_Mov",
+                "Fecha_Proceso",
+                "Fecha_Lote",
+                "Lote_Manual",
+                "Lote_Pos",
+                "Terminal",
+                "Voucher",
+                "Autorizacion",
+                "Cuotas",
+                "Tarjeta",
+                "Origen",
+                "Transaccion",
+                "Fecha_Consumo",
+                "Importe",
+                "Status",
+                "Comision",
+                "Comision_Afecta",
+                "IGV",
+                "Neto_Parcial",
+                "Neto_Total",
+                "Fecha_Abono",
+                "Fecha_Abono_8Dig",
+            ],
+            xls: [
+                "CODIGO",
+                "TIPO DE MOVIMIENTO",
+                "TIPO DE CAPTURA",
+                "TRANSACCION",
+                "FECHA DE TRANSACCION",
+                "HORA DE TRANSACCION",
+                "FECHA DE CIERRE DE LOTE",
+                "FECHA DE PROCESO",
+                "FECHA DE ABONO",
+                "ESTADO",
+                "IMPORTE",
+                "COMISION",
+                "IGV",
+                "IMPORTE NETO",
+                "ABONO DEL LOTE",
+                "NUM DE LOTE",
+                "TERMINAL",
+                "NUM DE REF (VOUCHER)",
+                "MARCA DE TARJETA",
+                "NUM DE TARJETA",
+                "CODIGO DE AUTORIZACION",
+                "CUOTAS",
+                "OBSERVACIONES",
+                "MONEDA",
+                "SERIE TERMINAL",
+            ],
+        };
+
+        // Variables de estado
+        let currentFileType = null;
+        let fileData = null;
+
+        // Manejadores de formularios
+        $("#formCsv").on("submit", function (e) {
+            e.preventDefault();
+            handleFileUpload("csv");
+        });
+
+        $("#formXls").on("submit", function (e) {
+            e.preventDefault();
+            handleFileUpload("xls");
+        });
+
+        // Función para manejar la subida de archivos
+        function handleFileUpload(type) {
+            const fileInput = $(`#file${type.toUpperCase()}`)[0];
+            const currentBtn = $(`#btnUpload${type === "csv" ? "Csv" : "Xls"}`);
+            const otherBtn = $(`#btnUpload${type === "csv" ? "Xls" : "Csv"}`);
+
+            if (fileInput.files.length === 0) {
+                showAlert(
+                        `Por favor seleccione un archivo ${type.toUpperCase()}`,
+                        "danger"
+                        );
+                return;
+            }
+
+            currentFileType = type;
+
+            currentBtn
+                    .prop("disabled", true)
+                    .html('<i class="fas fa-spinner fa-spin me-2"></i>Procesando...');
+            otherBtn.prop("disabled", true);
+
+            // Procesar directamente el archivo
+            if (type === "csv") {
+                processCsvFile();
+            } else if (type === "xls") {
+                processXlsFile();
+            }
+        }
+
+        function resetSubmitButtons() {
+            // Restaurar botón CSV
+            $("#btnUploadCsv")
+                    .prop("disabled", false)
+                    .html('<i class="fas fa-upload me-2"></i>Cargar CSV');
+            // Restaurar botón Excel
+            $("#btnUploadXls")
+                    .prop("disabled", false)
+                    .html('<i class="fas fa-upload me-2"></i>Cargar Excel');
+        }
+
+        // Procesar archivo CSV (para Pinpad)
+        function processCsvFile() {
+            const file = $("#fileCSV")[0].files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                try {
+                    const csvData = e.target.result;
+                    const parsedData = parseCsv(csvData);
+
+                    if (validateHeaders(parsedData.headers, "csv")) {
+                        fileData = parsedData.rows;
+                        sendDataToBackend(fileData, "csv");
+                    } else {
+                        showErrorModal(
+                                "Las cabeceras del CSV no coinciden con el formato esperado"
+                                );
+                    }
+                } catch (error) {
+                    console.error("Error al procesar CSV:", error);
+                    showErrorModal("Error al procesar el archivo CSV: " + error.message);
+                }
+            };
+
+            reader.onerror = function () {
+                showErrorModal("Error al leer el archivo CSV");
+            };
+
+            reader.readAsText(file);
+        }
+
+        // Procesar archivo XLS/XLSX (para Inalambrico)
+        function processXlsFile() {
+            const file = $("#fileXLS")[0].files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: "array"});
+
+                    // Procesar la primera hoja
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+
+                    // Convertir a JSON (incluyendo espacios vacíos)
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                        header: 1,
+                        defval: "",
+                    });
+
+                    if (jsonData.length < 2) {
+                        showErrorModal("El archivo Excel está vacío o no contiene datos");
+                        return;
+                    }
+
+                    // Buscar el inicio real de los datos (saltando filas vacías iniciales)
+                    let dataStartRow = 0;
+                    while (
+                            dataStartRow < jsonData.length &&
+                            (jsonData[dataStartRow].length === 0 ||
+                                    jsonData[dataStartRow].every((cell) => cell === ""))
+                            ) {
+                        dataStartRow++;
+                    }
+
+                    // Verificar que haya datos después de las filas vacías
+                    if (dataStartRow >= jsonData.length - 1) {
+                        showErrorModal(
+                                "No se encontraron datos después de las filas vacías iniciales"
+                                );
+                        return;
+                    }
+
+                    // Extraer cabeceras y validar
+                    const headers = jsonData[dataStartRow].map((h) =>
+                        h.toString().trim().toUpperCase()
+                    );
+                    const isValid = validateHeaders(headers, "xls");
+
+                    if (!isValid) {
+                        console.log("Cabeceras encontradas:", headers);
+                        console.log("Cabeceras esperadas:", expectedHeaders.xls);
+                        showErrorModal(
+                                "Las cabeceras del Excel no coinciden con el formato esperado"
+                                );
+                        return;
+                    }
+
+                    // Procesar filas de datos (empezando después de las cabeceras)
+                    const rows = [];
+                    for (let i = dataStartRow + 1; i < jsonData.length; i++) {
+                        if (
+                                jsonData[i].length === 0 ||
+                                jsonData[i].every((cell) => cell === "")
+                                )
+                            continue;
+
+                        const row = {};
+                        for (let j = 0; j < headers.length; j++) {
+                            const header = headers[j];
+                            const value = jsonData[i][j] !== undefined ? jsonData[i][j] : "";
+                            row[header] =
+                                    typeof value === "string" ? value.trim() : value.toString();
+                        }
+                        rows.push(row);
+                    }
+
+                    if (rows.length === 0) {
+                        showErrorModal("El archivo Excel no contiene datos válidos");
+                        return;
+                    }
+
+                    fileData = rows;
+                    sendDataToBackend(fileData, "xls");
+                } catch (error) {
+                    console.error("Error al procesar Excel:", error);
+                    showErrorModal(
+                            "Error al procesar el archivo Excel: " + error.message
+                            );
+                }
+            };
+
+            reader.onerror = function () {
+                showErrorModal("Error al leer el archivo Excel");
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Función para parsear CSV
+        function parseCsv(csvData) {
+            const lines = csvData.split("\n");
+            if (lines.length === 0)
+                return {headers: [], rows: []};
+
+            console.time("CSV Parse Fast");
+
+            // Procesar header una sola vez - tomar solo las primeras 24 columnas
+            const allHeaders = lines[0].split(";").map((h) => h.trim());
+            const first24Headers = allHeaders.slice(0, 24); // Solo las primeras 24 columnas
+            const cleanHeaders = first24Headers.filter(
+                    (h) => h && !h.startsWith("_")
+            );
+
+            const rows = [];
+
+            // Procesar filas de manera más eficiente
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line)
+                    continue;
+
+                const values = line.split(";");
+                const row = {};
+
+                // Solo procesar las primeras 24 columnas
+                for (let j = 0; j < cleanHeaders.length && j < 24; j++) {
+                    row[cleanHeaders[j]] = values[j] ? values[j].trim() : "";
+                }
+
+                rows.push(row);
+            }
+
+            console.timeEnd("CSV Parse Fast");
+            console.log(
+                    `Procesadas ${rows.length} filas con ${cleanHeaders.length} columnas (limitado a 24)`
+                    );
+
+            return {headers: cleanHeaders, rows};
+        }
+
+        // Validar cabeceras
+        function validateHeaders(fileHeaders, type) {
+            const expected = expectedHeaders[type];
+
+            if (fileHeaders.length !== expected.length) {
+                console.log(
+                        `Número de columnas no coincide (${fileHeaders.length} vs ${expected.length})`
+                        );
+                return false;
+            }
+
+            for (let i = 0; i < expected.length; i++) {
+                const fileHeader = fileHeaders[i].toString().trim().toUpperCase();
+                const expectedHeader = expected[i].toString().trim().toUpperCase();
+                if (fileHeader !== expectedHeader) {
+                    console.log(
+                            `Cabecera no coincide en posición ${i}: "${fileHeader}" vs "${expectedHeader}"`
+                            );
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Enviar datos al backend
+        function sendDataToBackend(data, type) {
+            if (data.length === 0) {
+                showAlert(
+                        `El archivo ${type.toUpperCase()} no contiene datos válidos`,
+                        "warning"
+                        );
+                return;
+            }
+
+            showProgress(0);
+            $("#uploadResults")
+                    .html(
+                            `<i class="fas fa-sync-alt fa-spin me-2"></i>Enviando datos ${type.toUpperCase()} al servidor...`
+                            )
+                    .removeClass("alert-info alert-danger alert-success")
+                    .addClass("alert-warning");
+
+            const batchSize = 200; // Reducido para mejor manejo
+            const totalBatches = Math.ceil(data.length / batchSize);
+            let processedBatches = 0;
+
+            function sendBatch(batchIndex) {
+                const start = batchIndex * batchSize;
+                const end = Math.min(start + batchSize, data.length);
+                const batchData = data.slice(start, end);
+
+                // Determinar el endpoint según el tipo
+                const endpoint = type === "csv" ? "subirPinpad" : "subirInalambrico";
+
+                // Preparar datos según el formato que espera el servlet
+                const formData = new FormData();
+                formData.append("batch", batchIndex);
+                formData.append("totalBatches", totalBatches);
+                formData.append("data", JSON.stringify(batchData));
+
+                console.log("Enviando batch:", {batchIndex, totalBatches, batchData});
+                $.ajax({
+                    url: endpoint,
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(`Lote ${batchIndex + 1} procesado:`, response);
+
+                        if (response.success) {
+                            processedBatches++;
+                            const progress = Math.round(
+                                    (processedBatches / totalBatches) * 100
+                                    );
+                            showProgress(progress);
+
+                            $("#uploadResults").html(
+                                    `<i class="fas fa-sync-alt fa-spin me-2"></i>${
+                                    response.message || "Procesando..."
+                                    }`
+                                    );
+
+                            if (processedBatches < totalBatches) {
+                                // Pequeña pausa entre lotes para no saturar el servidor
+                                setTimeout(() => sendBatch(processedBatches), 100);
+                            } else {
+                                showAlert(
+                                        `¡Datos ${type.toUpperCase()} enviados correctamente! Total de registros: ${
+                                        data.length
+                                        }`,
+                                        "success"
+                                        );
+                                showProgress(100);
+                                resetSubmitButtons();
+                                setTimeout(function () {
+                                    resetForm("csv");
+                                    resetForm("xls");
+                                }, 5000);
+                            }
+                        } else {
+                            resetSubmitButtons();
+                            $("#uploadResults").html(`
+                   
+                      <i class="fas fa-info-circle me-2"></i>
+                      ${response.message} - Seleccione y cargue el archivo correcto.
+                   
+                  `).css({
+                                "background-color": "#f8d7da", // fondo rojo suave
+                                "color": "#721c24", // texto rojo oscuro
+                                "padding": "10px",
+                                "border-radius": "5px",
+                                "border": "2px solid #f5c6cb"   // borde rojito bacán
+                            });
+                            ;
+                            //$("#uploadResults").css("background-color", "#CFF4FC");
+
+                            throw new Error(
+                                    response.message || "Error desconocido del servidor"
+                                    );
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(`Error al enviar lote ${batchIndex + 1}:`, error);
+                        resetSubmitButtons();
+                        let errorMessage = "Error de conexión";
+
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            errorMessage = response.message || error;
+                        } catch (e) {
+                            errorMessage = xhr.responseText || error;
+                        }
+
+                        showErrorModal(
+                                `Error al enviar datos ${type.toUpperCase()} (Lote ${
+                                batchIndex + 1
+                                }): ${errorMessage}`
+                                );
+                        showProgress(0);
+                    },
+                });
+            }
+
+            sendBatch(0);
+        }
+
+        // Funciones auxiliares
+        function showProgress(percent) {
+            $("#uploadProgress")
+                    .css("width", percent + "%")
+                    .attr("aria-valuenow", percent)
+                    .text(percent + "%");
+
+            if (percent === 100) {
+                $("#uploadProgress").removeClass("progress-bar-animated");
+            } else {
+                $("#uploadProgress").addClass("progress-bar-animated");
+            }
+        }
+
+        function showAlert(message, type) {
+            const icon =
+                    type === "success"
+                    ? "fa-check-circle"
+                    : type === "danger"
+                    ? "fa-exclamation-circle"
+                    : type === "warning"
+                    ? "fa-exclamation-triangle"
+                    : "fa-info-circle";
+
+            $("#uploadResults")
+                    .html(`<i class="fas ${icon} me-2"></i>${message}`)
+                    .removeClass("alert-info alert-danger alert-success alert-warning")
+                    .addClass("alert-" + type);
+        }
+
+        function showErrorModal(message) {
+            $("#errorContenido").text(message);
+            $("#modalError").modal("show");
+        }
+
+        // Función para limpiar formularios
+        function resetForm(type) {
+            $(`#file${type.toUpperCase()}`).val("");
+            $(`#nombre${type.toUpperCase()}`)
+                    .text("Ningún archivo seleccionado")
+                    .removeClass("text-success text-primary")
+                    .addClass("text-muted");
+            showProgress(0);
+            $("#uploadResults")
+                    .html("")
+                    .removeClass("alert-info alert-danger alert-success alert-warning");
+        }
+
+        // Botones para limpiar formularios
+        $("#btnLimpiarCsv").on("click", function () {
+            resetForm("csv");
+        });
+
+        $("#btnLimpiarXls").on("click", function () {
+            resetForm("xls");
+        });
+    });
+</script>

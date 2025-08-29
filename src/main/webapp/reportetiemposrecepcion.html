@@ -1,0 +1,33 @@
+
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Reporte por Orden: Tiempos Recepcion</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- Columna de Secuencias -->
+            <div class="col-md-3 mb-3 border">
+                <br>
+                <h4>Orden</h4>
+                <div class="form-group">
+                    <label for="secuencia1">Orden:</label>
+                    <input type="number" class="form-control" id="secuencia">
+                </div>
+                <div id="divalmacen" style="display: none">
+                    <label for="almacen" class="form-label">Seleccionar Almacen:</label>
+                    <select class="form-control mb-2 w-auto" aria-label="Selecciona un almacen" id='almacen'>
+                        <option value="" selected>Todos</option>
+                    </select>
+                </div>
+                <button type="button" id="btnPDF" class="btn btn-primary mb-1">
+                    <i class="fas fa-file-pdf"></i> Imprimir PDF
+                </button>
+                <button type="button" id="btnEXCEL" class="btn btn-primary mb-1">
+                    <i class="fas fa-file-excel"></i> Excel
+                </button>
+            </div>
+        </div>
+        <script src="js/reportetiemposrecepcion.js" type="text/javascript"></script>
+        
+    </div>
+</div>

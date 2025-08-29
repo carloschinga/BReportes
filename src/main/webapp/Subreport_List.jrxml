@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Subreport_List" pageWidth="595" pageHeight="100" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95056a24-8adc-47c1-8512-ecda7a4ed0d1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Caja"/>
+	<parameter name="fechaInicio" class="java.lang.String"/>
+	<parameter name="fechaFin" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    us.logiUsua as Usuario, 
+    COUNT(*) as TotalRegistros, 
+    FORMAT(SUM(re.montReci), 2) as MontoTotal
+FROM `recibo` re
+INNER JOIN usuario us ON re.codiUsuaAlta = us.codiUsua
+    WHERE DATE_FORMAT(re.fechRegiAlta, '%Y-%m-%d') >= $P{fechaInicio} 
+    AND DATE_FORMAT(re.fechRegiAlta, '%Y-%m-%d') <= $P{fechaFin}
+GROUP BY `codiUsuaAlta`]]>
+	</queryString>
+	<field name="Usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="logiUsua"/>
+		<property name="com.jaspersoft.studio.field.label" value="Usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="TotalRegistros" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="TotalRegistros"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalRegistros"/>
+	</field>
+	<field name="MontoTotal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MontoTotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="MontoTotal"/>
+	</field>
+	<group name="TotalRegistros">
+		<groupExpression><![CDATA[$F{TotalRegistros}]]></groupExpression>
+	</group>
+	<group name="MontoTotal">
+		<groupExpression><![CDATA[$F{MontoTotal}]]></groupExpression>
+	</group>
+	<detail>
+		<band height="60">
+			<rectangle>
+				<reportElement x="160" y="0" width="80" height="29" uuid="0cc96faf-0886-421a-948e-9e20abf83405"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="80" height="29" uuid="283d12bf-ce18-4100-933e-e5e724a10e6d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="29" width="80" height="30" uuid="f15e9abc-79ac-4302-9987-60940105e2c6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="29" width="80" height="30" uuid="554b40fc-4d17-4fd7-a3e8-bcd64b5fffea"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="160" y="29" width="80" height="30" uuid="2c4a7d35-fd66-47e5-bbf0-bb3e6dbf168f"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="29" width="80" height="30" uuid="1a73f73f-668d-4a24-a0b0-6b4a395144c8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe4a1e3a-d5ea-4c48-b2fe-3997cc28b992"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="29" width="80" height="30" uuid="4f52726f-052b-4553-9ea4-4917f2d92d3d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f162046-6882-4c60-b01d-731f93df354f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TotalRegistros}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="29" width="80" height="30" uuid="23b161fd-42e6-4f47-a261-1598f85fc539">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2c4bf211-1574-4d5e-a193-f86b81c501a2"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MontoTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="29" uuid="f1db9f89-6d6f-4af9-9f92-b97597968b2b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="80" height="29" uuid="44c89307-6076-4ebc-902a-f9a769a6b559"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Monto Total de recibos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="80" y="0" width="80" height="29" uuid="3fad9bdb-7ccc-4ad5-842b-2e4009e3352e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="80" y="0" width="80" height="29" uuid="e65d5801-fdb5-497e-8d8b-d61b3acaf143"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Recibos Emitidos]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

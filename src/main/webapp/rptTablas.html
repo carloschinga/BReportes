@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <center> <h3 class="card-title">Reportes de Tablas</h3></center>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-2">
+                                        AÑO:                                                 
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <select id="cmbAnio" class="form-control form-control-user"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sd-12 col-md-12 col-lg-6">
+
+                                        <!-- Circle Buttons -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Reporte de Aulas:</h6>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="form-group">
+
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-md-12 col-lg-12">
+                                                            <button class="btn btn-primary btn-user" id="btnReportexAulas">Mostrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Circle Buttons (Default) -->                    
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="col-sd-12 col-md-12 col-lg-6">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Reporte de Conceptos:</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <button class="btn btn-primary btn-user" id="btnReportexPlan">Mostrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Circle Buttons (Default) -->                    
+
+                                            </div>
+                                        </div>
+                                        <!-- Circle Buttons -->
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <div id="footer"></div>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="salir">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
+
+        <script>
+            let tableCelular;
+            $(document).ready(function () {
+                $.getJSON('http://localhost:8080/Matricula/obteneripyhost', function (data) {
+                    ip = data.ipAddress;
+                    hostname = data.hostName;
+                }).fail(function (error) {
+                    ip = 'iperror';
+                    hostname = 'hosterror';
+                });
+                $.getJSON("validarsesion", function (data) {
+                    codiUsua = data.codi;
+                    if (data.resultado === "ok") {
+                        //CARGA DE INTERFACES
+                        $('#topbar').load('topbar.html');
+                        $('#sidebar').load('sidebar.html');
+                        $('#footer').load('footer.html');
+
+                        //PROGRAMACION DE FUNCIONALIDADES
+                        let url = "http://localhost:8080/matriculaservicio/webresources/crudanio/listar";
+                        parametro = {token: getCookie("token")};
+                        $.getJSON(url, parametro, function (data) {
+                            for (const element of data.data) {
+                                $("#cmbAnio").append("<option value=" + element.codiAnio + " selected>" + element.nombAnio + "</option>");
+                            }
+                        });
+                    } else {
+                        $(location).attr('href', "index.html");
+                    }
+
+
+                });
+                $("#btnReportexAulas").click(function () {
+                    let url = "http://localhost:8080/matriculaservicio/rptaulas";
+                    let colegio = "COLEGIO SAC";
+                    let direccion = "Dirección:Av. Industrial 655";
+                    let telefono = "Celular:98205304";
+                    let correo = "Correo:cchinga@gamil.com";
+                    let anio = $("#cmbAnio").val();
+                    window.open(url+"?token=" + getCookie("token") + "&colegio=" + colegio+ "&direccion=" + direccion
+                    + "&telefono=" + telefono+ "&correo=" + correo+ "&anio=" + anio, 'Reporte', 'width=800, height=600');
+                });
+
+
+
+
+
+                //CERRAR SESIÓN   
+                $("#salir").click(function () {
+                    $.getJSON("cerrarsesion", function (data) {});
+                    $(location).attr('href', "index.html");
+                });
+            });
+            function getCookie(nombre) {
+                var nombreCookie = nombre + "=";
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.indexOf(nombreCookie) === 0) {
+                        return decodeURIComponent(cookie.substring(nombreCookie.length, cookie.length));
+                    }
+                }
+                return null;
+            }
+
+
+
+        </script>
+
+    </body>
+
+</html>

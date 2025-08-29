@@ -1,0 +1,56 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Gestión de Otros Objetivos</h6>
+    </div>
+    <div class="card-body">
+        <div class="form-row mb-3">
+            <div class="form-group col-md-3">
+                <label for="comboCodObj">Código de Objetivo</label>
+                <select class="form-control" id="comboCodObj">
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="comboSisCod">Periodo</label>
+                <input type="month" class="form-control" id="fechaMesAno" name="fecha-mes-año">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="comboSisCod">Código de Sistema</label>
+                <select class="form-control" id="comboSisCod">
+                </select>
+            </div>
+            
+            <div class="form-group col-md-3">
+                <label>&nbsp;</label>
+                <button class="btn btn-success btn-block" id="filtrarBtn"><i class="fas fa-filter"></i> Filtrar</button>
+            </div>
+        </div>
+        <div class="form-row mb-3">
+            <div class="form-group col-md-3">
+                <h4>Cuota Mensual: <span id="soles"></span> </h4>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-responsive">
+            <table id="tablaDias" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Número de Días</th>
+                        <th>Peso</th>
+                        <th>Unidades</th>
+                        <th>Cuotas Dias Mes</th>
+                        <th>Cuota Por Dia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-row mt-3 mb-6 col-md-12">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary btn-block mb-3" id="agregarboton"><i class="fas fa-plus-circle"></i>Agregar</button>
+        </div>
+    </div>
+</div>
+<script src="js/otrosobjetivos.js"></script>

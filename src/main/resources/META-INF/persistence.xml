@@ -1,7 +1,422 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     <!-- Define Persistence Unit -->
-    <persistence-unit name="my_persistence_unit">
-        
+    <persistence-unit name="logistica" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>dto.FaMovimientos</class>
+        <class>dto.FaMovimientosDetalle</class>
+        <class>dto.FaStockAlmacenes</class>
+        <class>dto.FaProductos</class>
+        <class>dto.HeTipoProductosFiltra</class>
+        <class>dto.Sistema</class>
+        <class>dto.Usuarios</class>
+        <class>dto.RestriccionesDistribucion</class>
+        <class>dto.SistemaUsuario</class>
+        <class>dto.Grupos</class>
+        <class>dto.DocumentosSeries</class>
+        <class>pe.bartolito.login.dto.UsuariosBartolito</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <!-- Conexión directa (solo para desarrollo) -->
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.2.16:1433;databaseName=LOLFAR_REDNORTE_PRO;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="applolfar" />
+            <property name="javax.persistence.jdbc.password" value="Lolfarapp24" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="logisticades" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>dto.FaMovimientos</class>
+        <class>dto.FaMovimientosDetalle</class>
+        <class>dto.FaStockAlmacenes</class>
+        <class>dto.FaProductos</class>
+        <class>dto.HeTipoProductosFiltra</class>
+        <class>dto.Sistema</class>
+        <class>dto.Usuarios</class>
+        <class>dto.RestriccionesDistribucion</class>
+        <class>dto.SistemaUsuario</class>
+        <class>dto.Grupos</class>
+        <class>dto.DocumentosSeries</class>
+        <class>dto.InventarioListaProductos</class>
+        <class>pe.bartolito.login.dto.UsuariosBartolito</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.2.16:1433;databaseName=LOLFAR_REDNORTE_PRO;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="applolfar" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+            <property name="javax.persistence.jdbc.password" value="Lolfarapp24" />
+
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="logistica2" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>dto.FaMovimientos</class>
+        <class>dto.FaMovimientosDetalle</class>
+        <class>dto.FaStockAlmacenes</class>
+        <class>dto.FaProductos</class>
+        <class>dto.HeTipoProductosFiltra</class>
+        <class>dto.Sistema</class>
+        <class>dto.Usuarios</class>
+        <class>dto.RestriccionesDistribucion</class>
+        <class>dto.SistemaUsuario</class>
+        <class>dto.Grupos</class>
+        <class>dto.DocumentosSeries</class>
+        <class>pe.bartolito.login.dto.UsuariosBartolito</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://SRV-REDTEST;databaseName=LOLFAR_REDNORTE_PRUEBA;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="carlosch" />
+            <property name="javax.persistence.jdbc.password" value="Carlitos24" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+
+
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="clinica" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>dto.Medicos</class>
+        <class>dto.Servicios</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.1.29\SERVILOLCLI:1433;databaseName=LOLCLI9000;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="applolcli" />
+            <property name="javax.persistence.jdbc.password" value="Lolcliapp23" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="sigoldbides" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.2.23:1433;databaseName=SIGOLDBI_PRD;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="carlosch" />
+            <property name="javax.persistence.jdbc.password" value="Carlitos24" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="sigoldbi" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.2.23:1433;databaseName=SIGOLDBI_PRD;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="carlosch" />
+            <property name="javax.persistence.jdbc.password" value="Carlitos24" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="lolfarP3" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://SRV-REDTEST;databaseName=LOLFAR_REDNORTE_PRUEBA_3;encrypt=true;trustServerCertificate=true" />
+            <property name="javax.persistence.jdbc.user" value="carlosch" />
+            <property name="javax.persistence.jdbc.password" value="Carlitos24" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="sigolD" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <!--<property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.1.21:1433;databaseName=SIGOLDHOSPITAL_DES" />-->
+                
+            <!-- 172.10.2.28   PRODUCCION -->
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:sqlserver://172.10.2.28:1433;databaseName=SIGOLDHOSPITAL" />
+            <property name="javax.persistence.jdbc.user" value="carlosch" />
+            <property name="javax.persistence.jdbc.driver"
+                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+            <property name="javax.persistence.jdbc.password" value="Carlitos24" />
+
+            <!-- Pool de conexiones optimizado -->
+            <property name="eclipselink.connection-pool.default.initial" value="3" />
+            <property name="eclipselink.connection-pool.default.min" value="3" />
+            <property name="eclipselink.connection-pool.default.max" value="50" />
+            <property name="eclipselink.connection-pool.default.maxTotal" value="50" />
+            <property name="eclipselink.connection-pool.default.maxWaitMillis" value="5000" />
+            <property name="eclipselink.query-timeout" value="30" />
+            <property name="eclipselink.connection-pool.default.timeout" value="30" />
+            <property name="eclipselink.connection-pool.fail-on-timeout" value="true" />
+
+            <!-- Configuración de caché desactivada para mejor rendimiento -->
+            <property name="eclipselink.cache.type.default" value="NONE" />
+            <property name="eclipselink.query-results-cache" value="false" />
+            <property name="eclipselink.cache.shared.default" value="false" />
+
+            <!-- Optimización JPA -->
+            <property name="eclipselink.persistence-context.flush-mode" value="COMMIT" />
+            <property name="eclipselink.persistence-context.close-on-commit" value="true" />
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc" />
+            <property name="eclipselink.jdbc.batch-writing.size" value="1000" />
+
+            <!-- Configuración de transacciones -->
+            <property name="eclipselink.target-server" value="None" />
+            <property name="eclipselink.jta.platform" value="None" />
+
+            <!-- Logging selectivo para mejor performance -->
+            <property name="eclipselink.logging.level" value="WARNING" />
+            <property name="eclipselink.logging.parameters" value="true" />
+            <property name="eclipselink.logging.session" value="false" />
+            <property name="eclipselink.logging.thread" value="false" />
+            <property name="eclipselink.logging.timestamp" value="false" />
+        </properties>
     </persistence-unit>
 </persistence>

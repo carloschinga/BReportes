@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Bartolito</title>
+
+    <!-- Custom fonts for this template-->
+    <link
+      href="vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+    <!-- Custom styles for this template-->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.min.css"
+    />
+    <link href="css/personalizado.css" rel="stylesheet" type="text/css" />
+    <style>
+      /* Custom styles for dropdown menu positioning */
+      .dropdown-menu-custom {
+        left: 8px !important; /* Adjust this value to move the menu to the right */
+        min-width: 200px; /* Adjust the width to fit your needs */
+      }
+      .text-dark {
+        color: #333 !important; /* Oscurece el color del texto */
+      }
+
+      .text-dark:hover {
+        color: #000 !important; /* Oscurece aún más el color del texto al pasar el ratón por encima */
+      }
+      .dropdown .dropdown-toggle {
+        color: white !important;
+        font-weight: bolder;
+      }
+      .dropdown .dropdown-toggle i {
+        color: white !important;
+      }
+      .padding12 {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    </style>
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <!-- Sidebar - Brand -->
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="principal.html"
+        >
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Bartolito <sup>2.0</sup></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+        <br />
+
+        <ul
+          class="nav flex-column emprA emprB JEFINA barto nocentral inventario"
+          style="display: none"
+        >
+          <li
+            class="nav-item active emprA emprB JEFINA barto nocentral inventario"
+            style="display: none"
+          >
+            <a class="nav-link" href="#" id="btnManuales">
+              <i class="fas fa-file"></i>
+              <span>Manuales</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-heading emprA" style="display: none">Logística</div>
+
+        <ul class="nav flex-column emprA" style="display: none">
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnDashboard">
+              <i class="fa fa-signal"></i>
+              <span>Rotacion De Producto</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btncompras">
+              <i class="fas fa-truck"></i>
+              <span>Gestión de Pedido</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnobjetivos">
+              <i class="fa fa-rocket"></i>
+              <span>Objetivos</span>
+            </a>
+          </li>
+          <li class="nav-item" style="display: none">
+            <a class="nav-link" href="#" id="btnotrosobjetivos">
+              <i class="fa fa-rocket"></i>
+              <span>Otros Objetivos</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading emprA" style="display: none">Clinica</div>
+
+        <ul class="nav flex-column emprA" style="display: none">
+          <li class="nav-item active emprA nino" style="display: none">
+            <a class="nav-link" href="#" id="btnReceta">
+              <i class="fa fa-search"></i>
+              <span>Seguimiento Receta</span>
+            </a>
+          </li>
+          <li class="nav-item active" style="display: none">
+            <a class="nav-link" href="#" id="btnPetitorio">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Petitorio Medico</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnPetitorioTecnico">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Lista de Clasif.</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA">
+            <a class="nav-link" href="#" id="btnPetitorioPorEspecialidad">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Petitorio Por Espec.</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading privada-para-ti" style="display: none">
+          Clinica
+        </div>
+
+        <ul class="nav flex-column privada-para-ti" style="display: none">
+          <li class="nav-item active nino" style="display: none">
+            <a class="nav-link" href="#" id="btnRecetaPrivada">
+              <i class="fa fa-search"></i>
+              <span>Seguimiento Receta</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading emprA emprB barto" style="display: none">
+          Distribucion y Transporte
+        </div>
+
+        <!-- Nav Item - Distribución -->
+        <ul class="nav flex-column">
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnDistribucion">
+              <i class="fas fa-truck"></i>
+              <span>Distribución</span>
+            </a>
+          </li>
+
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnGuiaTransferencia2">
+              <i class="fa fa-plus-square" style="font-size: 16px"></i>
+              <span>Crear Pedido Distribucion</span>
+            </a>
+          </li>
+
+          <li class="nav-item active emprA barto" style="display: none">
+            <a class="nav-link" href="#" id="btnPickingList">
+              <i class="fas fa-tasks" style="font-size: 16px"></i>
+              <span>Lista de Picking</span>
+            </a>
+          </li>
+
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnmatchpickmov">
+              <i class="fa fa-cogs" style="font-size: 16px"></i>
+              <span>Sincroni. Picking - mov</span>
+            </a>
+          </li>
+
+          <li class="nav-item dropdown emprA" style="display: none">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="inventariosDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-cog"></i>
+              <span>Modificar Distribucion</span>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-custom"
+              aria-labelledby="inventariosDropdown"
+            >
+              <a class="dropdown-item" href="#" id="btnApliFrac">
+                <i class="fas fa-th"></i>
+                <span>Gestion Aplic. Fracción</span>
+              </a>
+              <a class="dropdown-item" href="#" id="btnRestricciones">
+                <i class="fas fa-lock"></i>
+                <span>Restricciones</span>
+              </a>
+              <a class="dropdown-item" href="#" id="btnInmovLot">
+                <i class="fas fa-boxes"></i>
+                <span>Gestion SubLotes</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <div
+          class="sidebar-heading emprA barto nocentral inventario"
+          style="display: none"
+        >
+          Gestión de Almacenes
+        </div>
+        <ul
+          class="nav flex-column emprA barto nocentral inventario"
+          style="display: none"
+        >
+          <li
+            class="nav-item active nocentral emprA barto"
+            style="display: none"
+          >
+            <a class="nav-link" href="#" id="btnpagosvirtuales">
+              <i class="fa fa-credit-card"></i>
+              <span>Conciliacion Pagos Virtua.</span>
+            </a>
+          </li>
+
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnalmacenesbartolito">
+              <i class="fa fa-cubes"></i>
+              <span>Gestion Almacenes</span>
+            </a>
+          </li>
+
+          <li
+            class="nav-item active nocentral emprA barto"
+            style="display: none"
+          >
+            <a class="nav-link" href="#" id="btnAlmacenamiento">
+              <i class="fa fa-cube" style="font-size: 16px"></i>
+              <span>Almacenamiento</span>
+            </a>
+          </li>
+          <li
+            class="nav-item active nocentral emprA barto"
+            style="display: none"
+          >
+            <a class="nav-link" href="#" id="btnSincronizacion">
+              <i class="fa fa-cube" style="font-size: 16px"></i>
+              <span>Actualizacion de inventario</span>
+            </a>
+          </li>
+          <li
+            class="nav-item active nocentral emprA barto"
+            style="display: none"
+          >
+            <a class="nav-link" href="#" id="btnConsultarStock">
+              <i class="fas fa-tasks" style="font-size: 16px"></i>
+              <span>Consultar Stocks</span>
+            </a>
+          </li>
+          <li class="nav-item active nocentral" style="display: none">
+            <a class="nav-link" href="#" id="btnRecepcionCajas">
+              <i class="fas fa-box"></i>
+              <span>Recepcion Picking</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA inventario" style="display: none">
+            <a class="nav-link" href="#" id="btninventario">
+              <i class="fa fa-inbox" style="font-size: 16px"></i>
+              <span>Inventario</span>
+            </a>
+          </li>
+        </ul>
+
+        <div
+          class="sidebar-heading emprA nocentral barto"
+          style="display: none"
+        >
+          Reportes
+        </div>
+        <li
+          class="nav-item dropdown emprA nocentral barto"
+          style="display: none"
+        >
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="inventariosDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fas fa-file" style="font-size: 16px"></i>
+            <span>Reportes</span>
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-custom"
+            aria-labelledby="inventariosDropdown"
+          >
+            <a class="dropdown-item emprA barto" href="#" id="btnEmbalajenuevo">
+              <i class="fas fa-file"></i>
+              <span>Etiquetas de Embalaje-nuevo</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnEmbalaje">
+              <i class="fas fa-file"></i>
+              <span>Etiquetas de Embalaje</span>
+            </a>
+            <a
+              class="dropdown-item emprA nocentral"
+              href="#"
+              id="btnProductosPlantilla"
+            >
+              <i class="fas fa-th-large"></i>
+              <span>Tira Productos</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnRepRes">
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Restricciones</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnRepTiem">
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Tiempo Picking</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnRepTiemRecep">
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Tiempo Recepcion</span>
+            </a>
+            <a
+              class="dropdown-item emprA nocentral barto"
+              href="#"
+              id="btnRepOTCaja"
+            >
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Picking - Bultos</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnRepQRProductos">
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Productos</span>
+            </a>
+            <a class="dropdown-item emprA" href="#" id="btnRepPetitorio">
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Petitorio</span>
+            </a>
+            <a
+              class="dropdown-item emprA nocentral"
+              href="#"
+              id="btnRepFaltanteexcedente"
+            >
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. faltante excedente</span>
+            </a>
+            <a
+              class="dropdown-item emprA nocentral"
+              href="#"
+              id="btnRepRegistroProductos"
+            >
+              <i class="fas fa-file" style="font-size: 16px"></i>
+              <span>Rep. Registro Productos por orden</span>
+            </a>
+          </div>
+        </li>
+        <div class="sidebar-heading emprB" style="display: none">
+          Facturación
+        </div>
+        <ul class="nav flex-column emprB" style="display: none">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" id="btnFacturacion">
+              <i class="fas fa-file-invoice"></i>
+              <span>Facturación</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-heading emprB" style="display: none">
+          Inventarios
+        </div>
+
+        <ul class="nav flex-column emprB" style="display: none">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="inventariosDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-boxes"></i>
+              <span>Inventarios</span>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-custom"
+              aria-labelledby="inventariosDropdown"
+            >
+              <a class="dropdown-item" href="#" id="btnProductos">
+                <i class="fas fa-box"></i> Productos
+              </a>
+              <a class="dropdown-item" href="#" id="btnalmacenes">
+                <i class="fas fa-warehouse"></i> Almacenes
+              </a>
+            </div>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading emprB" style="display: none">Cajas</div>
+
+        <ul class="nav flex-column emprB" style="display: none">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="cajasDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-cash-register"></i>
+              <span>Cajas</span>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-custom"
+              aria-labelledby="cajasDropdown"
+            >
+              <a class="dropdown-item" href="#" id="btnCajas">
+                <i class="fas fa-box-open"></i> Cajas
+              </a>
+              <a class="dropdown-item" href="#" id="btnAperturaCaja">
+                <i class="fas fa-door-open"></i> Apertura de Caja
+              </a>
+              <a class="dropdown-item" href="#" id="btnCierreCaja">
+                <i class="fas fa-door-closed"></i> Cierre de Caja
+              </a>
+            </div>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading emprB" style="display: none">Registros</div>
+
+        <ul class="nav flex-column emprB" style="display: none">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" id="btnKardex">
+              <i class="fas fa-file-alt"></i>
+              <span>Kardex</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-heading emprA barto" style="display: none">
+          Opciones
+        </div>
+        <ul class="nav flex-column emprA barto" style="display: none">
+          <li class="nav-item active barto" style="display: none">
+            <a class="nav-link" href="cambiarClave.html">
+              <i class="fas fa-lock"></i>
+              <span>Cambiar clave</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnUsuariosBartolito">
+              <i class="fas fa-user"></i>
+              <span>Usuarios Bartolito</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA" style="display: none">
+            <a class="nav-link" href="#" id="btnUsuariosInventario">
+              <i class="fas fa-user"></i>
+              <span>Usuarios Inventario</span>
+            </a>
+          </li>
+          <li class="nav-item active emprA">
+            <a class="nav-link" href="#" id="btnparambart">
+              <i class="fas fa-cog"></i>
+              <span>Param. Bartolito</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-heading boss" style="display: none">Permisos</div>
+        <ul class="nav flex-column">
+          <li class="nav-item active">
+            <a href="#" class="nav-link" id="btnGruposPermisos">
+              <i class="fas fa-cog"></i>
+              <span>Gestion de Grupos - Permisos</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="#" class="nav-link" id="btnPermisos">
+              <i class="fas fa-cog"></i>
+              <span>Gestion de Permisos</span>
+            </a>
+          </li>
+        </ul>
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+        <!-- Sidebar Message -->
+        <div class="sidebar-card d-none d-lg-flex">
+          <img
+            class="sidebar-card-illustration mb-2"
+            src="img/undraw_rocket.svg"
+            alt="..."
+          />
+          <p class="text-center mb-2">¡Es facil de usar!</p>
+        </div>
+      </ul>
+      <!-- End of Sidebar -->
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <!-- Sidebar Toggle (Topbar) -->
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown">
+                <div class="nav-link">
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    id="lblEstablecimiento"
+                  ></span>
+                </div>
+              </li>
+              <div class="topbar-divider d-none d-sm-block"></div>
+              <li class="nav-item dropdown no-arrow">
+                <div class="nav-link">
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    id="lblGrupo"
+                  ></span>
+                </div>
+              </li>
+
+              <div class="topbar-divider d-none d-sm-block"></div>
+
+              <!-- Nav Item - User Information -->
+              <li class="nav-item dropdown no-arrow">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                    id="lblUsuario"
+                  ></span>
+                  <img
+                    class="img-profile rounded-circle"
+                    src="img/undraw_profile.svg"
+                  />
+                </a>
+                <!-- Dropdown - User Information -->
+                <div
+                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="userDropdown"
+                >
+                  <!--<div class="dropdown-divider"></div>-->
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#logoutModal"
+                  >
+                    <i
+                      class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+                    ></i>
+                    Cerrar Sesión
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid text-dark padding12" id="contenido"></div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; Bartolito 2024</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              ¿Realmente desea salir?
+            </h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Al aceptar usted cierra la sesión del sistema.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button class="btn btn-primary" id="cerrarSesion">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- pdfMake (necesario para exportar a PDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="js/principal.js?v=1.0.1" type="text/javascript"></script>
+  </body>
+</html>
+<script>
+  $(document).ready(function () {
+    $.fn.validarSession = function () {
+      $.getJSON("validarsesion", function (data) {
+        if (data.resultado === "ok") {
+          console.log({ data });
+          $("#lblUsuario").text(data.logi);
+          $("#lblGrupo").text(data.grudes);
+          $("#lblEstablecimiento").text(data.sisent);
+          if (data.empr === "a") {
+            $(".emprB").hide();
+            if (data.de === "l") {
+              if (data.central === "S") {
+                $(".nocentral").hide();
+                $(".barto").hide();
+                $(".inventario").hide();
+                $(".emprA").show();
+                $(".boss").show();
+              } else {
+                $(".emprA").hide();
+                $(".barto").hide();
+                $(".inventario").hide();
+                $(".nocentral").show();
+                if (data.codalminv === "A5") {
+                  $(".privada-para-ti").show();
+                  $(".nino").show();
+                }
+              }
+            } else if (data.de === "b") {
+              $(".emprA").hide();
+              $(".nocentral").hide();
+              $(".inventario").hide();
+              $(".barto").show();
+            } else if (data.de === "i") {
+              $(".inventario").show();
+            }
+            if (data.grucod === "JEFINA") {
+              $(".JEFINA").show();
+            }
+          } else {
+            $(".emprA").hide();
+            $(".nocentral").hide();
+            $(".emprB").show();
+            $(".emprA").show();
+            $(".barto").show();
+            $(".nocentral").show();
+          }
+        } else {
+          $(location).attr("href", "index.html");
+        }
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        $(location).attr("href", "index.html");
+      });
+    };
+    $.fn.validarSession();
+
+    $("#cerrarSesion").click(function () {
+      $.getJSON("CerrarSesion", function (data) {
+        if (data.resultado === "ok") {
+          if (data.empr === undefined) {
+            $(location).attr("href", "index.html");
+          } else {
+            $(location).attr("href", "index.html?empr=" + data.empr);
+          }
+        } else {
+          alert("Error del servicio");
+        }
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert("Error: No se logro hacer la conexion con el servicio");
+      });
+    });
+    $("#btnDistribucion").click(function () {
+      $("#contenido").load("distribucion.html");
+    });
+    $("#btnGuiaTransferencia").click(function () {
+      $("#contenido").load("guiatransferencia.html");
+    });
+
+    $("#btnDashboard").click(function () {
+      $("#contenido").load("dashboard.html");
+    });
+    $("#btnReceta").click(function () {
+      console.log("Redirigiendo a clinica - receta");
+      $("#contenido").load("clinica/receta.html");
+    });
+    $("#btnRecetaPrivada").click(function () {
+      console.log("Redirigiendo a clinica - receta");
+      $("#contenido").load("clinica/receta.html");
+    });
+
+    $("#btnProductos").click(function () {
+      $("#contenido").load("productos.html");
+    });
+    $("#btnalmacenes").click(function () {
+      $("#contenido").load("almacenes.html");
+    });
+    $("#btnCajas").click(function () {
+      $("#contenido").load("cajas.html");
+    });
+    $("#btnAperturaCaja").click(function () {
+      $("#contenido").load("aperturacaja.html");
+    });
+    $("#btnCierreCaja").click(function () {
+      $("#contenido").load("cierrecaja.html");
+    });
+    $("#btnFacturacion").click(function () {
+      $("#contenido").load("facturacion.html");
+    });
+    $("#btnKardex").click(function () {
+      $("#contenido").load("kardex.html");
+    });
+    $("#btnRestricciones").click(function () {
+      $("#contenido").load("restricciones.html");
+    });
+    $("#btnCargosDescargos").click(function () {
+      $("#contenido").load("cargosDescargos.html");
+    });
+    $("#btnPickingList").click(function () {
+      $("#contenido").load("pickingList.html");
+    });
+    $("#btnRepRes").click(function () {
+      $("#contenido").load("reporterestricciones.html");
+    });
+    $("#btnUsuariosBartolito").click(function () {
+      $("#contenido").load("usuariosbartolito.html");
+    });
+    $("#btnRepTiem").click(function () {
+      $("#contenido").load("reportetiempopicking.html");
+    });
+    $("#btnRepOTCaja").click(function () {
+      $("#contenido").load("reporteOrdenCaja.html");
+    });
+    $("#btnGestionOT").click(function () {
+      $("#contenido").load("gestionOrdenTrabajo.html");
+    });
+    $("#btnApliFrac").click(function () {
+      $("#contenido").load("aplicFrac.html");
+    });
+    $("#btnInmovLot").click(function () {
+      $("#contenido").load("inmobilizar.html");
+    });
+    $("#btnRepQRProductos").click(function () {
+      $("#contenido").load("repQRProductos.html");
+    });
+    $("#btnConsultarStock").click(function () {
+      $("#contenido").load("consultarStock.html");
+    });
+    $("#btnparambart").click(function () {
+      $("#contenido").load("opciones.html");
+    });
+    $("#btnProductosPlantilla").click(function () {
+      $("#contenido").load("ReporteProductosPrecio.html");
+    });
+    $("#btnRecepcionCajas").click(function () {
+      $("#contenido").load("recepcioncajas.html");
+    });
+    $("#btnOrdenReposicion").click(function () {
+      $("#contenido").load("ordenreposicion.html");
+    });
+    $("#btnOrdenesReposicionCentral").click(function () {
+      $("#contenido").load("ordenreposicioncentral.html");
+    });
+    $("#btnPetitorio").click(function () {
+      $("#contenido").load("petitorio.html");
+    });
+    $("#btnPetitorioTecnico").click(function () {
+      $("#contenido").load("petitorioTecnico.html");
+    });
+    $("#btnPetitorioPorEspecialidad").click(function () {
+      $("#contenido").load("petitorioEspecial.html");
+    });
+    $("#btnEmbalaje").click(function () {
+      $("#contenido").load("reporteEtiquetasEmbalaje.html");
+    });
+    $("#btnRepPetitorio").click(function () {
+      $("#contenido").load("reportepetitorio.html");
+    });
+    $("#btncompras").click(function () {
+      $("#contenido").load("comprasreposicion.html");
+    });
+    $("#btnEmbalajenuevo").click(function () {
+      $("#contenido").load("reporteetiquetasenvalajenuevo.html");
+    });
+    $("#btnRepFaltanteexcedente").click(function () {
+      $("#contenido").load("reportefaltanteexcedente.html");
+    });
+    $("#btnabrirot").click(function () {
+      $("#contenido").load("abrirotrecepcion.html");
+    });
+    $("#btnobjetivos").click(function () {
+      $("#contenido").load("objetivos.html");
+    });
+    $("#btnotrosobjetivos").click(function () {
+      $("#contenido").load("otrosobjetivos.html");
+    });
+    $("#btnrepocicionrecepcion").click(function () {
+      $("#contenido").load("reposicionrecepcion.html");
+    });
+    $("#btnRepTiemRecep").click(function () {
+      $("#contenido").load("reportetiemposrecepcion.html");
+    });
+    $("#btnDistribucionGenerico").click(function () {
+      $("#contenido").load("distribucion_generico.html");
+    });
+    $("#btnreceta").click(function () {
+      $("#contenido").load("hechrecetas.html");
+    });
+    $("#btnseguimiento").click(function () {
+      $("#contenido").load("seguimientoentrega.html");
+    });
+    $("#btninventario").click(function () {
+      $("#contenido").load("inventario.html");
+    });
+    $("#btnUsuariosInventario").click(function () {
+      $("#contenido").load("usuarioinventario.html");
+    });
+    $("#btnRepRegistroProductos").click(function () {
+      $("#contenido").load("reporteordentrabajoserdoc.html");
+    });
+    $("#btnpagosvirtuales").click(function () {
+      $("#contenido").load("pagosvirtuales.html");
+    });
+    $("#btnGuiaTransferencia2").click(function () {
+      $("#contenido").load("pickinglistagrupado.html");
+    });
+    $("#btnmatchpickmov").click(function () {
+      $("#contenido").load("matchpickmov.html");
+    });
+    $("#btnAlmacenamiento").click(function () {
+      $("#contenido").load("almacenamiento.html");
+    });
+    $("#btnSincronizacion").click(function () {
+      $("#contenido").load("sincronizacion.html");
+    });
+    $("#btnManuales").click(function () {
+      $("#contenido").load("manuales.html");
+    });
+    $("#btnalmacenesbartolito").click(function () {
+      $("#contenido").load("almacenes_bartolito.html");
+    });
+    $("#btnGruposPermisos").click(function () {
+      $("#contenido").load("grupospermisos.html");
+    });
+    $("#btnPermisos").click(function () {
+      $("#contenido").load("permisos.html");
+    });
+  });
+</script>

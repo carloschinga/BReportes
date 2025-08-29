@@ -1,0 +1,641 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<style>
+  /* Asegurar que el dropdown de Select2 sea visible sobre el modal */
+  .select2-container {
+    z-index: 99999 !important;
+  }
+
+  /* Asegurar que el dropdown tenga suficiente espacio */
+  .select2-dropdown {
+    z-index: 99999 !important;
+  }
+  /* Estilos para el grupo de botones */
+  .btn-group {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  /* Espaciado y transiciones suaves */
+  .btn {
+    transition: all 0.3s ease;
+    margin: 0 2px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* Estilo para el botón de activar/desactivar */
+  .btn-activar {
+    min-width: 90px; /* Ancho mínimo para mantener consistencia */
+  }
+
+  /* Efecto hover para todos los botones */
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Estilo específico para estado activo */
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+
+  /* Estilo específico para estado inactivo */
+  .btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  /* Estilos para la sección de objetivo */
+  .objetivo-header {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .objetivo-nombre {
+    display: inline-block;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px dashed #dee2e6;
+  }
+
+  .objetivo-meta {
+   /* border-left: 3px solid #0d6efd;
+    transition: all 0.3s ease;*/
+
+  }
+
+  .objetivo-meta:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transform: translateY(-2px);
+  }
+
+  /* Mejora para la tarjeta de detalles */
+  #objetivoDetalle p {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  #objetivoDetalle p:last-child {
+    border-bottom: none;
+  }
+
+  #objetivoDetalle strong {
+    color: #495057;
+    font-weight: 600;
+  }
+
+  /* Agregar al CSS existente */
+  .badge-vendedores {
+    font-size: 0.65em;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+
+  .select-rol {
+    min-width: 180px;
+  }
+
+  .input-monto,
+  .input-porcentaje {
+    text-align: right;
+  }
+
+  .progress {
+    background-color: #e9ecef;
+    border-radius: 4px;
+  }
+
+  .progress-bar {
+    transition: width 0.6s ease;
+  }
+
+  /* Efecto para filas al pasar el mouse */
+  #rolesAsignadosTable tr:not(#nuevoRolRow):hover {
+    background-color: rgba(13, 110, 253, 0.05);
+  }
+
+  /* Estilo para el filtro de sucursal */
+  .filtro-sucursal {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  
+  
+  
+</style>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">
+      Gestion Objetivos Comerciales
+    </h6>
+  </div>
+  <div class="card-body">
+    <button class="btn btn-primary mb-3" id="agregarboton">
+      <i class="fas fa-plus-circle"></i> Agregar
+    </button>
+    <div class="table-responsive">
+      <table
+        id="tabla"
+        class="table table-bordered text-dark table-sm table-striped"
+      >
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Objetivo</th>
+            <th>Fecha</th>
+            <th>Periodo</th>
+            <th>Tipo</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para asignar rol a sucursal -->
+<div
+  class="modal fade"
+  id="asignarRolesModal"
+  tabindex="-1"
+  aria-labelledby="asignarRolesModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="asignarRolesModalLabel">
+          Asignar Roles a Objetivo
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Sección de selección de objetivo -->
+        <div class="mb-1">
+          <h6 class="fw-bold mb-1">1. Objetivo Seleccionado</h6>
+         
+          <div class="row">
+            <div class="col-md-6">
+              <div class="objetivo-header">
+                <label
+                  for="selectObjetivo"
+                  class="form-label small text-uppercase text-muted fw-bold"
+                  >OBJETIVO DE VENTA</label
+                >
+                <h5 id="nombreObjetivo" class="fw-bold text-primary mt-1 mb-3">
+                  <i class="bi bi-bullseye me-2"></i>
+                  <span class="objetivo-nombre">Ventas Q1 2025</span>
+                </h5>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="objetivo-meta bg-light p-3 rounded">
+                <div class="d-flex align-items-center mb-2">
+                  <span class="badge bg-primary me-2">META TOTAL</span>
+                  <span class="fs-5 fw-bold"
+                    >S/.
+                    <span class="fs-5 fw-bold" id="metaTotal">60,000</span>
+                  </span>
+                </div>
+                <div class="progress" style="height: 8px">
+                  <div
+                    class="progress-bar bg-success"
+                    role="progressbar"
+                    style="width: 75%"
+                    aria-valuenow="75"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+           
+          </div>
+        </div>
+
+        <!-- Filtro de sucursal movido aquí -->
+        <div class="filtro-sucursal " style="padding-bottom: 1px;">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-2">
+                <i class="bi bi-building me-2"></i>2. Filtrar por Sucursal
+              </h6>
+              <p class="text-muted small mb-0">
+                Seleccione una sucursal para ver y gestionar sus roles asignados
+              </p>
+            </div>
+            <div class="col-md-6">
+              <select class="form-select" id="sucursal">
+                <option value="" disabled selected>Seleccione sucursal</option>
+               
+              </select>
+            </div>
+            <div class="objetivo-meta rounded" style="padding: 1px; text-align: center;">
+           
+               
+                <span ><b>MONTO SUCURSAL</b> S/.
+                  <span class="fs-5 fw-bold" id="metaSucursal">00,000</span>
+                </span>
+            
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de asignación de roles -->
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">3. Asignar Roles</h6>
+          <div class="table-responsive">
+            <table class="table table-hover table-sm">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Rol</th>
+                  <th style="display: none">Monto Asignado</th>
+                  <th style="display: none">Monto Sucursal</th>
+                  <th>Porcentaje</th>
+                  <th>Vendedores Asignados</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="rolesAsignadosTable">
+                <!-- Fila para agregar nuevo rol -->
+                <tr id="nuevoRolRow" class="table-success">
+                  <td colspan="7" class="text-center">
+                    <button class="btn btn-sm btn-success" id="agregarRolBtn">
+                      <i class="bi bi-plus-circle"></i> Agregar Rol
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sección de resumen -->
+        <div class="card border-primary">
+          <div class="card-header bg-light">
+            <h6 class="fw-bold mb-0">Resumen de Asignación</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Total asignado:</strong></p>
+                <h4 class="text-primary total-asignado">S/. 0.00</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Porcentaje total:</strong></p>
+                <h4 class="text-primary total-porcentaje">0.00%</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Restante monto:</strong></p>
+                <h4 class="text-success restante-monto">S/. 0.00</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Restante %:</strong></p>
+                <h4 class="text-success restante-porcentaje">0.00%</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary">
+          Guardar Asignación
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal para asignar vendedores a rol -->
+<div
+  class="modal fade"
+  id="asignarVendedoresModal"
+  tabindex="-1"
+  aria-labelledby="asignarVendedoresModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="asignarVendedoresModalLabel">
+          <i class="bi bi-people-fill me-2"></i>Asignar Vendedores a Roles
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Sección de selección de objetivo y sucursal -->
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">1. Contexto de Asignación</h6>
+          <div class="row">
+            <!-- Objetivo -->
+            <div class="col-md-4">
+              <div class="card bg-light p-3 h-100">
+                <label
+                  class="form-label small text-uppercase text-muted fw-bold"
+                  >OBJETIVO</label
+                >
+                <h4 class="fw-bold text-primary">
+                  <span id="nombreObjetivoVend"></span>
+                </h4>
+                <div class="d-flex justify-content-between mt-2">
+                  <span class="badge bg-primary"
+                    >META TOTAL: S/. <span id="metaTotalVend"></span
+                  ></span>
+                  <span class="badge bg-secondary"
+                    ><span id="objMesAnoVend"></span
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <!-- Sucursal -->
+            <div class="col-md-4">
+              <div class="card bg-light p-3 h-100">
+                <label
+                  class="form-label small text-uppercase text-muted fw-bold"
+                  >SUCURSAL</label
+                >
+                <h4 class="fw-bold text-success">
+                  <span id="nombreSucursalVend"></span>
+                </h4>
+                <div class="mt-2">
+                  <span class="badge bg-info"
+                    >META SUCURSAL: S/. <span id="metaSucursalVend"></span
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <!-- Rol -->
+            <div class="col-md-4">
+              <div class="card bg-light p-3 h-100">
+                <label
+                  class="form-label small text-uppercase text-muted fw-bold"
+                  >ROL SELECCIONADO</label
+                >
+                <h4 class="fw-bold text-warning">
+                  <span id="nombreRolVend"></span>
+                </h4>
+                <div class="mt-2">
+                  <span class="badge bg-dark"
+                    >META ROL: S/. <span id="metaRolVend"></span
+                  ></span>
+                  <span class="badge bg-dark ms-2"
+                    ><span id="porcRolVend"></span
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de asignación de vendedores -->
+        <div class="mb-4">
+          <div class="vendedores-header mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-people-fill me-2 text-primary"></i>
+                <h5 class="m-0 text-primary fw-bold">
+                  2. Asignar Vendedores al Rol
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover table-sm">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Vendedor</th>
+                  <th>Fecha Inicio</th>
+                  <th>Fecha Fin</th>
+                  <th>Monto Asignado</th>
+                  <th>Porcentaje</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="vendedoresAsignadosTable">
+                <!-- Ejemplo de fila de vendedor asignado -->
+                <tr>
+                  <td>1</td>
+                  <td>Juan Pérez</td>
+                  <td>jperez</td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text">S/.</span>
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="2500"
+                        min="0"
+                        step="100"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="50"
+                        min="0"
+                        max="100"
+                        step="1"
+                      />
+                      <span class="input-group-text">%</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <input
+                        type="date"
+                        class="form-control"
+                        value="2025-01-01"
+                      />
+                      <span class="input-group-text">a</span>
+                      <input
+                        type="date"
+                        class="form-control"
+                        value="2025-01-31"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- Fila para agregar nuevo vendedor -->
+                <tr id="nuevoVendedorRow" class="table-success d-none">
+                  <td colspan="7">
+                    <div class="p-2">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <select
+                            class="form-select form-select-sm"
+                            id="selectVendedor"
+                          >
+                            <option value="" selected disabled>
+                              Seleccione vendedor
+                            </option>
+                            <option value="1">Juan Pérez (jperez)</option>
+                            <option value="2">María Gómez (mgomez)</option>
+                            <option value="3">Carlos Ruiz (cruiz)</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="input-group input-group-sm">
+                            <span class="input-group-text">S/.</span>
+                            <input
+                              type="number"
+                              class="form-control"
+                              placeholder="Monto"
+                              min="0"
+                              step="100"
+                              id="montoVendedor"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="input-group input-group-sm">
+                            <input
+                              type="number"
+                              class="form-control"
+                              placeholder="%"
+                              min="0"
+                              max="100"
+                              step="1"
+                              id="porcVendedor"
+                            />
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="input-group input-group-sm">
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="fechaInicioVend"
+                            />
+                            <span class="input-group-text">a</span>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="fechaFinVend"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-1">
+                          <button
+                            class="btn btn-sm btn-success"
+                            id="confirmarVendedor"
+                          >
+                            <i class="bi bi-check"></i>
+                          </button>
+                          <button
+                            class="btn btn-sm btn-secondary"
+                            id="cancelarVendedor"
+                          >
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sección de resumen -->
+        <div class="card border-primary">
+          <div class="card-header bg-light">
+            <h6 class="fw-bold mb-0">Resumen de Asignación</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <p class="mb-1">
+                  <strong>Total asignado a vendedores:</strong>
+                </p>
+                <h4 class="text-primary total-asignado-vend">S/. 2,500.00</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Porcentaje asignado:</strong></p>
+                <h4 class="text-primary total-porcentaje-vend">50.00%</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Restante monto:</strong></p>
+                <h4 class="text-success restante-monto-vend">S/. 2,500.00</h4>
+              </div>
+              <div class="col-md-3">
+                <p class="mb-1"><strong>Restante %:</strong></p>
+                <h4 class="text-success restante-porcentaje-vend">50.00%</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="guardarAsignacionVendedores"
+        >
+          <i class="bi bi-save me-1"></i> Guardar Asignación
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popper.js (necesario para Bootstrap 4) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- DataTables Core -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- Select2 CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Para traducción al español si es necesario -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+<!-- Js personalizado -->
+<script src="comercial/sigoObjetivos.js"></script>

@@ -1,0 +1,182 @@
+<style>
+    .fixed-title {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+        padding: 10px 35px 5px 15px;
+        display: none; /* Oculto inicialmente */
+    }
+    #back-button {
+        position: fixed;
+        top: 100px; /* Altura inicial del botón */
+        right: 30px;
+        z-index: 1020;
+        transition: top 0.3s; /* Transición suave al cambiar la altura */
+    }
+    .circle-container {
+        display: flex; /* Utilizar flexbox */
+    }
+    .card-header{
+        padding: 10px 35px 10px 15px;
+    }
+    .circle {
+        border-radius: 50%;
+        width: 2em; /* Ancho relativo */
+        height: 2em; /* Alto relativo */
+        max-width: 20px; /* Ancho máximo */
+        max-height: 20px; /* Alto máximo */
+        display: flex; /* Centro vertical y horizontal del ícono */
+        justify-content: center;
+        align-items: center;
+        margin-right: 5px; /* Espacio entre los círculos */
+    }
+    .circle-success {
+        background-color: #28a745; /* Verde */
+    }
+    .producto-btn {
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+    }
+    .circle-danger {
+        background-color: #dc3545; /* Rojo */
+    }
+    .aplicado{
+        background-color: #99ff99; /* Rojo */
+    }
+    .nopadding{
+        padding-left: 2px;
+        padding-right: 2px;
+        padding-top:  0;
+        padding-bottom: 0;
+        margin-right: 0;
+        margin-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+</style>
+<div class="card shadow mb-4 fuente-min">   
+    <div class="fixed-title" id="fixed-title">
+        <h6 class="m-0 font-weight-bold text-primary" id="titulo2">Recepción de Picking</h6>
+    </div>
+    <div class="card-header py-3" id="card-header">
+        <h6 class="m-0 font-weight-bold text-primary mb-2" id="titulo">Recepción de Picking</h6>
+        <a href="#" id="back-button" class="btn btn-primary">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+    </div>
+    <div class="card-body no-border nopadding">
+        <div class="container nopadding">
+            <div class="table-responsive mb-2">
+                <table class="table table-bordered table-sm " id="example">
+                    <thead>
+                        <tr>
+                            <th scope="col">Secuencia</th>
+                            <th scope="col">Item Check</th>
+                            <th scope="col">Item Conforme</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Las filas se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-inline mb-2">
+                <button id="show-modal" class="btn btn-primary btn-sm mr-2">Buscar Producto</button>
+                <input type="text" id="search-qr" class="form-control mr-2" placeholder="Escanea o ingresa el código barras">
+                <!--<button class="btn btn-primary btn-sm mr-2" id="search-button">Aceptar</button>-->
+                <input type="text" id="search-bulto" class="form-control mr-2" placeholder="Buscar Producto en el bulto">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="codigoprod">
+                    <label class="form-check-label" for="codigoprod">Mostrar codigo producto</label>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="reference-table" class="table table-bordered table-sm" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="no-display">codigo</th>
+                            <th>Producto</th>
+                            <th>Lote</th>
+                            <th>Vence</th>
+                            <th>CantE</th>
+                            <th>CantF</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-primary" type="button" id="guardar">Guardar</button>
+            </div>
+            <br/>
+            <h6>Productos No Registrados en Bulto</h6>
+            <div class="table-responsive">
+                <table id="product-table" class="table table-bordered table-sm table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="no-display">Codigo</th>
+                            <th>Producto</th>
+                            <th>CantE</th>
+                            <th>CantF</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!--
+            <button id="compare-btn" class="btn btn-success">Aceptar Bulto</button>
+            -->
+            <div id="results" style="display:none;">
+                <h4>Productos Faltantes del Bulto</h4>
+                <ul id="missing-products"></ul>
+                <h4>Productos no Encontrados en el Bulto</h4>
+                <ul id="extra-products"></ul>
+                <h4>Productos con Diferencias de Cantidades</h4>
+                <ul id="different-products"></ul>
+            </div>
+
+            <div id="equal-message" style="display:none;">
+                <h3>Bulto Operado Correctamente.</h3>
+            </div>
+
+            <div id="error-message" style="display:none;">
+                <h3>Error al cargar.</h3>
+            </div>
+        </div>
+    </div>
+    <div id="product-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buscar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="modal-product-table" class="table table-bordered table-sm table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Producto</th>
+                                <th>Barras</th>
+                                <th>Agregar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se llenarán dinámicamente con DataTables -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/recepcioncajasdetalle.js" type="text/javascript"></script>
+</div>

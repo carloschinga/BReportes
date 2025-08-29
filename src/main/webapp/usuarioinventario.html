@@ -1,0 +1,104 @@
+
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Gestion de Usuario Inventario</h6>
+    </div>
+    <div class="card-body">
+        <button class="btn btn-primary mb-3" id="botonmodalagregar"><i class="fas fa-plus-circle"></i> Agregar Usuario</button>
+        <table id="usuariosTable" class="table table-bordered text-dark table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Agregar Usuario -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel"><i class="fas fa-plus"></i> Agregar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="addUseusr">Usuario</label>
+                        <input type="text" class="form-control" id="addUseusr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addUsenam">Nombre</label>
+                        <input type="text" class="form-control" id="addUsenam" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addPass">Contrase�a</label>
+                        <input type="password" class="form-control" id="addPass" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Agregar</button>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Usuario -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel"><i class="fas fa-edit"></i> Editar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUsecod">
+                    <div class="form-group">
+                        <label for="editUseusr">Usuario</label>
+                        <input type="text" class="form-control" id="editUseusr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUsenam">Nombre</label>
+                        <input type="text" class="form-control" id="editUsenam" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar Usuario -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel"><i class="fas fa-trash"></i> Eliminar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar este usuario?</p>
+                <input type="hidden" id="deleteUsecod">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/CryptoJS v3.1.2/rollups/sha256.js" type="text/javascript"></script>
+<script src="js/usuarioinventario.js" type="text/javascript"></script>

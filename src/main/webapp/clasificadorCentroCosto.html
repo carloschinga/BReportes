@@ -1,0 +1,1131 @@
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">
+      <i class="fas fa-list-alt me-2"></i>Clasificador de Centro de Costos
+    </h5>
+  </div>
+  <div class="card-body">
+    <!-- Botones de acción -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="d-flex justify-content-end gap-2 flex-wrap">
+          <button
+            data-bs-target="#modalRegistro"
+            data-bs-toggle="modal"
+            type="button"
+            class="btn btn-primary"
+            id="btnAgregarRegistro"
+          >
+            <i class="fas fa-plus me-2"></i>Agregar Registro
+          </button>
+          <!--button-- type="button" class="btn btn-primary" id="btnVerPendientes">
+            <i class="fas fa-clock me-2"></i>Ver Pendientes
+          </!--button-->
+          <button type="button" class="btn btn-primary" id="btnExportar">
+            <i class="fas fa-download me-2"></i>Reportes
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table
+        id="tablaClasificador"
+        class="table table-striped table-bordered table-sm"
+      >
+        <thead class="thead-light">
+          <tr>
+            <th>Id</th>
+            <th>Unidad Operador</th>
+            <th>Tipo Gasto</th>
+            <th>Cuenta</th>
+            <th>CS</th>
+            <th>AC</th>
+            <th>TA</th>
+            <th>ACT</th>
+            <th>PR</th>
+            <th>CR</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar/editar registro -->
+<div
+  class="modal fade"
+  id="modalRegistro"
+  tabindex="-1"
+  aria-labelledby="modalRegistroLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalRegistroLabel">
+          <i class="fas fa-edit me-2"></i>Registro de Clasificador
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="formRegistro">
+          <input type="hidden" id="registroId" name="id" />
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="modalUnidadOperador" class="form-label">
+                <i class="fas fa-building me-1"></i>Unidad Operador
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="modalUnidadOperador"
+                name="unidadOperador"
+                required
+              ></select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="modalTipoGasto" class="form-label">
+                <i class="fas fa-tag me-1"></i>Tipo Gasto
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="modalTipoGasto"
+                name="tipoGasto"
+                required
+              ></select>
+            </div>
+          </div>
+
+          <div class="row">
+            <!--Cuenta-->
+            <div class="col-md-6 mb-3">
+              <label for="modalCuenta" class="form-label">
+                <i class="fas fa-credit-card me-1"></i>Cuenta
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="modalCuenta"
+                name="cuenta"
+                required
+                maxlength="25"
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="modalCS" class="form-label">CS</label>
+              <select
+                class="form-select"
+                id="modalCS"
+                name="cs"
+                required
+              ></select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="modalAC" class="form-label">AC</label>
+              <select class="form-select" id="modalAC" name="ac" required>
+                <option value="">Seleccione...</option>
+                <option value="01">Personal</option>
+                <option value="02">Bienes y Servicios</option>
+                <option value="03">Otros Gastos</option>
+                <option value="04">Transferencias</option>
+                <option value="05">Bienes de Capital</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="modalTA" class="form-label">TA</label>
+              <select class="form-select" id="modalTA" name="ta" required>
+                <option value="">Seleccione...</option>
+                <option value="01">Personal</option>
+                <option value="02">Bienes y Servicios</option>
+                <option value="03">Otros Gastos</option>
+                <option value="04">Transferencias</option>
+                <option value="05">Bienes de Capital</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="modalACT" class="form-label">ACT</label>
+              <select
+                class="form-select"
+                id="modalACT"
+                name="act"
+                required
+              ></select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="modalPR" class="form-label">PR</label>
+              <select
+                class="form-select"
+                id="modalPR"
+                name="pr"
+                required
+              ></select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="modalCR" class="form-label">CR</label>
+              <select
+                class="form-select"
+                id="modalCR"
+                name="cr"
+                required
+              ></select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" id="btnGuardarRegistro">
+          <i class="fas fa-save me-2"></i>Guardar Registro
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminación -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-warning me-2"></i>Confirmar
+          Eliminación
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea eliminar este registro?</p>
+        <p class="text-muted">Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="btnConfirmarEliminacion"
+        >
+          <i class="fas fa-trash me-2"></i>Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para ver registros pendientes 
+<div
+  class="modal fade"
+  id="modalRegistrosPendientes"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-clock me-2"></i>Registros Pendientes
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="registrosPendientesTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="nuevos-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nuevos"
+              type="button"
+              role="tab"
+            >
+              Nuevos <span class="badge bg-success" id="contadorNuevos">0</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="modificados-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#modificados"
+              type="button"
+              role="tab"
+            >
+              Modificados
+              <span class="badge bg-warning" id="contadorModificados">0</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="eliminados-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#eliminados"
+              type="button"
+              role="tab"
+            >
+              Eliminados
+              <span class="badge bg-danger" id="contadorEliminados">0</span>
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content mt-3" id="registrosPendientesContent">
+          <div class="tab-pane fade show active" id="nuevos" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-sm" id="tablaNuevos">
+                <thead>
+                  <tr>
+                    <th>Unidad Operador</th>
+                    <th>Tipo Gasto</th>
+                    <th>Cuenta</th>
+                    <th>CS</th>
+                    <th>AC</th>
+                    <th>TA</th>
+                    <th>ACT</th>
+                    <th>PR</th>
+                    <th>CR</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="modificados" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-sm" id="tablaModificados">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Unidad Operador</th>
+                    <th>Tipo Gasto</th>
+                    <th>Cuenta</th>
+                    <th>CS</th>
+                    <th>AC</th>
+                    <th>TA</th>
+                    <th>ACT</th>
+                    <th>PR</th>
+                    <th>CR</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="eliminados" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-sm" id="tablaEliminados">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Unidad Operador</th>
+                    <th>Tipo Gasto</th>
+                    <th>Cuenta</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" id="btnGuardarPendientes">
+          <i class="fas fa-save me-2"></i>Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<!-- DataTables CSS -->
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+/>
+
+<!-- DataTables JS -->
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
+></script>
+
+<!-- Bootstrap (opcional, si lo usas) -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<!-- Popper.js (necesario para Bootstrap 4) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Select2 CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+
+<!-- Para traducción al español (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+
+<script>
+  $(document).ready(function () {
+    var tabla;
+    let registrosNuevos = [];
+    let registrosModificados = [];
+    let registrosEliminados = [];
+    let registroIdParaEliminar = 0;
+    initDataTable();
+    llenarCombos("modalUnidadOperador", "1");
+    llenarCombos("modalTipoGasto", "2");
+    llenarCombos("modalCS", "3");
+    llenarCombos("modalACT", "6");
+    llenarCombos("modalPR", "7");
+    llenarCombos("modalCR", "8");
+
+    $("#btnExportar").on("click", function () {
+      $("#contenido").load("reporteClasi.html");
+    });
+
+    function initDataTable() {
+      // Inicializar DataTable
+      var tableConfig = {
+        language: {
+          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+        },
+        ajax: {
+          url: "clasiCentCost",
+          type: "GET",
+          contentType: "application/json",
+        },
+        columns: [
+          { data: "ClasiUnidOperaId" },
+          { data: "UnidOperaDescripcion" },
+          { data: "TipoGastoDescripcion" },
+          { data: "Cuenta" },
+          { data: "ProcesoDescripcion" },
+          { data: "ActividadDescripcion" },
+          { data: "TareaDescripcion" },
+          { data: "ActivoDescripcion" },
+          { data: "ProductoDescripcion" },
+          { data: "CentroCostoResponsabilidadDescripcion" },
+          {
+            data: null,
+            render: function (data, type, row) {
+              return `
+                <div class="d-flex justify-content-start">
+                  <button class="btn btn-info btn-sm mx-1" data-row="${row}" title="Editar">
+                      <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm mx-1" data-codreg="${row.ClasiUnidOperaId}" title="Eliminar">
+                      <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              `;
+            },
+          },
+        ],
+        responsive: true,
+        pageLength: 25,
+        order: [[0, "asc"]],
+      };
+
+      // Inicializar o reinicializar la tabla
+      /*if ($.fn.DataTable.isDataTable("#tablaClasificador")) {
+        tabla = $("#tablaClasificador").DataTable().destroy();
+      }
+      tabla = $("#tablaClasificador").DataTable(tableConfig);*/
+
+      if ($.fn.DataTable.isDataTable("#tablaClasificador")) {
+        $("#tablaClasificador").DataTable().destroy();
+        $("#tablaClasificador").empty(); // Limpiar el contenido HTML
+      }
+
+      // Inicializar nueva tabla
+      tabla = $("#tablaClasificador").DataTable(tableConfig);
+    }
+
+    $("#btnGuardar").click(function () {
+      guardarTodos();
+    });
+
+    $("#btnFiltrar").click(function () {
+      aplicarFiltros();
+    });
+
+    $("#btnLimpiarFiltros").click(function () {
+      limpiarFiltros();
+    });
+
+    $("#btnGuardarRegistro").click(function () {
+      guardarRegistro();
+    });
+
+    $("#btnConfirmarEliminacion").click(function () {
+      confirmarEliminacion();
+    });
+
+    $("#modalAC").prop("disabled", true);
+    $("#modalTA").prop("disabled", true);
+
+    $("#modalCS").on("change", function () {
+      var csValue = $(this).val();
+
+      if (csValue === "" || csValue === null) {
+        // Si CS está en "Seleccione", bloquear AC y TA, y resetear sus valores
+        $("#modalAC")
+          .prop("disabled", true)
+          .val("")
+          .empty()
+          .append('<option value="">Seleccione...</option>');
+        $("#modalTA")
+          .prop("disabled", true)
+          .val("")
+          .empty()
+          .append('<option value="">Seleccione...</option>');
+      } else {
+        // *** LLENAR AC CUANDO CS CAMBIA ***
+        $("#modalAC").prop("disabled", false).val("");
+        $("#modalTA")
+          .prop("disabled", true)
+          .val("")
+          .empty()
+          .append('<option value="">Seleccione...</option>');
+
+        // Llenar AC basado en CS seleccionado
+        llenarCombos("modalAC", "4", csValue); // Asumiendo que AC depende de CS (como actividad de proceso)
+      }
+    });
+
+    // Control del select AC
+    $("#modalAC").on("change", function () {
+      var acValue = $(this).val();
+      var csValue = $("#modalCS").val();
+
+      if (acValue === "" || acValue === null) {
+        // Si AC está en "Seleccione", bloquear TA y resetear su valor
+        $("#modalTA")
+          .prop("disabled", true)
+          .val("")
+          .empty()
+          .append('<option value="">Seleccione...</option>');
+      } else {
+        // *** LLENAR TA CUANDO AC CAMBIA ***
+        $("#modalTA").prop("disabled", false).val("");
+
+        // Llenar TA basado en CS y AC seleccionados
+        llenarCombos("modalTA", "5", csValue, acValue); // Asumiendo que TA depende de CS y AC (como tarea)
+      }
+    });
+
+    // Función para resetear todos los selects
+    function resetearSelects() {
+      $("#modalCS").val("");
+      $("#modalAC")
+        .prop("disabled", true)
+        .val("")
+        .empty()
+        .append('<option value="">Seleccione...</option>');
+      $("#modalTA")
+        .prop("disabled", true)
+        .val("")
+        .empty()
+        .append('<option value="">Seleccione...</option>');
+
+      // *** VOLVER A LLENAR CS DESPUÉS DEL RESET ***
+      llenarCombos("modalCS", "3"); // Recargar CS
+    }
+
+    // Función para limpiar el formulario
+    function limpiarFormulario() {
+      $("#formRegistro")[0].reset();
+      $("#registroId").val("");
+      resetearSelects();
+    }
+
+    // Modificar la función editarRegistro para usar los IDs correctos
+    async function editarRegistro(row) {
+      const datos = tabla.row(row).data();
+
+      // Llenar el formulario con los datos del registro usando los IDs
+      $("#registroId").val(datos.ClasiUnidOperaId);
+      $("#modalUnidadOperador").val(datos.UnidOperaId);
+      $("#modalTipoGasto").val(datos.TipoGastoId);
+      $("#modalCuenta").val(datos.Cuenta);
+
+      // Manejar CS, AC y TA de forma asíncrona
+      if (datos.ProcesoId) {
+        $("#modalCS").val(datos.ProcesoId);
+        $("#modalAC").prop("disabled", false);
+
+        // Cargar AC y esperar a que se complete
+        await new Promise((resolve) => {
+          llenarCombos("modalAC", "4", datos.ProcesoId, null, () => {
+            $("#modalAC").val(datos.ActividadId);
+            resolve();
+          });
+        });
+
+        if (datos.ActividadId) {
+          $("#modalTA").prop("disabled", false);
+
+          // Cargar TA y esperar a que se complete
+          await new Promise((resolve) => {
+            llenarCombos(
+              "modalTA",
+              "5",
+              datos.ProcesoId,
+              datos.ActividadId,
+              () => {
+                $("#modalTA").val(datos.TareaId);
+                resolve();
+              }
+            );
+          });
+        }
+      }
+
+      $("#modalACT").val(datos.ActivoId);
+      $("#modalPR").val(datos.ProductoId);
+      $("#modalCR").val(datos.CentroCostoResponsabilidadId);
+
+      // Mostrar el modal
+      $("#modalRegistro").modal("show");
+    }
+
+    // Agregar evento para el botón de editar
+    $("#tablaClasificador").on("click", ".btn-info", function () {
+      const row = $(this).closest("tr");
+      editarRegistro(row).catch((error) => {
+        console.error("Error al editar registro:", error);
+        mostrarToast("Error al cargar los datos del registro", "error");
+      });
+    });
+
+    // Agregar evento para el botón de eliminar
+    $("#tablaClasificador").on("click", ".btn-danger", function () {
+      registroIdParaEliminar = $(this).data("codreg");
+      $("#modalConfirmacion").modal("show");
+    });
+
+    // Agregar evento para limpiar el formulario cuando se cierra el modal
+    $("#modalRegistro").on("hidden.bs.modal", function () {
+      limpiarFormulario();
+    });
+
+    /*function actualizarContadores() {
+      $("#contadorNuevos").text(registrosNuevos.length);
+      $("#contadorModificados").text(registrosModificados.length);
+      $("#contadorEliminados").text(registrosEliminados.length);
+    }*/
+
+    // Función para agregar registro nuevo
+
+    function agregarRegistroNuevo(datos) {
+      console.log("Datos a enviar:", datos);
+
+      // Envolver el objeto en un array dentro de la estructura esperada
+      const datosParaEnviar = {
+        clasificadores: [datos], // Convertir el objeto en array
+      };
+
+      console.log("Datos estructurados:", datosParaEnviar);
+
+      return $.ajax({
+        url: "clasiCentCost",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datosParaEnviar), // Enviar la estructura correcta
+        success: function (response) {
+          tabla.ajax.reload(null, false);
+          mostrarToast("Registro nuevo agregado", "info");
+        },
+        error: function (xhr, status, error) {
+          mostrarToast("Error al agregar registro nuevo", "error");
+          // Manejar el error aquí
+        },
+      });
+    }
+
+    // Función para agregar registro modificado
+    function agregarRegistroModificado(datos) {
+      console.log("Datos a agregar:", datos);
+
+      // Envolver el objeto en un array dentro de la estructura esperada
+      const datosParaEnviar = {
+        clasificadores: [datos], // Convertir el objeto en array
+      };
+
+      console.log("Datos estructurados para enviar:", datosParaEnviar);
+
+      return $.ajax({
+        url: "clasiCentCost",
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(datosParaEnviar), // Ahora sí enviamos la estructura correcta
+        success: function (response) {
+          tabla.ajax.reload(null, false);
+          mostrarToast("Registro actualizado", "info");
+        },
+        error: function (xhr, status, error) {
+          mostrarToast("Error al editar el registro", "error");
+          // Manejar el error aquí
+        },
+      });
+    }
+
+    // Función para agregar registro a eliminar
+    function agregarRegistroEliminar(datos) {
+      console.log("Datos a eliminar:", datos);
+
+      // Extraer solo el ID que necesita el servlet
+      const datosParaEnviar = {
+        ids: [datos.ClasiUnidOperaId], // El servlet espera array de IDs
+      };
+
+      console.log("IDs para eliminar:", datosParaEnviar);
+
+      return $.ajax({
+        url: "clasiCentCost",
+        type: "DELETE",
+        contentType: "application/json",
+        data: JSON.stringify(datosParaEnviar),
+        success: function (response) {
+          tabla.ajax.reload(null, false);
+          mostrarToast("Registro eliminado exitosamente", "success");
+        },
+        error: function (xhr, status, error) {
+          mostrarToast("Error al eliminar el registro", "error");
+        },
+      });
+    }
+
+    // Función para actualizar tabla de nuevos registros
+    /*function actualizarTablaNuevos() {
+      const tbody = $("#tablaNuevos tbody");
+      tbody.empty();
+
+      registrosNuevos.forEach((registro, index) => {
+        tbody.append(`
+        <tr>
+          <td>${registro.UnidOperaId}</td>
+          <td>${registro.TipoGastoId}</td>
+          <td>${registro.Cuenta}</td>
+          <td>${registro.CS || ""}</td>
+          <td>${registro.AC || ""}</td>
+          <td>${registro.TA || ""}</td>
+          <td>${registro.ACT || ""}</td>
+          <td>${registro.PR || ""}</td>
+          <td>${registro.CR || ""}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="eliminarRegistroNuevo(${index})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `);
+      });
+    }
+
+    // Función para actualizar tabla de registros modificados
+    function actualizarTablaModificados() {
+      const tbody = $("#tablaModificados tbody");
+      tbody.empty();
+
+      registrosModificados.forEach((registro, index) => {
+        tbody.append(`
+        <tr>
+          <td>${registro.ClasiUnidOperaId}</td>
+          <td>${registro.UnidOperaId}</td>
+          <td>${registro.TipoGastoId}</td>
+          <td>${registro.Cuenta}</td>
+          <td>${registro.CS || ""}</td>
+          <td>${registro.AC || ""}</td>
+          <td>${registro.TA || ""}</td>
+          <td>${registro.ACT || ""}</td>
+          <td>${registro.PR || ""}</td>
+          <td>${registro.CR || ""}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="eliminarRegistroModificado(${index})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `);
+      });
+    }
+
+    // Función para actualizar tabla de registros eliminados
+    function actualizarTablaEliminados() {
+      const tbody = $("#tablaEliminados tbody");
+      tbody.empty();
+
+      registrosEliminados.forEach((registro, index) => {
+        tbody.append(`
+        <tr>
+          <td>${registro.ClasiUnidOperaId}</td>
+          <td>${registro.UnidOperaId}</td>
+          <td>${registro.TipoGastoId}</td>
+          <td>${registro.Cuenta}</td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="restaurarRegistroEliminado(${index})">
+              <i class="fas fa-undo"></i>
+            </button>
+          </td>
+        </tr>
+      `);
+      });
+    }*/
+
+    // Función para guardar todos los cambios pendientes
+    /*async function guardarCambiosPendientes() {
+      try {
+        // Guardar nuevos registros
+        if (registrosNuevos.length > 0) {
+          const response = await fetch("clasiCentCost", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              clasificadores: registrosNuevos,
+            }),
+          });
+
+          if (!response.ok)
+            throw new Error("Error al guardar nuevos registros");
+        }
+
+        // Actualizar registros modificados
+        if (registrosModificados.length > 0) {
+          const response = await fetch("clasiCentCost", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              clasificadores: registrosModificados,
+            }),
+          });
+
+          if (!response.ok) throw new Error("Error al actualizar registros");
+        }
+
+        // Eliminar registros
+        if (registrosEliminados.length > 0) {
+          const response = await fetch("clasiCentCost", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ids: registrosEliminados.map((r) => r.ClasiUnidOperaId),
+            }),
+          });
+
+          if (!response.ok) throw new Error("Error al eliminar registros");
+        }
+
+        // Limpiar registros pendientes
+        registrosNuevos = [];
+        registrosModificados = [];
+        registrosEliminados = [];
+
+        // Actualizar tablas y contadores
+        actualizarTablaNuevos();
+        actualizarTablaModificados();
+        actualizarTablaEliminados();
+        actualizarContadores();
+
+        // Recargar tabla principal
+        tabla.ajax.reload();
+
+        // Mostrar mensaje de éxito
+        mostrarToast("Todos los cambios se guardaron exitosamente", "success");
+
+        // Cerrar modal
+        $("#modalRegistrosPendientes").modal("hide");
+      } catch (error) {
+        mostrarToast("Error al guardar los cambios: " + error.message, "error");
+      }
+    }*/
+
+    // Modificar la función guardarRegistro existente
+    function guardarRegistro() {
+      if ($("#formRegistro")[0].checkValidity()) {
+        const datos = {
+          UnidOperaId: $("#modalUnidadOperador").val(),
+          TipoGastoId: $("#modalTipoGasto").val(),
+          Cuenta: $("#modalCuenta").val(),
+          CS: $("#modalCS").val(),
+          AC: $("#modalAC").val(),
+          TA: $("#modalTA").val(),
+          ACT: $("#modalACT").val(),
+          PR: $("#modalPR").val(),
+          CR: $("#modalCR").val(),
+        };
+
+        const registroId = $("#registroId").val();
+
+        if (registroId) {
+          // Es una edición
+          datos.ClasiUnidOperaId = registroId;
+          agregarRegistroModificado(datos);
+        } else {
+          // Es un nuevo registro
+          agregarRegistroNuevo(datos);
+        }
+        $("#modalRegistro").modal("hide");
+      } else {
+        $("#formRegistro")[0].reportValidity();
+      }
+    }
+
+    // Modificar la función de eliminación
+    function confirmarEliminacion() {
+      if (registroIdParaEliminar) {
+        const registro = tabla
+          .row(
+            $(`button[data-codreg="${registroIdParaEliminar}"]`).closest("tr")
+          )
+          .data();
+        agregarRegistroEliminar(registro);
+        tabla.ajax.reload();
+        $("#modalConfirmacion").modal("hide");
+      }
+    }
+
+    // Agregar botón para ver registros pendientes
+    /*$("#btnVerPendientes").click(function () {
+      $("#modalRegistrosPendientes").modal("show");
+    });
+
+    // Agregar evento para guardar cambios pendientes
+    $("#btnGuardarPendientes").click(guardarCambiosPendientes);*/
+
+    function aplicarFiltros() {
+      const unidad = $("#selectUnidadOperador").val();
+      const tipo = $("#selectTipoGasto").val();
+
+      // Aplicar filtros a la tabla
+      if (unidad) {
+        tabla.column(1).search(unidad);
+      }
+      if (tipo) {
+        tabla.column(2).search(tipo);
+      }
+
+      tabla.draw();
+      mostrarToast("Filtros aplicados", "info");
+    }
+
+    //si
+    function limpiarFiltros() {
+      $("#selectUnidadOperador").val("");
+      $("#selectTipoGasto").val("");
+      tabla.search("").columns().search("").draw();
+      mostrarToast("Filtros limpiados", "info");
+    }
+
+    /*async function guardarTodos() {
+      mostrarToast("Guardando todos los cambios...", "info");
+
+      try {
+        await guardarDbRegistros();
+        mostrarToast("Todos los cambios guardados exitosamente", "success");
+      } catch (error) {
+        console.error("Error en guardarTodos:", error);
+        mostrarToast("Error al guardar todos los cambios", "error");
+      }
+    }*/
+
+    //si
+    function mostrarToast(mensaje, tipo = "info") {
+      const color =
+        tipo === "success"
+          ? "text-bg-success"
+          : tipo === "error"
+          ? "text-bg-danger"
+          : "text-bg-info";
+
+      const toast = $(`
+              <div class="toast ${color}" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+                  <div class="toast-body text-white">
+                      ${mensaje}
+                  </div>
+              </div>
+          `);
+
+      $("body").append(toast);
+      const bsToast = new bootstrap.Toast(toast[0]);
+      bsToast.show();
+
+      toast[0].addEventListener("hidden.bs.toast", () => {
+        toast.remove();
+      });
+    }
+
+    //si
+    function llenarCombos(
+      selectId,
+      opcion,
+      proceso = null,
+      actividad = null,
+      callback = null
+    ) {
+      var requestData = {
+        opcion: opcion,
+      };
+
+      // Agregar parámetros adicionales según la opción
+      if (opcion === "4" && proceso) {
+        requestData.proceso = proceso;
+      }
+      if (opcion === "5" && proceso && actividad) {
+        requestData.proceso = proceso;
+        requestData.actividad = actividad;
+      }
+
+      $.ajax({
+        url: "combosForClasi",
+        type: "GET",
+        data: requestData,
+        dataType: "json",
+        success: function (data) {
+          var select = $("#" + selectId);
+          select.empty(); // Limpiar opciones existentes
+          select.append('<option value="">-- Seleccionar --</option>');
+
+          $.each(data, function (index, item) {
+            var option = "";
+            switch (opcion) {
+              case "1": // Unidad Operativa
+                option =
+                  '<option value="' +
+                  item.id +
+                  '">' +
+                  item.unidad +
+                  "</option>";
+                break;
+              case "2": // Tipo Gasto
+                option =
+                  '<option value="' + item.id + '">' + item.tipo + "</option>";
+                break;
+              case "3": // Proceso
+                option =
+                  '<option value="' +
+                  item.id +
+                  '">' +
+                  item.proceso +
+                  "</option>";
+                break;
+              case "6": // Activo
+                option =
+                  '<option value="' +
+                  item.id +
+                  '">' +
+                  item.activo +
+                  "</option>";
+                break;
+              case "7": // Producto/Servicio
+                option =
+                  '<option value="' +
+                  item.id +
+                  '">' +
+                  item.producto +
+                  "</option>";
+                break;
+              case "4": // Actividad
+                option =
+                  '<option value="' +
+                  item.id +
+                  '">' +
+                  item.actividad +
+                  "</option>";
+                break;
+              case "5": // Tarea
+                option =
+                  '<option value="' + item.id + '">' + item.tarea + "</option>";
+                break;
+              case "8": // Centro Costo Responsabilidad
+                option =
+                  '<option value="' + item.id + '">' + item.costo + "</option>";
+                break;
+            }
+            select.append(option);
+          });
+
+          if (callback) {
+            callback();
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error al cargar combo:", error);
+        },
+      });
+    }
+
+    // Funciones para manejar registros pendientes
+    /*function eliminarRegistroNuevo(index) {
+      registrosNuevos.splice(index, 1);
+      actualizarTablaNuevos();
+      actualizarContadores();
+      mostrarToast("Registro nuevo eliminado de pendientes", "info");
+    }
+
+    function eliminarRegistroModificado(index) {
+      registrosModificados.splice(index, 1);
+      actualizarTablaModificados();
+      actualizarContadores();
+      mostrarToast("Registro modificado eliminado de pendientes", "info");
+    }
+
+    function restaurarRegistroEliminado(index) {
+      const registro = registrosEliminados[index];
+      registrosEliminados.splice(index, 1);
+      actualizarTablaEliminados();
+      actualizarContadores();
+      mostrarToast("Registro restaurado exitosamente", "success");
+    }
+
+    // Hacer las funciones disponibles globalmente
+    window.eliminarRegistroNuevo = eliminarRegistroNuevo;
+    window.eliminarRegistroModificado = eliminarRegistroModificado;
+    window.restaurarRegistroEliminado = restaurarRegistroEliminado;*/
+  });
+</script>

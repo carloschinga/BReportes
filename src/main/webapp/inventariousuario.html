@@ -1,0 +1,43 @@
+<link href="css/select2.min.css" rel="stylesheet" type="text/css"/>
+<style>
+    .select2-container {
+        width: 100% !important;
+        min-width: 250px; /* Ajusta este valor al ancho mínimo que desees */
+    }
+</style>
+
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" id="titulo">Asignacion de Usuario a Inventario</h6>
+    </div>
+    <div class="card-body">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secundary me-md-2" id="volver"><i class="fa fa-arrow-left"></i> Volver</button>
+            <button class="btn btn-primary me-md-2" id="editar"><i class="fa fa-edit"></i> Editar</button>
+            <button class="btn btn-primary me-md-2" id="guardar" style="display: none"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+        <div class="form-group" id="divagregar" style="display: none">
+            <label for="select-usuario">Usuario</label>
+            <select id="select-usuario" class="form-control select2"></select>
+            <button class="btn btn-primary me-md-2 mt-2" id="agregar"><i class="fa fa-plus"></i> Agregar</button>
+        </div>
+
+        <div class="table-responsive">
+            <table id="tabla" class="table table-bordered text-dark table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="js/select2.min.js" type="text/javascript"></script>
+<script src="js/inventariousuario.js" type="text/javascript"></script>

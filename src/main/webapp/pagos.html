@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+        <link href="css/showLoading.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body id="page-top">
+        <div class="transparentCover"></div>
+        <div class="loading"></div>
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <center> <h3 class="card-title">Registrar Pagos</h3></center>
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-12">
+                                        <!-- Circle Buttons -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Buscar Alumno Matriculado</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6 col-xl-6">
+                                                            <input type="text" id="txtCodigoCliente">
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtBuscarAlumno" 
+                                                                   placeholder="Ingrese Alumno a buscar...">
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3">                         
+                                                            <button class="btn btn-primary btn-user btn-block" id="btnBuscar">Buscar</button>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3" id="loading" style="display:none">                         
+                                                            <div>
+                                                                <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3">                         
+                                                            <button class="btn btn-secondary btn-user btn-block" id="btnCancelar">Cancelar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="alert alert-warning" id="aleAdvertencia" style="display:none;" role="alert">
+                                                    Debe ingresar mínimo 2 caracteres para buscar cliente...
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <div id="resultadoBusqueda" class="form-group">
+                                                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Codigo</th> 
+                                                                    <th>Alumno</th> 
+                                                                    <th>Año</th>   
+                                                                    <th>Matricula</th>   
+                                                                    <th>Estado</th>   
+                                                                    <th>Seleccionar</th>   
+                                                                </tr>
+                                                            </thead>                                                
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- Circle Buttons (Default) -->                    
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="divServicio">
+                                    <div class="col-12">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary" id="tituloPagar">Pagar</h6>
+                                                <input type="hidden" id="txtCodiServ"/>
+                                                <input type="hidden" id="txtCodiPlan"/>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="tblDeuda" class="table table-striped table-bordered" style="width:100%">
+                                                        <thead>
+                                                            <tr>                                                            
+                                                                <th>Cuota</th>   
+                                                                <th>Concepto</th>  
+                                                                <th>Abonado</th>   
+                                                                <th>Descuento</th>  
+                                                                <th>Debe</th>  
+                                                                <th>Estado</th>  
+                                                                <th>Operación</th>   
+                                                            </tr>
+                                                        </thead>
+
+                                                    </table>  
+                                                </div>
+                                                <!--<button class="btn btn-primary" type="button" id="btnAgregarCuota">Agregar Cuota</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row" id="divServicioAbono">
+                                    <div class="col-12">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary" id="tituloAbonado">Pagar</h6>
+                                                <!--<input type="hidden" id="txtCodiServ"/>-->
+                                                <!--<input type="hidden" id="txtCodiPlan"/>-->
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+
+                                                    <table id="tblAbono" class="table table-striped table-bordered" style="width:100%">
+                                                        <thead>
+                                                            <tr>                                                            
+                                                                <th>CodiServ</th>  
+                                                                <th>Año</th>  
+                                                                <th>Cuota</th> 
+                                                                <th>UsuCuota</th>  
+                                                                <th>FechGenCuota</th>  
+                                                                <th>CodiConc</th>   
+                                                                <th>Concepto</th>  
+                                                                <th>Monto</th>  
+                                                                <th>CodiReci</th>                                                                                                                                                                                      
+                                                                <th>Estado</th>                                                              
+                                                                <th>UsuPago</th>                                                              
+                                                                <th>FechGenPago</th>                                                              
+                                                                <th>Acción</th>                                                              
+                                                            </tr>
+                                                        </thead>
+
+                                                    </table>    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- /.container-fluid -->
+                        </div>
+                        <br/>
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <div id="footer"></div>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+            </div>
+            <!-- End of Page Wrapper -->
+
+        </div>
+
+        <!-- Agregar Cuota-->
+        <div class="modal fade" id="agregarCuotaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Seleccionar la cuota</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-user" id="txtAnio" disabled />
+                        </div>
+                        <div class="form-group">
+                            <select id="cmbMes" class="form-control form-control-user"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="button" id="btnAgrearCuotaCuenta">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="salir">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea generar el Servicio de Instalación?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnGrabarEditar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalMontoPago" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Registrar Pago</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tr><td>Forma de Pago</td><td><select id="cmbFormPago" class="form-control form-control-user"></td></tr>
+                            <tr><td>Ingrese monto</td><td><input id="txtMontoPago" class="form-control form-control-user" type="number" min="1" max="100"/></td></tr>
+                            <tr><td>N° Operacion</td><td><input id="txtOperación" class="form-control form-control-user" type="text"></td></tr>
+                        </table>
+                        <div class="alert alert-warning" id="aleAdvertenciaMonto" style="display:none;" role="alert">
+                            El monto no debe ser mayor a la deuda, ni menor que cero.
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input id="txtCode" type="hidden" />
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnGrabarPago">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="js/moment.min.js" type="text/javascript"></script>        
+        <script src="js/pagos.js" type="text/javascript"></script>
+    </body>
+
+</html>

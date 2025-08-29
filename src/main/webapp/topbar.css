@@ -1,0 +1,238 @@
+.head-nav {
+  margin-bottom: 10px;
+  padding: 0.5rem 0;
+}
+
+/* Estilos para las líneas */
+.border-gray-300 {
+  border-color: #dee2e6 !important;
+  border-width: 1px;
+}
+
+/* Estilo del texto BARTOLITO */
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #2c3e50 !important;
+  letter-spacing: 1px;
+}
+
+/* Botón toggler personalizado */
+.navbar-toggler {
+  padding: 0.5rem;
+  background: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-toggler:hover {
+  background-color: #f8f9fa;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* Contenedor del menú */
+#menudinamico,
+#menudinamico-mobile {
+  margin-top: 0.5rem;
+}
+
+/* ===== ESTILOS DESKTOP ===== */
+/* Estilos para el menú dinámico - DESKTOP */
+#menudinamico > ul.navbar-nav {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Items del menú - General */
+.nav-item.dropdown {
+  position: relative;
+}
+
+.nav-link.dropdown-toggle {
+  color: #2c3e50 !important;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Desktop */
+#menudinamico .nav-link.dropdown-toggle {
+  padding: 0.5rem 1rem;
+}
+
+.nav-link.dropdown-toggle:hover {
+  background-color: #f8f9fa;
+  color: #1a73e8 !important;
+}
+
+/* Estilos para los dropdowns DESKTOP */
+#menudinamico .dropdown-menu {
+  border: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+  width: auto;
+  min-width: 100%;
+}
+
+/* Estilos para los items del dropdown DESKTOP */
+#menudinamico .dropdown-item {
+  padding: 0.5rem 1.25rem;
+  color: #2c3e50;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+#menudinamico .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #1a73e8;
+}
+
+/* Estilos para submenús - Desktop */
+#menudinamico .dropdown-submenu {
+  position: relative;
+}
+
+#menudinamico .dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: 0;
+  display: none;
+  position: absolute;
+}
+
+#menudinamico .dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* ===== ESTILOS MÓVIL ===== */
+@media (max-width: 767.98px) {
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+
+  .head-nav {
+    padding: 0.25rem 0;
+  }
+
+  #navbarCollapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* Estilos para el menú dinámico - MOBILE */
+  #menudinamico-mobile > ul.navbar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+
+  #menudinamico-mobile .nav-item {
+    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  #menudinamico-mobile .nav-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Mobile nav links */
+  #menudinamico-mobile .nav-link.dropdown-toggle {
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #2c3e50 !important;
+    background: none;
+    border: none;
+    text-decoration: none;
+  }
+
+  #menudinamico-mobile .nav-link.dropdown-toggle:hover {
+    background-color: #f8f9fa;
+    color: #1a73e8 !important;
+  }
+
+  /* Mobile dropdowns */
+  #menudinamico-mobile .dropdown-menu {
+    position: static !important;
+    transform: none !important;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    border-radius: 0;
+    display: none;
+    width: 100%;
+  }
+
+  #menudinamico-mobile .dropdown-menu.show {
+    display: block !important;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  #menudinamico-mobile .dropdown-item {
+    padding: 0.6rem 2rem;
+    color: #6c757d;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+  }
+
+  #menudinamico-mobile .dropdown-item:last-child {
+    border-bottom: none;
+  }
+
+  #menudinamico-mobile .dropdown-item:hover {
+    background-color: #e9ecef;
+    color: #1a73e8;
+    padding-left: 2.5rem;
+  }
+
+  /* Iconos de chevron en móvil */
+  .mobile-chevron {
+    transition: transform 0.2s ease;
+    font-size: 0.8rem;
+  }
+
+  .mobile-chevron.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+@media (min-width: 768px) {
+  #navbarCollapse {
+    display: none !important;
+  }
+}
+
+/* Animación para el dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

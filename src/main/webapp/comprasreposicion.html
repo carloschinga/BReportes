@@ -1,0 +1,342 @@
+<link href="css/select2.min.css" rel="stylesheet" type="text/css" />
+<style>
+  .link-grafica:hover {
+    cursor: pointer; /* Cambia el cursor a una manito */
+    text-decoration: underline; /* Subraya el texto */
+    color: blue; /* Cambia el color del texto */
+  }
+</style>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Gestion de Pedido</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2">
+        <div class="form-group">
+          <label for="select-tipo">Tipo</label>
+          <select
+            id="select-tipo"
+            class="form-control select2"
+            style="width: 100%"
+          >
+            <option value="">TODOS</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="select-lab">Laboratorio</label>
+          <select
+            id="select-lab"
+            class="form-control select2"
+            style="width: 100%"
+          >
+            <option value="">TODOS</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="select-gen">Generico</label>
+          <select
+            id="select-gen"
+            class="form-control select2"
+            style="width: 100%"
+          >
+            <option value="">TODOS</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="select-pet">Petitorio</label>
+          <select id="select-pet" class="form-control" style="width: 100%">
+            <option value="">TODOS</option>
+            <option value="S">Si</option>
+            <option value="N">No</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="select-estr">Estrategico</label>
+          <select id="select-estr" class="form-control" style="width: 100%">
+            <option value="">TODOS</option>
+            <option value="E">Si</option>
+            <option value="N">No</option>
+            <option value="P">P</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="filtrar">Filtrar:</label>
+          <button class="btn btn-primary form-control" id="filtrar">
+            Filtrar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="table-responsive"
+      style="position: relative; height: 620px; overflow-y: auto"
+    >
+      <table
+        id="tabladatos"
+        class="table table-striped table-bordered text-dark table-sm table-min"
+      >
+        <thead
+          style="position: sticky; top: 0; z-index: 1; background-color: #fff"
+        >
+          <tr>
+            <th title="Predeterminado" scope="col">Pre.</th>
+            <th title="Petitorio" scope="col">Pet</th>
+            <th title="Codigo producto" scope="col">Cod</th>
+            <th scope="col">Producto</th>
+            <th title="Laboratorio" scope="col">Lab.</th>
+            <th title="Stock Entero" scope="col">StkE</th>
+            <th title="Stock Fraccion" scope="col">StkF</th>
+            <th title="Transito Entero" scope="col">TranE</th>
+            <th title="Transito Fraccion" scope="col">TranF</th>
+            <th title="Stock Minimo" scope="col">Stkmin2</th>
+            <th title="Meses de abastecimiento" scope="col">Mes</th>
+            <th title="Comprar" scope="col">C</th>
+            <th title="Costo Compra" scope="col">CP</th>
+            <th title="Nombre Generico" scope="col">Generico</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="loadingproductos" style="display: none">
+        <center>
+          <img src="img/loader.gif" alt="cargando" /><br />Un momento, por
+          favor...
+        </center>
+      </div>
+    </div>
+
+    <div
+      class="modal border"
+      id="modaltablaproductos"
+      style="
+        display: none;
+        position: fixed;
+        width: 90%;
+        height: 100%;
+        left: 5%;
+        top: 0;
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 98%;
+          height: 98%;
+          border: 2px solid #333;
+          border-radius: 10px;
+          overflow-y: auto;
+        "
+      >
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-auto me-3" id="datosproducto"></div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary" id="cerrarmodal">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-5">
+              <div>Indicadores Venta</div>
+              <br />
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Stock Mínimo</th>
+                    <td id="tab_stkmin2"></td>
+                  </tr>
+                  <tr>
+                    <th>Stock Almacén</th>
+                    <td id="ta_stkalm"></td>
+                  </tr>
+                  <tr>
+                    <th>Meses</th>
+                    <td id="ta_repone"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <div id="nombre-grafica">Unidades Vendidas</div>
+              <br />
+              <div id="chart-container2" style="height: 80%">
+                <canvas id="myAreaChart"></canvas>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <br />
+              <div>Stock Establecimientos</div>
+              <div
+                class="table-responsive"
+                style="position: relative; height: 90%; overflow-y: auto"
+              >
+                <table
+                  id="table-establecimientos"
+                  class="table table-bordered text-dark table-sm table-striped"
+                  style="color: black"
+                >
+                  <thead
+                    style="
+                      position: sticky;
+                      top: 0;
+                      z-index: 1;
+                      background-color: #fff;
+                    "
+                  >
+                    <tr>
+                      <th title="Nombre Almacen">Almacen</th>
+                      <th title="Stock Entero">StkE</th>
+                      <th title="Stock Fraccion">StkF</th>
+                      <th title="Meses de abastecimiento">Mes</th>
+                      <th title="Stock Minimo">StkM</th>
+                    </tr>
+                  </thead>
+                </table>
+                <div id="loadingproductos" style="display: none">
+                  <center>
+                    <img src="img/loader.gif" alt="cargando" /><br />Un momento,
+                    por favor...
+                  </center>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <br />
+              <div>Indicador de Compra</div>
+              <table
+                id="table-indicadorcompra"
+                class="table table-bordered text-dark table-sm table-striped"
+                style="color: black"
+              >
+                <thead
+                  style="
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
+                    background-color: #fff;
+                  "
+                >
+                  <tr>
+                    <th>Descripción</th>
+                    <th>Proveedor</th>
+                    <th>Costo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha Creación</th>
+                    <th>Documento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se insertarán los datos -->
+                </tbody>
+              </table>
+              <div id="loadingproductos" style="display: none">
+                <center>
+                  <img src="img/loader.gif" alt="cargando" /><br />Un momento,
+                  por favor...
+                </center>
+              </div>
+              <br />
+              <div>Compras Ultimos 12 Meses</div>
+              <table
+                id="table-ultimacompra"
+                class="table table-bordered text-dark table-sm table-striped"
+                style="color: black"
+              >
+                <thead
+                  style="
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
+                    background-color: #fff;
+                  "
+                >
+                  <tr>
+                    <th>Proveedor</th>
+                    <th>Cant E</th>
+                    <th>Fecha</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Aquí se insertarán los datos -->
+                </tbody>
+              </table>
+              <div id="loadingproductos" style="display: none">
+                <center>
+                  <img src="img/loader.gif" alt="cargando" /><br />Un momento,
+                  por favor...
+                </center>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal-grafica"
+      class="modal fade"
+      id="exampleModal"
+      tabindex="1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div
+          class="modal-content"
+          style="
+            border: 1px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 16px 24px rgba(0, 0, 0, 0.6);
+          "
+        >
+          <div class="modal-header">
+            <p id="nombre-grafica2">Grafica:</p>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="chart-container" style="width: 100%; height: 400px">
+              <canvas id="myAreaChart2" width="100" height="100"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/select2.min.js" type="text/javascript"></script>
+<script src="vendor/chart.js/Chart.js" type="text/javascript"></script>
+<script src="js/comprasreposicion.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>

@@ -1,0 +1,127 @@
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary" id="titulo">
+      Conteo Inventario
+    </h6>
+  </div>
+  <div class="card-body">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btn-primary me-md-2" id="recargar">
+        <i class="fa fa-sync-alt"></i> Recargar
+      </button>
+      <button class="btn btn-primary me-md-2" id="volver">
+        <i class="fa fa-arrow-left"></i> Volver
+      </button>
+      <button type="button" class="btn btn-primary" id="consolidado">
+        Consolidado por lote
+      </button>
+      <button type="button" class="btn btn-primary" id="consolidadoproducto">
+        Consolidado por producto
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#modalagregar"
+      >
+        Agregar Conteo
+      </button>
+    </div>
+    <hr />
+    <div class="table-responsive">
+      <table
+        id="tabla"
+        class="table table-bordered text-dark table-sm table-striped"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Almacen</th>
+            <th scope="col">Nombre</th>
+            <!--<th scope="col">Tipo</th>-->
+            <th scope="col">Apertura</th>
+            <th scope="col">Cierre</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR -->
+<div
+  class="modal fade"
+  id="modalagregar"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEntryModalLabel">Agregar Entrada</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="addEntryForm">
+          <!-- Nombre -->
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="nombre"
+              id="nombreInput"
+              placeholder="Nombre"
+              required
+            />
+            <label for="nombreInput">Nombre</label>
+          </div>
+          <!-- Tipo -->
+          <div class="form-floating mb-3" style="display: none">
+            <select class="form-select" id="tipoSelect" name="tipo" required>
+              <option value="T" selected>Toma</option>
+              <option value="A">Ajuste</option>
+            </select>
+            <label for="tipoSelect">Tipo</label>
+          </div>
+          <!-- Apertura -->
+          <div class="form-floating mb-3">
+            <input
+              type="date"
+              class="form-control"
+              id="aperturaInput"
+              name="apertura"
+              placeholder="Fecha de apertura"
+              required
+            />
+            <label for="aperturaInput">Apertura</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="submit"
+          form="addEntryForm"
+          id="guardaragregar"
+          class="btn btn-primary"
+        >
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/inventarioalmacendetalle.js" type="text/javascript"></script>

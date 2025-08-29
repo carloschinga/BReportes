@@ -1,0 +1,62 @@
+<div class="container mt-4">
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+            <h6 class="card-title m-0 font-weight-bold text-primary">Gestión de Ubicaciones: <span id="titulo"></span></h6>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-primary mt-3 mb-2 float-end"  id="volver">Volver</button>
+            <div class="table-responsive">
+            <table id="tablaUbicaciones" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Rotación</th>
+                        <th>M3</th>
+                        <th>Valor</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+            </table>
+                </div>
+            <button class="btn btn-primary mt-3 float-end"  id="agregarboton">Agregar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalUbicacion" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gestión de Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formUbicacion">
+                    <input type="hidden" id="codubi">
+
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input type="text" id="codigo" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Código de barras</label>
+                        <input type="text" id="codbar" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Rotación</label>
+                        <input type="text" id="rotacion" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>M3</label>
+                        <input type="number" id="m3" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/almacenes_bartolito_ubicaciones.js" type="text/javascript"></script>

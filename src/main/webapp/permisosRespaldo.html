@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Gestión de Permisos</title>
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        margin-top: 20px;
+        color: #fff;
+      }
+
+      .top-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        align-items: center;
+      }
+
+      .select-roles {
+        background: #fff;
+        color: #222;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 16px;
+        min-width: 220px;
+        outline: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .create-btn {
+        background-color: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 24px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      .create-btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      .pages-list {
+        border: 1px solid #444444;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 auto;
+        width: 80%; /* Cambiado de 60% a 100% */
+        background: #fff;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px 32px;
+        min-height: 120px;
+        max-height: 400px;
+        align-items: start;
+        overflow-y: auto;
+        box-sizing: border-box;
+        transition: max-width 0.3s;
+      }
+
+      .empty-pages-info {
+        grid-column: 1 / -1; /* Ocupa todas las columnas del grid */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        padding: 30px 0 10px 0;
+        opacity: 0.95;
+        width: 100%;
+      }
+
+      .page-option {
+        display: flex;
+        align-items: center;
+        background: #f4f7fb;
+        border-radius: 7px;
+        padding: 10px 14px;
+        box-shadow: 0 1px 4px rgba(37, 99, 235, 0.07);
+        color: #222;
+        transition: box-shadow 0.2s, background 0.2s;
+        min-width: 0;
+        min-height: 48px;
+      }
+
+      .page-option:hover {
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+        background: #e8f0fe;
+      }
+
+      .page-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        accent-color: #2563eb;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        color: #222;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        border-radius: 10px;
+        width: 350px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        color: #fff;
+      }
+
+      .modal-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 18px;
+        text-transform: uppercase;
+        color: #222;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        color: #222;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        background-color: #fff;
+        border: 1px solid #444444;
+        border-radius: 5px;
+        color: #222;
+        box-sizing: border-box;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      .btn {
+        padding: 8px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #2563eb;
+        color: #fff;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      .btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      .empty-pages-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        padding: 30px 0 10px 0;
+        opacity: 0.95;
+      }
+      .empty-pages-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 18px;
+        color: #222;
+        letter-spacing: 0.5px;
+      }
+      .empty-pages-desc {
+        font-size: 1rem;
+        color: #555;
+        margin-top: 6px;
+        text-align: center;
+        max-width: 320px;
+      }
+
+      .div-boton-guardar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .div-top-header {
+        display: flex;
+        color: #1e1e1e;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="card">
+      <div class="div-top-header">
+        <h1 class="title-header">Permisos</h1>
+      </div>
+      <div class="top-controls">
+        <select class="select-roles"></select>
+        <button class="create-btn" onclick="openModal()">CREAR PERMISO</button>
+      </div>
+
+      <div class="pages-list" id="pagesList">
+        <div class="empty-pages-info">
+          <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
+            <rect width="48" height="48" rx="12" fill="#e0e7ef" />
+            <path
+              d="M16 24h16M16 30h10"
+              stroke="#2563eb"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <rect
+              x="12"
+              y="12"
+              width="24"
+              height="24"
+              rx="4"
+              stroke="#2563eb"
+              stroke-width="2"
+              fill="#fff"
+            />
+          </svg>
+          <div class="empty-pages-title">Seleccione un permiso</div>
+          <div class="empty-pages-desc">
+            Elija un permiso del combo superior para visualizar las páginas
+            asociadas.
+          </div>
+        </div>
+      </div>
+      <div class="div-boton-guardar">
+        <button class="create-btn" id="guardar-mejoras">Guardar</button>
+      </div>
+    </div>
+
+    <!-- Modal para crear permiso -->
+    <div id="createModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-title">CREACION DE PERMISO</div>
+
+        <div class="form-group">
+          <label for="name">NOMBRE:</label>
+          <input type="text" id="name" name="name" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">DESCRIPCION:</label>
+          <input type="text" id="description" name="description" />
+        </div>
+
+        <div class="button-group">
+          <button class="btn" onclick="closeModal()">CANCELAR</button>
+          <button class="btn" id="btn-guardar-permiso">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/permisos.js" type="text/javascript"></script>
+  </body>
+</html>

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReciboXPagar" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb74fac8-8bff-4093-a1a9-bab17f85eb1a">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[cGxhbiAsMzg3LDE1LDBiM2FmNTlmLTYzZmEtNDhlYi1hZmFlLWJjN2VmN2RkMzI2NTtjbGllbnRl
+ICw0NjEsMTUsOGRiZWM2ZDEtNzg4My00NzY1LTljZmUtMmRmMjcxODk3OTVjO2N1b3RhICwxNSwx
+NSw4NDE3YmUwNS0wNGY4LTQyZDYtYTljZC02MzhkNGVjMGE5ZDY7dWJpZ2VvICwxOTEsMTUsMmE2
+NmU2YmMtNjA4Ny00N2FiLTg1MzgtNGI3NGM4ZTFiM2ZhO3NlcnZpY2lvICw5OSwxNSxhMTc5MjNk
+Ni05MDY1LTRlMjItYTNiMi0xYzgwNTVlOTU3ZTc7Y29uY2VwdG8gLDI4MywxNSwzYzJmNWY4YS1i
+MWIwLTRjNGMtYmRiOS01NTY2YTIxMWVhOGI7]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Caja"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="223"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="769"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="serv" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT codiServ,
+	codiCuot,
+	codiClie,
+	raznSociClie,
+	nombPlan,
+	nombConc,
+	concat( ub.nombUbig," ",se.direServ," ",se.numeDireServ," ",se.numInteServ) AS direccion,
+	montAbon,
+	montDeud,
+	fechVenc,
+	estdConc,
+	numeDocu,
+	celuClie,
+	celuClie2
+FROM cuota cu
+	inner join servicio se ON 
+	 'NULL' = 'NULL' 
+	 AND ( 
+	 'NULL' = 'V' 
+	 OR 'NULL' = 'S') 
+	 AND DATE_FORMAT(OVER null) = $P{fecha} 
+	 AND 'NULL' = $P{serv} 
+	inner join ubigeo ub ON 
+	 'NULL' = 'NULL' 
+	inner join concepto co ON 
+	 'NULL' = 'NULL' 
+	inner join plan pl ON 
+	 'NULL' = 'NULL' 
+	inner join cliente cl ON 
+	 'NULL' = 'NULL' 
+WHERE 
+	 'NULL' = 'D']]>
+	</queryString>
+	<field name="codiServ" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codiServ"/>
+		<property name="com.jaspersoft.studio.field.label" value="codiServ"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+	</field>
+	<field name="codiCuot" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codiCuot"/>
+		<property name="com.jaspersoft.studio.field.label" value="codiCuot"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cuota"/>
+	</field>
+	<field name="codiClie" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codiClie"/>
+		<property name="com.jaspersoft.studio.field.label" value="codiClie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="raznSociClie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="raznSociClie"/>
+		<property name="com.jaspersoft.studio.field.label" value="raznSociClie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="nombPlan" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombPlan"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombPlan"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="plan"/>
+	</field>
+	<field name="nombConc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombConc"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombConc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="concepto"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+	</field>
+	<field name="montAbon" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="montAbon"/>
+		<property name="com.jaspersoft.studio.field.label" value="montAbon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cuota"/>
+	</field>
+	<field name="montDeud" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="montDeud"/>
+		<property name="com.jaspersoft.studio.field.label" value="montDeud"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cuota"/>
+	</field>
+	<field name="fechVenc" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fechVenc"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechVenc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cuota"/>
+	</field>
+	<field name="estdConc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estdConc"/>
+		<property name="com.jaspersoft.studio.field.label" value="estdConc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cuota"/>
+	</field>
+	<field name="numeDocu" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numeDocu"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeDocu"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="celuClie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celuClie"/>
+		<property name="com.jaspersoft.studio.field.label" value="celuClie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="celuClie2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celuClie2"/>
+		<property name="com.jaspersoft.studio.field.label" value="celuClie2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="3" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="385" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="28" width="374" height="30" uuid="08eff81d-b45e-4b4b-a706-fec277b43c47"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO PENDIENTE DE PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="49" width="286" height="10" uuid="09e04747-75e8-48e3-91d9-e075769a7a08">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Dirección: Av. Los Laureles 124-126 - Barranca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="286" height="10" uuid="42b585dd-2145-4a28-a62d-f0f495d417c9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Teléfono: 944558594]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="68" width="286" height="10" uuid="d14779c0-6144-453b-b052-f970dd60165b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Email: administracion@dataonlineperu.com]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="453" y="28" width="100" height="14" uuid="4317de6d-24cc-4bca-8f2f-57300c08c24a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="453" y="58" width="100" height="30" uuid="1555d377-7e24-486a-ab0f-40bb0e2f08f3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="453" y="42" width="100" height="15" uuid="86863b32-5a7a-4a49-a449-2542d5464578"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="118" width="124" height="15" uuid="8865aac6-de98-4d27-bdea-9025ab958d6d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiClie}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="118" width="64" height="15" uuid="3d1d02ea-9be8-47ac-913d-d9134455d8ad">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="210" width="268" height="15" uuid="72dd9f0a-9efd-47a4-ab14-8a1a1446addb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombPlan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="210" width="65" height="15" uuid="24141feb-ed89-4f02-904d-1ba1709d4ac2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plan:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="227" width="268" height="15" uuid="094adc77-53e1-4c2e-8664-9e718ab949e4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombConc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="227" width="70" height="15" uuid="2cd1230c-59b9-4c2a-8769-2765df32862b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="245" width="43" height="15" uuid="6b39a5d5-6511-4abe-af3c-38ecb39930fc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechVenc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="245" width="70" height="14" uuid="9cbfcd5b-bfaa-4324-bf61-6bcdc9860d8f"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fech. Venc.:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="28" width="100" height="77" uuid="f6556b39-ad72-47ef-9763-7db5034ea49d"/>
+				<imageExpression><![CDATA["http://181.224.248.20/Fact2/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="164" y="77" width="227" height="14" uuid="0d5c25a2-d959-47c4-88a2-df984f79ef37">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[AV. LOS LAURELES 124-126, BARRANCA, LIMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="97" width="199" height="15" uuid="33e61582-a61c-4e04-9e94-1e3bd1d8e257"/>
+				<text><![CDATA[administracion@dataonlineperu.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="306" y="97" width="34" height="15" uuid="50956824-8ed4-4068-8019-601afcd95caa">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6e4bd2ab-97d5-4960-93e1-5e9ce0378f34"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="97" width="53" height="15" uuid="5de772f4-3ccd-4f74-9219-ab60e38f2928">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6e4bd2ab-97d5-4960-93e1-5e9ce0378f34"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefeno:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="78" width="53" height="13" uuid="2d6bb3da-a8bb-47ef-8ff7-0cdbd0125ab2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6e4bd2ab-97d5-4960-93e1-5e9ce0378f34"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="56" width="211" height="23" uuid="9a4b9ab9-d230-472f-9f9f-173de6e867a1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA ONLINE PERU SAC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="97" width="124" height="14" uuid="5ecaaff6-0dc0-4ab7-981f-aa919cdaae14"/>
+				<text><![CDATA[944558594 o 944 558 294]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="371" y="271" width="180" height="60" uuid="6b50c1ab-e256-4af1-a41f-7a2224c63758"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="375" y="292" width="100" height="15" uuid="5477b16a-d272-4e63-9f39-d7b7c98efcef"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE DEUDA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="481" y="271" width="1" height="60" uuid="ea7bad7c-0cb0-4bd7-803e-4c70f7edcb18"/>
+			</line>
+			<rectangle radius="10">
+				<reportElement x="0" y="269" width="360" height="75" uuid="61863ae3-52d7-42c6-bd1f-2778bb6d256d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="17" y="273" width="72" height="17" uuid="b69d232c-e220-4348-8806-85f97fc75b72">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="289" width="340" height="15" uuid="40d5bff1-630d-4966-a0d9-0971442a42ab">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CUENTA CORRIENTE SOLES BCP: 235-2226808-0-45 / DATA ONLINE PERU SAC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="301" width="340" height="15" uuid="eb17b336-54c5-4362-b5e5-2322d808ce86">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ENVIAR FOTO DEL VOUCHER AL WSP 944558594-944558294]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="313" width="341" height="29" uuid="b6c3a78a-22af-46c2-ba84-3427f2533234">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[EL CORTE DEL SERVICIO SE REALIZARA 10 DIAS DESPUES DE LA FECHA, PAGUE A TIEMPO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="486" y="292" width="59" height="15" uuid="e5d2ee53-682c-4081-bc2c-a0361b4c7944">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols(new java.util.Locale("en", "US"))).format($F{montDeud})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="137" width="298" height="15" uuid="f81342b2-e861-443a-8ea2-392947ab92a3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{raznSociClie}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="137" width="65" height="15" uuid="a98a6766-cfca-45b5-b973-310c30d9afa8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="179" width="64" height="15" uuid="e5483569-3ac2-40b7-899e-f6f31beff0e0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="179" width="347" height="28" uuid="a65b7f4a-72e1-446d-b688-687f388fb37a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="157" width="64" height="18" uuid="5776f151-b58c-4436-bb64-c7113b12b66e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DNI/RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="157" width="184" height="18" uuid="31f3774b-e1a1-4276-bd5c-44d8bfc64210"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{numeDocu}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="391" y="209" width="46" height="18" uuid="c6a46a56-a604-451f-bf16-fbb4f89b1e5e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="229" width="46" height="18" uuid="fa6ed7d9-7689-470b-b9bf-8a3dc421f6c8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="229" width="100" height="18" uuid="ea562a01-703f-46db-9677-0ba010a90540">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{celuClie2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="445" y="209" width="100" height="18" uuid="8ec172ec-81ce-4ad9-a1ef-8bffafc2eae2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{celuClie}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="460" y="115" width="91" height="79" uuid="cc4d7625-1b7e-4d81-87ff-5daa7bf24ee6"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="117" width="90" height="10" uuid="ac205c2c-fcc4-4f01-a2aa-6985d4c9d73e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[PAGA AQUÍ CON YAPE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="474" y="127" width="70" height="66" uuid="3a58807f-ae8c-4427-935c-25c5354480ba"/>
+				<imageExpression><![CDATA["http://181.224.248.20/Fact2/QR_yape.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

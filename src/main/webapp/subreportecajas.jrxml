@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreportecajas" columnCount="3" printOrder="Horizontal" pageWidth="160" pageHeight="145" orientation="Landscape" columnWidth="50" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="fc94a83c-a7d1-4d34-aaef-b520f7dc2b7b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterLolfar.jrdax"/>
+	<parameter name="siscod" class="java.lang.String"/>
+	<parameter name="orden" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT c.Secuencia,case when exists(
+select d.invnum from picking_detalle d left join (
+select caj.pickdetcod,isnull(sum(caj.cante),0) as cante,
+isnull(sum(caj.cantf),0) as cantf
+from picking_cajas caj
+inner join picking_detalle det on caj.pickdetcod=det.pickdetcod
+where det.invnum=c.Secuencia
+group by caj.pickdetcod)
+ca on ca.pickdetcod=d.pickdetcod
+where d.invnum=c.Secuencia and (ca.cante!=d.cante or
+ca.cantf!=d.cantf or ca.pickdetcod is null)) then 'N' else 'S' end as check1 
+FROM view_orden_trabajo_caja_nuevo c
+WHERE c.orden = $P{orden}   and c.siscod= $P{siscod}  GROUP BY Secuencia]]>
+	</queryString>
+	<field name="Secuencia" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Secuencia"/>
+		<property name="com.jaspersoft.studio.field.label" value="Secuencia"/>
+	</field>
+	<field name="check1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="check1"/>
+		<property name="com.jaspersoft.studio.field.label" value="check1"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="110" height="20" uuid="44e4e441-76d7-4610-ae1e-5977140621ed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fad8f97-9710-4498-903f-5d01eefd3756"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Cantidad de Secuencia:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="110" y="0" width="49" height="20" uuid="d5228a8c-7ac7-4716-b57c-d1e9bdf5894e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="15" uuid="df2c7bd7-291e-49ce-85d0-949788b6983a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fad8f97-9710-4498-903f-5d01eefd3756"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="2"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="2"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Secuencia}.toString() + ($F{check1}.equals("S") ? "✓" : "X")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

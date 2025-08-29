@@ -1,0 +1,101 @@
+<style>
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: #2196F3;
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(20px);
+    }
+
+    .content {
+        display: none;
+        padding: 5px;
+        background-color: #f2f2f2;
+        border-radius: 3px;
+    }
+
+    input:checked ~ .content {
+        display: block;
+    }
+    .border {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Abrir OT(Recepcion)</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- Columna de Secuencias -->
+            <div class="col-md-2 mb-3 border">
+                <br>
+                <h4>Orden</h4>
+                <div class="form-group">
+                    <label for="secuencia1">Secuencia:</label>
+                    <input type="number" class="form-control" id="secuencia">
+                </div>
+
+                <button type="button" id="inprimirsec" class="btn btn-primary mb-1">
+                    <i class='fas fa-search'></i> Buscar
+                </button>
+            </div>
+            <div class="col-md-10 mb-3  border">
+                <br>
+                <h4>Lista de Establecimientos</h4>
+                <div class="table-responsive" style="position: relative; height: 380px; overflow-y: auto">
+                    <table id="table-secuencias" class="table table-bordered text-dark table-sm table-striped">
+                        <thead style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr>
+                                <th scope="col">Orden</th>
+                                <th scope="col">Establecimiento</th>
+                                <th scope="col">Avance</th>
+                                <th scope="col">Abrir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/abrirotrecepcion.js" type="text/javascript"></script>

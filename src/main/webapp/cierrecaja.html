@@ -1,0 +1,81 @@
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Cierre de Caja</h5>
+    </div>
+    <div class="card-body">
+        <div class="form-group col-md-3">
+            <label for="secuencia">Secuencia:</label>
+            <input type="text" class="form-control" id="secuencia">
+        </div>
+        <div class="form-row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="caja">Caja:</label>
+                    <select class="form-control" id="caja">
+                        <option value="1" selected>Caja 1</option>
+                        <option value="2">Caja 2</option>
+                        <option value="3">Caja 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="secApertura">Sec-Apertura:</label>
+                    <input type="text" class="form-control" id="secApertura">
+                </div>
+                <div class="form-group">
+                    <label for="cajero">Cajero:</label>
+                    <input type="text" class="form-control" id="cajero" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="montoInicial">Monto Inicial:</label>
+                    <input type="number" class="form-control" id="montoInicial" disabled>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="border p-3 mb-4">
+                            <h6>Información del Turno</h6>
+                            <div class="form-group">
+                                <label for="turno">Turno:</label>
+                                <input type="text" class="form-control" id="turno" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="desde">Desde:</label>
+                                <input type="datetime-local" class="form-control" id="desde" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="hasta">Hasta:</label>
+                                <input type="datetime-local" class="form-control" id="hasta" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border p-3">
+                            <h6>Totales</h6>
+                            <div class="form-group">
+                                <label for="toCaja">Total Caja:</label>
+                                <input type="number" class="form-control" id="toCaja" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="toCalculado">Total Calculado:</label>
+                                <input type="number" class="form-control" id="toCalculado" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="diferencia">Diferencia:</label>
+                                <input type="number" class="form-control" id="diferencia" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="observacion">Observación:</label>
+            <textarea class="form-control" id="observacion" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" id="btnCierreCaja"><i class="fas fa-lock"></i> Cerrar Caja</button>
+        </div>
+    </div>
+</div>

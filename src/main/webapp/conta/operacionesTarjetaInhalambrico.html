@@ -1,0 +1,164 @@
+
+<div class="container mt-4">
+    <h3 class="mb-4">
+        <i class="fas fa-search me-2"></i>Operaciones con Tarjeta Inalámbrico
+    </h3>
+    <form id="filtroForm" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="fechaInicio" class="form-label">Fecha de Proceso (Inicio)</label>
+            <input type="date" class="form-control" id="fechaInicio" required />
+        </div>
+        <div class="col-md-4">
+            <label for="fechaFin" class="form-label">Fecha de Proceso (Fin)</label>
+            <input type="date" class="form-control" id="fechaFin" required />
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-search me-2"></i>Buscar
+            </button>
+        </div>
+    </form>
+
+    <!-- Spinner de carga -->
+    <div id="loadingSpinner" class="text-center my-3" style="display:none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table id="tablaInalambrico" class="table table-striped table-bordered" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CODIGO</th>
+                    <th>TIPO DE MOVIMIENTO</th>
+                    <th>TIPO DE CAPTURA</th>
+                    <th>TRANSACCION</th>
+                    <th>FECHA DE TRANSACCION</th>
+                    <th>HORA DE TRANSACCION</th>
+                    <th>FECHA DE CIERRE DE LOTE</th>
+                    <th>FECHA DE PROCESO</th>
+                    <th>FECHA DE ABONO</th>
+                    <th>ESTADO</th>
+                    <th>IMPORTE</th>
+                    <th>COMISION</th>
+                    <th>IGV</th>
+                    <th>IMPORTE NETO</th>
+                    <th>ABONO DEL LOTE</th>
+                    <th>NUM DE LOTE</th>
+                    <th>TERMINAL</th>
+                    <th>NUM DE REF (VOUCHER)</th>
+                    <th>MARCA DE TARJETA</th>
+                    <th>NUM DE TARJETA</th>
+                    <th>CODIGO DE AUTORIZACION</th>
+                    <th>CUOTAS</th>
+                    <th>OBSERVACIONES</th>
+                    <th>MONEDA</th>
+                    <th>SERIE TERMINAL</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+
+    $(document).ready(function () {
+        let fechaActual = moment().format('YYYY-MM-DD');
+
+        $("#fechaInicio").val(fechaActual);
+        $("#fechaFin").val(fechaActual);
+
+        let tabla = $("#tablaInalambrico").DataTable({
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json",
+            },
+            columns: [
+                {data: "ID", defaultContent: ""},
+                {data: "Codigo", defaultContent: ""},
+                {data: "Tipo_de_Movimiento", defaultContent: ""},
+                {data: "Tipo_de_Captura", defaultContent: ""},
+                {data: "Transaccion", defaultContent: ""},
+                {data: "Fecha_de_Transaccion", defaultContent: ""},
+                {data: "Hora_de_Transaccion", defaultContent: ""},
+                {data: "Fecha_de_Cierre_de_Lote", defaultContent: ""},
+                {data: "Fecha_de_Proceso", defaultContent: ""},
+                {data: "Fecha_de_Abono", defaultContent: ""},
+                {data: "Estado", defaultContent: ""},
+                {data: "Importe", defaultContent: ""},
+                {data: "Comision", defaultContent: ""},
+                {data: "IGV", defaultContent: ""},
+                {data: "Importe_Neto", defaultContent: ""},
+                {data: "Abono_del_Lote", defaultContent: ""},
+                {data: "Num_de_Lote", defaultContent: ""},
+                {data: "Terminal", defaultContent: ""},
+                {data: "Num_de_Ref_Voucher", defaultContent: ""},
+                {data: "Marca_de_Tarjeta", defaultContent: ""},
+                {data: "Num_de_Tarjeta", defaultContent: ""},
+                {data: "Codigo_de_Autorizacion", defaultContent: ""},
+                {data: "Cuotas", defaultContent: ""},
+                {data: "Observaciones", defaultContent: ""},
+                {data: "Moneda", defaultContent: ""},
+                {data: "Serie_Terminal", defaultContent: ""},
+            ],
+            data: [],
+        });
+
+        // Sincronizar fecha fin con inicio
+        $("#fechaInicio").on("change", function () {
+            let inicioVal = $(this).val();
+            if (inicioVal) {
+                $("#fechaFin").val(inicioVal);
+                let maxFechaFin = moment(inicioVal).add(31, 'days').format('YYYY-MM-DD');
+                $("#fechaFin").attr("min", $("#fechaInicio").val());
+                $("#fechaFin").attr("max", maxFechaFin);
+            }
+        });
+
+
+
+        $("#filtroForm").on("submit", function (e) {
+            e.preventDefault();
+            let fechaInicio = $("#fechaInicio").val();
+            let fechaFin = $("#fechaFin").val();
+
+            if (!fechaInicio || !fechaFin) {
+                alert("Debe seleccionar ambas fechas.");
+                return;
+            }
+
+            let diffDias = moment(fechaFin).diff(moment(fechaInicio), 'days');
+            if (diffDias < 0) {
+                alert("La fecha fin no puede ser anterior a la fecha inicio.");
+                return;
+            }
+            if (diffDias > 31) {
+                alert("El rango no debe superar los 31 días.");
+                return;
+            }
+
+            $("#loadingSpinner").show();
+
+            $.ajax({
+                url: "inalambrico", // Cambia por tu endpoint real
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({fechaInicio, fechaFin}),
+                success: function (response) {
+                    tabla.clear().rows.add(response).draw();
+                },
+                error: function () {
+                    alert("Error al consultar los datos");
+                },
+                complete: function () {
+                    $("#loadingSpinner").hide();
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,131 @@
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Registro de Cajas</h5>
+    </div>
+    <div class="card-body">
+        <div class="form-check form-check-inline float-right">
+            <input class="form-check-input" type="checkbox" id="generaIngresoEgreso">
+            <label class="form-check-label" for="generaIngresoEgreso">Genera Ingreso/Egreso automático Fondo Inicial</label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary mb-2" id="btnNuevoRegistroCaja"><i class="fas fa-plus-circle"></i> Nuevo Registro</button>
+        </div>
+        <div class="form-row">
+            <div class="col-md-8">
+                <div class="form-group col-md-7">
+                    <label for="establecimiento">Establecimiento:</label>
+                    <select class="form-control" id="establecimientoRegistro">
+                        <option value="1" selected>Establecimiento 1</option>
+                        <option value="2">Establecimiento 2</option>
+                        <option value="3">Establecimiento 3</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="codigoCaja">Código de Caja:</label>
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="codigoCaja">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id='btnBuscarProducto'><i class="fas fa-download"></i></button>
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="descripcionCaja">Descripción:</label>
+                    <input type="text" class="form-control" id="descripcionCaja" disabled>
+                </div>
+            </div>
+            <div class="col-md-4 border p-3">
+                <div class="form-group">
+                    <label for="montoInicial">Monto Inicial:</label>
+                    <input type="number" class="form-control" id="montoInicial" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="tipoMovimientoIngreso">Tipo Movimiento Ingreso:</label>
+                    <select class="form-control" id="tipoMovimientoIngreso" disabled>
+                        <option value="1" selected>Tipo 1</option>
+                        <option value="2">Tipo 2</option>
+                        <option value="3">Tipo 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipoMovimientoEgreso">Tipo Movimiento Egreso:</label>
+                    <select class="form-control" id="tipoMovimientoEgreso" disabled>
+                        <option value="1" selected>Tipo 1</option>
+                        <option value="2">Tipo 2</option>
+                        <option value="3">Tipo 3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="border p-3 mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Cajeros de esta caja</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Mover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cajerosEstaCaja">
+                            <!-- Aquí se insertarán los cajeros de esta caja -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h6>Todos los cajeros</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Mover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todosLosCajeros">
+                            <!-- Aquí se insertarán todos los cajeros -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="border p-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Series de esta caja</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Mover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seriesEstaCaja">
+                            <!-- Aquí se insertarán las series de esta caja -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h6>Todas las series</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Mover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todasLasSeries">
+                            <!-- Aquí se insertarán todas las series -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="form-group">
+            <button class="btn btn-primary" id="btnMoverCajero"><i class="fas fa-check-circle"></i> Guardar Cambios</button>
+        </div>
+    </div>
+</div>

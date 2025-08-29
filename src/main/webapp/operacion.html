@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <center> <h3 class="card-title">Operaciones Pendientes</h3></center>
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Begin Page Content -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Listado de pendientes por atender</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Codigo</th>
+                                                                <th>Razon Social</th>
+                                                                <th>Nombre T. Servicio</th>
+                                                                <th>Direccion</th>
+                                                                <th>Observaciones</th>
+                                                                <th>Estado</th>
+                                                                <th>Fecha</th>
+                                                                <th>Acciones</th>
+                                                        </thead>
+
+                                                    </table>  
+
+
+
+                                                    <script>
+                                                        // Obtener referencia al formulario y al botón de descarga
+                                                        //const form = document.querySelector('form[name="frmPDF"]');
+                                                        //const btnDownload = document.getElementById("btnPdf");
+
+
+                                                        // Agregar evento de click al botón de descarga
+                                                        //btnDownload.addEventListener('click', function () {
+                                                        // Enviar el formulario
+                                                        //  form.submit();
+                                                        //});
+
+                                                        // Modificar el atributo "href" del botón de descarga
+                                                        //btnDownload.href = '/Cripto05/ListadoClientes';
+                                                    </script>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.container-fluid -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <div id="footer"></div>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+        <!-- End of Page Wrapper -->
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="salir">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Para continuar la Alta completar los siguiente datos:
+                        <hr/>
+                        <div class="form-group">Pago por servicio:
+                            <div class="row">
+                                <div class="col-4">
+                                    <select id="cmbFormPago" class="form-control form-control-user"></select></div>
+                                <div class="col-4">
+                                    <input id="txtMontoPago" class="form-control form-control-user" value="50" disabled /></div> 
+                                <div class="col-4">
+                                    <input id="txtOperación" class="form-control form-control-user" type="text" placeholder="N° Operación"/>
+                                </div>                                   
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="text" class="form-control form-control-user"
+                           id="txtCodAM" hidden>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnGrabarEditar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
+
+        <script>
+                                                        $(document).ready(function () {
+                                                            $.getJSON("validarsesion", function (data) {
+                                                                if (data.resultado === "ok") {
+                                                                    //CARGA DE INTERFACES
+                                                                    $('#topbar').load('topbar.html');
+                                                                    $('#sidebar').load('sidebar.html');
+                                                                    $('#footer').load('footer.html');
+
+                                                                    $.getJSON("formPagoCRUD", {tipo: 9}, function (data) {
+                                                                        $("#cmbFormPago").empty();
+                                                                        for (const element of data) {
+                                                                            $("#cmbFormPago").append("<option value=" + element.codiFormPago + ">" + element.nombFormPago + "</option>");
+                                                                        }
+                                                                        $.getJSON("conceptoCRUD", {codigo: 1}, function (data) {
+                                                                            $("#txtMontoPago").val(data.monto);
+                                                                        });
+                                                                    });
+                                                                    //PROGRAMACION DE FUNCIONALIDADES
+                                                                    table = $('#dataTable').DataTable({
+                                                                        language: {
+                                                                            decimal: "",
+                                                                            emptyTable: "No hay datos",
+                                                                            info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                                                                            infoEmpty: "Mostrando desde el 0 al 0 del total de  0 registros",
+                                                                            infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                                                                            infoPostFix: "",
+                                                                            thousands: ",",
+                                                                            lengthMenu: "Mostrar _MENU_ registros por página",
+                                                                            loadingRecords: "Cargando...",
+                                                                            processing: "Procesando...",
+                                                                            search: "Buscar:",
+                                                                            zeroRecords: "No se ha encontrado nada  atraves de ese filtrado.",
+                                                                            paginate: {
+                                                                                first: "Primero",
+                                                                                last: "Última",
+                                                                                next: "Siguiente",
+                                                                                previous: "Anterior"
+                                                                            },
+                                                                            aria: {
+                                                                                sortAscending: ": activate to sort column ascending",
+                                                                                sortDescending: ": activate to sort column descending"
+                                                                            },
+                                                                        },
+                                                                        paging: false,
+                                                                        ordering: false,
+                                                                        info: false,
+                                                                        searching: false,
+                                                                        ajax: {
+                                                                            url: 'mostrarOperaciones',
+                                                                            type: 'POST',
+                                                                            data: function (d) {
+                                                                                d.tipo = 1;
+                                                                            }
+                                                                        },
+                                                                        columns: [
+                                                                            {data: 'codiOper'},
+                                                                            {data: 'raznSociClie'},
+                                                                            {data: 'nombTipoServ'},
+                                                                            {data: 'direccion'},
+                                                                            {data: 'obseOper'},
+                                                                            {data: 'estdOper'},
+                                                                            {data: 'fechRegiAlta'},
+                                                                            {data: 'codiOper',
+                                                                                render: function (data, type, row, meta) {
+                                                                                    if (row.nombTipoServ !== "SUSPENSION") {
+                                                                                        return "<button onclick=seleccionarOperacion(" + data + ") class=\"btn btn-success btn-user \">Atendido</button>";
+                                                                                    } else
+                                                                                        return "";
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    });
+                                                                } else {
+                                                                    $(location).attr('href', "index.html");
+                                                                }
+
+
+                                                            });
+                                                            $("#btnGrabarEditar").click(function () {
+                                                                //alert('falta programar');
+                                                                $("#btnGrabarEditar").prop("disabled", true);
+                                                                // $("#btnAceptar").prop("disabled", true);
+                                                                let codigo = $("#txtCodAM").val();
+                                                                if (codigo === "") {
+                                                                    alert("Debe ingresar todos los datos");
+                                                                } else {
+                                                                    let formaPago = $("#cmbFormPago").val();
+                                                                    let operacion = $("#txtOperación").val();
+                                                                    let parametro = {tipo: 5, codigo: codigo,formaPago:formaPago,operacion:operacion};                                                                    
+                                                                    $.getJSON("mostrarOperaciones", parametro, function (data) {
+                                                                        if (data.valor === "ok") {
+                                                                            
+                                                                            window.open("mostarrecibo?numeReci=" + data.numeReci, 'Reporte', 'width=800, height=600');
+                                                                            $("#nuevoServicioModal").modal("hide");
+                                    
+                                    
+                                                                            $('#modalConfirmar').modal('hide');
+                                                                            window.location.reload();
+                                                                        }
+                                                                        $("#btnGrabarEditar").prop("disabled", false);
+                                                                    });
+                                                                }
+                                                            });
+                                                            //CERRAR SESIÓN
+                                                            //CERRAR SESIÓN   
+                                                            $("#salir").click(function () {
+                                                                $.getJSON("cerrarsesion", function (data) {});
+                                                                $(location).attr('href', "index.html");
+                                                            });
+                                                        });
+                                                        function seleccionarOperacion(code) {
+                                                            $("#txtCodAM").val(code);
+
+                                                            window.$('#modalConfirmar').modal();
+
+                                                        }
+        </script>
+
+    </body>
+
+</html>

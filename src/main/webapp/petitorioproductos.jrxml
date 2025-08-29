@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f8b9c8bb-1348-4b86-bcb4-7acc8759a3f9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterLolfar.jrdax"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT pe.codpro,
+	p.despro,g.desgen,p.codlab,sum(s.stkalm)+sum(s.stkalm_m)/p.stkfra as stock
+FROM petitorio pe
+	inner join fa_productos p ON 
+	 p.codpro = pe.codpro 
+	 inner join fa_stock_almacenes s on
+	 s.codpro=pe.codpro
+	 left join fa_genericos g on g.codgen=p.codgen
+WHERE 
+	 pe.estado = 'S' 
+group by pe.codpro,p.despro,g.desgen,p.codlab,p.stkfra
+ORDER BY p.despro]]>
+	</queryString>
+	<field name="codpro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpro"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpro"/>
+	</field>
+	<field name="despro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="despro"/>
+		<property name="com.jaspersoft.studio.field.label" value="despro"/>
+	</field>
+	<field name="desgen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="desgen"/>
+		<property name="com.jaspersoft.studio.field.label" value="desgen"/>
+	</field>
+	<field name="codlab" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codlab"/>
+		<property name="com.jaspersoft.studio.field.label" value="codlab"/>
+	</field>
+	<field name="stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="stock"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="102" y="0" width="350" height="29" uuid="79e16a65-2b86-412d-a156-03c21a1d61eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ef145b-e6a0-4c2a-b7ab-43c3f052f144"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Reporte por Producto Petitorio]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="70" height="18" uuid="c8d99a24-25ec-4ee4-a944-9e6efbed1dba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ef145b-e6a0-4c2a-b7ab-43c3f052f144"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="210" height="18" uuid="0acdd785-7edb-42fc-abd9-89446c21aae7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="130" height="18" uuid="9f6084ae-49de-4e11-80c8-482d01ebd5fd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Generico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="60" height="18" uuid="7b0580ec-edc8-4824-bb1a-7b3cfb91dec0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laboratorio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="85" height="18" uuid="0be54493-2501-482a-95b1-3530093cc708">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField textAdjust="ScaleFont">
+				<reportElement x="0" y="0" width="70" height="15" uuid="2639fc85-8d16-418d-91e7-f34e9dea6253">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ef145b-e6a0-4c2a-b7ab-43c3f052f144"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{codpro}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="70" y="0" width="210" height="15" uuid="4f7eb761-d4d1-4dad-b528-afda1be5e340">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{despro}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="280" y="0" width="130" height="15" uuid="d5d4116c-df31-40d7-a61e-c337aac0ab5c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{desgen}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="410" y="0" width="60" height="15" uuid="5cab8126-d7be-45f3-b872-6e5f374ab1ac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{codlab}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="470" y="0" width="85" height="15" uuid="50e2e36e-674d-4e65-9718-399fd35ecb22">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8c31347-4901-4d6d-8d0f-030d24f7cb5c"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{stock}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

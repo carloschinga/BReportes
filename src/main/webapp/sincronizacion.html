@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actualizacion de Inventario</title>
+
+    <style>
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .badge {
+        font-size: 0.85em;
+        padding: 0.5em 0.75em;
+      }
+
+      .bg-custom-info {
+        background-color: #17a2b8;
+        color: white;
+      }
+
+      .bg-custom-warning {
+        background-color: #ffc107;
+        color: #212529;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+
+      .table th {
+        white-space: nowrap;
+      }
+
+      .btn-action {
+        min-width: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid mt-3">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-sync-alt me-2"></i>Actualizacion de Inventario
+          </h5>
+          <div>
+            <button
+              id="btnSetearTodo"
+              class="btn btn-info btn-action me-2"
+              disabled
+            >
+              <i class="fas fa-sync-alt me-1"></i> Sincronizar a +
+            </button>
+            <button
+              id="btnUbicarTodo"
+              class="btn btn-warning btn-action"
+              disabled
+            >
+              <i class="fas fa-map-marker-alt me-1"></i> Sincronizar a -
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="tabla"
+              class="table table-bordered table-hover table-sm"
+              style="width: 100%"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th title="Nombre del producto" scope="col">Producto</th>
+                  <th title="Número de lote" scope="col">Lote</th>
+                  <th title="Cantidad de Entero de LolFarm" scope="col">CEL</th>
+                  <th title="Cantidad de Fracción de LolFarm" scope="col">
+                    CFL
+                  </th>
+                  <th title="Cantidad de Entero de Bartolito" scope="col">
+                    CEB
+                  </th>
+                  <th title="Cantidad de Fracción de Bartolito" scope="col">
+                    CFB
+                  </th>
+                  <th title="Estado de sincronización" scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          <small>Última actualización: <span id="lastUpdate"></span></small>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+    />
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Bootstrap (opcional, si lo usas) -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Popper.js (necesario para Bootstrap 4) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom JS -->
+    <script src="js/sincronizacion.js"></script>
+  </body>
+</html>

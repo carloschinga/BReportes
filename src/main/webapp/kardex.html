@@ -1,0 +1,128 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Kardex</h5>
+    </div>
+    <div class="card-body">
+        <div class="form-row">
+    <div class="border p-3 mb-3 col-md-4">
+        <div class="form-group row">
+            <label for="codigoProducto" class="col-sm-5 col-form-label">Código Producto</label>
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="txtcodprod">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id='btnBuscarProducto'><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="almacen" class="col-sm-4 col-form-label">Almacén</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="almacen">
+                    <option>Almacen 1</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="tiFecha" class="col-sm-4 col-form-label">TI-Fecha</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="tiFecha">
+                    <option>Fecha Registro</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="desde" class="col-sm-4 col-form-label">Desde</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control" id="desde">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="hasta" class="col-sm-4 col-form-label">Hasta</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control" id="hasta">
+            </div>
+        </div>
+    </div>
+
+    <div class="border p-3 mb-3 col-md-8">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="producto" class="col-sm-4 col-form-label">Producto</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="producto" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="laboratorio" class="col-sm-4 col-form-label">Laboratorio</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="laboratorio" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="familia" class="col-sm-4 col-form-label">Familia</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="familia" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="principioActivo" class="col-sm-4 col-form-label">Principio Activo</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="principioActivo" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="condicion" class="col-sm-4 col-form-label">Condición</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="condicion" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tipoProducto" class="col-sm-4 col-form-label">Tipo de Producto</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="tipoProducto" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="fraccion" class="col-sm-4 col-form-label">Fracción</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="fraccion" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- Table of Records -->
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Secuencia</th>
+                        <th>S-Movimiento</th>
+                        <th>TI-Movimiento</th>
+                        <th>Documento</th>
+                        <th>Fecha</th>
+                        <th>StkA-E</th>
+                        <th>StkA-F</th>
+                        <th>CantE</th>
+                        <th>CantF</th>
+                        <th>Stk-E</th>
+                        <th>Stk-F</th>
+                        <th>Dscto</th>
+                        <th>P-Base</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added dynamically via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

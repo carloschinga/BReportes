@@ -1,0 +1,212 @@
+<!-- jsTree CSS -->
+<link rel="stylesheet" href="css/jstree.css" />
+
+<!-- jsTree JS -->
+<script src="js/jstree.min.js"></script>
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex align-items-center">
+        <h1 class="h3 mb-0 text-gray-800">Gestión de Permisos</h1>
+      </div>
+      <nav class="navbar navbar-light bg-white p-2">
+        <div class="container-fluid d-flex align-items-center p-0">
+          <div class="d-flex align-items-center me-3"></div>
+          <div class="btn-group">
+            <button id="btnEdit" class="btn btn-primary">Actualizar</button>
+          </div>
+        </div>
+      </nav>
+      <hr />
+      <nav class="navbar navbar-light bg-white p-2">
+        <label for="codiRol" class="form-label">Rol</label>
+        <select class="form-select" id="codiRol" name="codiRol">
+          <option value="">Seleccione un rol</option>
+        </select>
+        <div id="treePerm"></div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#treePerm").jstree({
+      core: {
+        data: {
+          url: "loginpaginaservlet",
+          dataType: "json",
+        },
+        themes: { responsive: true, dots: true },
+      },
+      plugins: ["checkbox"],
+    });
+
+    $("#btnEdit").click(function () {
+      var selectedNodes = $("#treePerm").jstree("get_selected", true);
+      var rolId = $("#codiRol").val();
+
+      if (!rolId) {
+        handleAjaxError(`Selecciona un rol antes de actualizar`)();
+        return;
+      }
+
+      var permisos = [];
+      var nodosProcesados = new Set();
+
+      selectedNodes.forEach(function (node) {
+        var idPadre = node.parent;
+
+        // Si el nodo es raíz, solo lo agregamos una vez
+        if (idPadre === "#") {
+          if (!nodosProcesados.has(node.id)) {
+            permisos.push({
+              codiPagi: node.id,
+              nombPagi: node.text,
+              asigPerm: 1,
+            });
+            nodosProcesados.add(node.id);
+          }
+
+          // Agregar sus hijos si aún no han sido seleccionados
+          var hijos = $("#treePerm").jstree(true).get_children_dom(node);
+          hijos.each(function () {
+            var hijoNode = $("#treePerm").jstree(true).get_node(this);
+            if (!nodosProcesados.has(hijoNode.id)) {
+              permisos.push({
+                codiPagi: hijoNode.id,
+                nombPagi: hijoNode.text,
+                asigPerm: 1,
+              });
+              nodosProcesados.add(hijoNode.id);
+            }
+          });
+        } else {
+          // Agregar el nodo hijo seleccionado
+          if (!nodosProcesados.has(node.id)) {
+            permisos.push({
+              codiPagi: node.id,
+              nombPagi: node.text,
+              asigPerm: 1,
+            });
+            nodosProcesados.add(node.id);
+          }
+
+          // Agregar su padre si aún no ha sido agregado
+          if (!nodosProcesados.has(idPadre)) {
+            var nodoPadre = $("#treePerm").jstree(true).get_node(idPadre);
+            permisos.push({
+              codiPagi: nodoPadre.id,
+              nombPagi: nodoPadre.text,
+              asigPerm: 1,
+            });
+            nodosProcesados.add(idPadre);
+          }
+        }
+      });
+
+      let dataToSend = {
+        codiRol: rolId,
+        permisos: permisos,
+      };
+
+      $.ajax({
+        url: "loginrolpaginaservlet",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+          mostrarAlerta(`Permisos actualizados correctamente`, "success");
+        },
+        error: function (xhr, status, error) {
+          handleAjaxError(`Error al actualizar permisos la persona`)();
+          //console.error(error);
+        },
+      });
+    });
+
+    // Ejecutar cargarChecks() automáticamente cuando se cambia el rol en el select
+    $("#codiRol").change(function () {
+      cargarChecks();
+    });
+
+    cargarRoles();
+
+    function cargarRoles() {
+      $.ajax({
+        url: "loginrolservlet",
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+          let options = '<option value="">Seleccione un rol</option>';
+          response.forEach((rol) => {
+            options += `<option value="${rol.codiRol}">${rol.nomRol}</option>`;
+          });
+          $("#codiRol").html(options);
+        },
+        error: function () {
+          $("#codiRol").html('<option value="">Error al cargar roles</option>');
+        },
+      });
+    }
+
+    function cargarChecks() {
+      let codiRol = $("#codiRol").val();
+
+      let tree = $("#treePerm").jstree(true);
+
+      console.log("codiRol= " + codiRol);
+
+      if (codiRol === "") {
+        handleAjaxError(`¡Seleccione un rol!`)();
+        tree.deselect_all(); // Limpiar selecciones previas
+        tree.uncheck_all(); // Desmarcar todos los nodos
+
+        return;
+      }
+
+      let url = `loginrolpaginaservlet/${codiRol}`;
+
+      $.get(url, function (data) {
+        tree.deselect_all(); // Limpiar selecciones previas
+        tree.uncheck_all(); // Desmarcar todos los nodos
+
+        let nodosRaiz = tree
+          .get_json("#", { flat: true })
+          .filter((n) => n.parent === "#") // Obtener nodos raíz
+          .map((n) => n.id);
+
+        data.forEach((node) => {
+          let nodoId = node.codiPagi.toString(); // Convertir a string para comparación
+
+          // Si el nodo no es raíz y tiene permiso asignado, lo marcamos
+          if (!nodosRaiz.includes(nodoId) && node.asigPerm === 1) {
+            tree.check_node(nodoId);
+          }
+        });
+      });
+    }
+
+    // Manejo de errores AJAX
+    function handleAjaxError(message) {
+      return function (xhr, error, thrown) {
+        mostrarAlerta(message, "error");
+      };
+    }
+
+    // Mostrar alertas
+    function mostrarAlerta(mensaje, icono) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: icono,
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        customClass: { popup: "swal2-sm" },
+      });
+    }
+  });
+</script>

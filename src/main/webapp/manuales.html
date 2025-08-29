@@ -1,0 +1,104 @@
+
+<div class="card">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" id="titulo">Manuales</h6>
+    </div>
+    <div class="card-body">
+        <div class="container mt-4">
+            <h2 class="text-center">Subir Archivo PDF</h2>
+            <form id="uploadForm" enctype="multipart/form-data" class="mb-4">
+                <div class="mb-3">
+                    <input type="file" id="file" name="file" class="form-control" accept="application/pdf" required>
+                </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text"  id="descripcion" name="descripcion" placeholder="Descripcion" class="form-control" required>
+                        <label for="descripcion">Descripcion</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Subir</button>
+            </form>
+
+            <h2 class="text-center">Archivos Guardados</h2>
+            <table id="tablaArchivos" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Descargar</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        let table = $('#tablaArchivos').DataTable({
+            pageLength: 10, // Fija la paginación a 10 elementos por página
+            lengthChange: false,
+            language: {
+                decimal: "",
+                emptyTable: "No hay datos",
+                info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                infoEmpty: "Mostrando desde el 0 al 0 del total de 0 registros",
+                infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                thousands: ",",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                loadingRecords: "Cargando...",
+                processing: "Procesando...",
+                search: "Buscar:",
+                zeroRecords: "No se ha encontrado nada a través de ese filtrado.",
+                paginate: {
+                    first: "Primero",
+                    last: "Última",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                },
+                aria: {
+                    sortAscending: ": activar para ordenar columna ascendente",
+                    sortDescending: ": activar para ordenar columna descendente"
+                }
+            },
+            ajax: {
+                url: "CRUDManuales?opcion=2"
+            },
+            columns: [
+                {data: "id"},
+                {data: "descripcion"},
+                {
+                    data: "fechaSubida",
+                    render: function (data) {
+                        return data ? data.split(" ")[0] : "";
+                    }
+                },
+                {
+                    data: "id",
+                    render: function (data) {
+                        return `<a href="CRUDManuales?opcion=3&id=${data}" class="btn btn-sm btn-success" target="_blank">Descargar</a>`;
+                    }
+                }
+            ]
+        });
+
+        $("#uploadForm").submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            formData.append("opcion", "1");
+
+            $.ajax({
+                url: "CRUDManuales",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    alert(response.mensaje);
+                    table.ajax.reload();
+                }
+            });
+        });
+    });
+</script>

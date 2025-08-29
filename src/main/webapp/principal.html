@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            />
+        <meta
+            name="description"
+            content="Sistema Bartolito - Gestión empresarial"
+            />
+        <meta name="author" content="Bartolito Team" />
+        <title>Bartolito</title>
+
+        <!-- Google Fonts - Nunito -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap"
+            rel="stylesheet"
+            />
+
+        <!-- Bootstrap 5 CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            />
+
+        <!-- Font Awesome -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            rel="stylesheet"
+            />
+
+        <!-- DataTables BS5 CSS -->
+        <link
+            href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"
+            rel="stylesheet"
+            />
+
+        <!-- Select2 CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+            rel="stylesheet"
+            />
+        <link
+            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+            rel="stylesheet"
+            />
+    
+
+        <style>
+            :root {
+                --primary-color: #2c3e50;
+                --secondary-color: #1a73e8;
+                --success-color: #2e7d32;
+                --light-green: #e8f5e9;
+                --border-color: #dee2e6;
+                --text-muted: #6c757d;
+                --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+                --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+                --transition: all 0.3s ease;
+            }
+
+            body {
+                font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+                background-color: #f8f9fc;
+                overflow-x: hidden;
+                font-size: 0.9rem;
+            }
+
+            /* Header Styles */
+            .main-header {
+                background: white;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: var(--shadow-light);
+                position: sticky;
+                top: 0;
+                z-index: 1030;
+            }
+
+            .brand-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: var(--primary-color);
+            }
+
+            /* Navigation Styles */
+            .navbar-toggler {
+                border: none;
+                padding: 0.5rem;
+                transition: var(--transition);
+            }
+
+            .desktop-menu .nav-link {
+                color: var(--primary-color) !important;
+                font-weight: 500;
+                padding: 0.5rem 1rem;
+                border-radius: 0.375rem;
+                transition: var(--transition);
+            }
+
+            .desktop-menu .nav-link:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+                color: var(--secondary-color) !important;
+            }
+
+            .desktop-menu .dropdown-menu {
+                border: none;
+                box-shadow: var(--shadow-medium);
+                border-radius: 0.5rem;
+            }
+
+            /* Main Content */
+            .main-content {
+                min-height: calc(100vh - 120px);
+                padding: 2rem 0;
+            }
+
+            /* Footer Styles */
+            .custom-footer {
+                background: linear-gradient(135deg, #f8f9fc 0%, #8dbceb 100%);
+                padding: 0.75rem 1.5rem;
+                border-top: 1px solid var(--border-color);
+            }
+
+            /* Responsive Adjustments */
+            @media (max-width: 767.98px) {
+                .brand-title {
+                    font-size: 1.1rem;
+                }
+
+                .main-content {
+                    padding: 1rem 0;
+                    margin-bottom: 80px;
+                }
+
+                .diva {
+                    justify-content: flex-end;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="d-flex flex-column min-vh-100">
+            <!-- Header -->
+            <header class="navbar navbar-expand-lg main-header">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <h1 class="brand-title m-0">
+                            <i class="fas fa-laugh-wink me-2"></i>BARTOLITO <small>3.0</small>
+                        </h1>
+                    </a>
+
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse"
+                        >
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <!-- Menú se cargará dinámicamente -->
+                        <ul
+                            class="navbar-nav me-auto mb-2 mb-lg-0 desktop-menu"
+                            id="desktop-menu"
+                            ></ul>
+
+                        <div class="d-flex diva">
+                            <div class="dropdown">
+                                <a
+                                    href="#"
+                                    class="nav-link dropdown-toggle"
+                                    id="dropdownUser"
+                                    data-bs-toggle="dropdown"
+                                    >
+                                    <span id="navbar-username">Usuario</span>
+                                    <i class="fas fa-user-circle ms-2"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" id="user-menu">
+                                    <li><h6 class="dropdown-header">Configuración</h6></li>
+                                    <li>
+                                        <a
+                                            class="dropdown-item"
+                                            href="#"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#logoutModal"
+                                            >
+                                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-grow-1">
+                <div class="container-fluid main-content" id="contenido">
+                    <!-- Contenido dinámico se cargará aquí -->
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="custom-footer mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-light text-dark">
+                                <i class="fas fa-warehouse me-1"></i>
+                                <span id="footer-almacen"
+                                      >Almacén: <strong>Cargando...</strong></span
+                                >
+                            </span>
+                            <span class="badge bg-light text-dark">
+                                <i class="fas fa-user-tag me-1"></i>
+                                <span id="footer-grucod"
+                                      >Rol: <strong>Cargando...</strong></span
+                                >
+                            </span>
+                        </div>
+                        <div class="text-muted small">
+                            <span id="current-year"></span> &copy;
+                            <strong>Bartolito 3.0</strong>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Modales -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            ></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i
+                            class="fas fa-question-circle text-warning mb-3"
+                            style="font-size: 3rem"
+                            ></i>
+                        <p>¿Está seguro que desea cerrar la sesión?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            >
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="button" class="btn btn-primary" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap 5 JS Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+
+        <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- JSZip para exportar Excel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- DataTables Buttons + Excel -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+
+        <!-- pdfmake para PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+        <!-- Botón de impresión -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
+       
+
+        <!-- Popper.js (necesario para Bootstrap 4) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+
+        <!-- Para traducción al español (opcional) -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+
+        <script>
+
+            class BartolitoApp {
+                constructor() {
+                    this.initialized = false;
+                    this.init();
+                }
+
+                async init() {
+                    if (this.initialized)
+                        return;
+                    try {
+                        // Recuperar el token
+                        const token = this.obtenerParametro("token");
+                        const data = await this.validateSession(token);
+                        //console.log(data);
+                        //alert(data);
+                        await this.loadMenu();
+                        this.initEventHandlers();
+                        this.updateYear();
+                        this.cargarPermisosYusOpciones(data.grucod);
+                    } catch (error) {
+                        console.error("Error inicializando app:", error);
+                        this.redirectToLogin();
+                    }
+                }
+
+                obtenerParametro(nombre) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(nombre);
+                }
+
+                // funcion para cargar permisos y opciones
+                cargarPermisosYusOpciones(grucod) {
+                    // obtener el ul
+                    const ul = document.getElementById("user-menu");
+
+                    // verifico que grucod es de supervisor
+                    if (grucod === "SUPERV") {
+                        // integramos como elemento li
+                        const ambosLi = `<li class="permisos">
+                        <h6 class="dropdown-header">Permisos</h6>
+                      </li>
+                      <li class="permisos">
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-bs-toggle="modal"
+                          id="btnPermisos"
+                        >
+                          <i class="fas fa-user-shield me-2"></i> Permisos
+                        </a>
+                      </li>
+                      <li class="opciones">
+                        <h6 class="dropdown-header">Opciones</h6>
+                      </li>
+                      <li class="opciones">
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-bs-toggle="modal"
+                          id="btnParambart"
+                        >
+                          <i class="fas fa-user-shield me-2"></i> Param Bartolito
+                        </a>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-bs-toggle="modal"
+                          id="btnUsuariosBartolito"
+                        >
+                          <i class="fas fa-user-shield me-2"></i> Usuarios Bartolito
+                        </a>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-bs-toggle="modal"
+                          id="btnUsuariosInventario"
+                        >
+                          <i class="fas fa-user-shield me-2"></i> Usuarios
+                          Inventario
+                        </a>
+                      </li>`;
+
+                        // agrego ambos li al ul
+                        ul.innerHTML += ambosLi;
+
+                        // cargar los botones
+                        this.btnLoadPages();
+                    }
+                }
+
+                // metodo para btnPermisos, y cargar la pagina permisos.html
+                btnLoadPages() {
+                    $("#btnPermisos").click(function (e) {
+                        e.preventDefault();
+                        $("#contenido").load("permisos.html");
+                    });
+                    $("#btnParambart").click(function (e) {
+                        e.preventDefault();
+                        $("#contenido").load("opciones.html");
+                    });
+                    $("#btnUsuariosBartolito").click(function (e) {
+                        e.preventDefault();
+                        $("#contenido").load("usuariosbartolito.html");
+                    });
+                    $("#btnUsuariosInventario").click(function (e) {
+                        e.preventDefault();
+                        $("#contenido").load("usuarioinventario.html");
+                    });
+                }
+
+                async validateSession(token) {
+                    try {
+                        //console.log("Token recibido en validateSession:", token);
+                        //alert(token);
+                        const response = await $.getJSON("validar?token=" + encodeURIComponent(token));
+                        console.log(response);
+                        if (response.error)
+                            throw new Error(response.error);
+
+                        $("#navbar-username").text(response.useusr || "Usuario");
+                        $("#footer-almacen strong").text(response.sisent || "No asignado");
+                        $("#footer-grucod strong").text(response.grudes || "No asignado");
+
+                        return response;
+                    } catch (error) {
+                        throw new Error("Validación de sesión fallida");
+                    }
+                }
+
+                async loadMenu() {
+                    try {
+                        const menuData = await $.get("menu");
+                        $("#desktop-menu").html(menuData);
+                        this.initMenuEvents();
+                    } catch (error) {
+                        console.error("Error cargando menú:", error);
+                    }
+                }
+
+                initMenuEvents() {
+                    // Eventos para dropdowns
+                    /* const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+                     dropdownElementList.forEach(dropdownToggleEl => {
+                     dropdownToggleEl.addEventListener('click', function (e) {
+                     e.preventDefault();
+                     const dropdown = new bootstrap.Dropdown(this);
+                     dropdown.toggle();
+                     });
+                     });*/
+
+                    // Navegación de páginas
+                    $(document).on("click", "[data-page]", (e) => {
+                        const page = $(e.currentTarget).data("page");
+                        if (page)
+                            this.loadPage(page);
+                    });
+                }
+
+                loadPage(page) {
+                    $("#contenido").html(
+                            '<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>'
+                            );
+
+                    $("#contenido").load(page, (response, status) => {
+                        if (status === "error") {
+                            $("#contenido").html(`
+                        <div class="alert alert-danger text-center">
+                          <i class="fas fa-exclamation-triangle"></i>
+                          Error al cargar la página
+                        </div>
+                      `);
+                        } else {
+                            // Reinicializa solo los componentes necesarios
+                            this.reinitBootstrapComponents();
+                        }
+                    });
+                }
+
+                reinitBootstrapComponents() {
+                    // Reinicializa dropdowns
+                    const dropdowns = document.querySelectorAll(".dropdown-toggle");
+                    dropdowns.forEach((el) => {
+                        if (!el._dropdown) {
+                            // Evitar reinicializar
+                            el._dropdown = new bootstrap.Dropdown(el);
+                        }
+                    });
+
+                    // Reinicializa tooltips
+                    const tooltips = document.querySelectorAll(
+                            '[data-bs-toggle="tooltip"]'
+                            );
+                    tooltips.forEach((el) => {
+                        if (!el._tooltip) {
+                            // Evitar reinicializar
+                            el._tooltip = new bootstrap.Tooltip(el);
+                        }
+                    });
+                }
+
+                initEventHandlers() {
+                    // Logout
+                    $("#logoutBtn").click(this.handleLogout.bind(this));
+
+                    // Cerrar menú al hacer clic fuera
+                    $(document).click((e) => {
+                        if (!$(e.target).closest(".navbar-collapse").length) {
+                            const navbar = bootstrap.Collapse.getInstance(
+                                    document.getElementById("navbarCollapse")
+                                    );
+                            if (navbar)
+                                navbar.hide();
+                        }
+                    });
+                }
+
+                async handleLogout() {
+                    try {
+                        const response = await $.getJSON("CerrarSesion");
+                        if (response.resultado === "ok") {
+                            window.location.href = response.empr
+                                    ? `index.html?empr=${response.empr}`
+                                    : "index.html";
+                        }
+                    } catch (error) {
+                        Swal.fire("Error", "No se pudo cerrar sesión", "error");
+                    }
+                }
+
+                updateYear() {
+                    $("#current-year").text(new Date().getFullYear());
+                }
+
+                redirectToLogin() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const empr = urlParams.get("empr");
+                    window.location.href = empr
+                            ? `index.html?empr=${empr}`
+                            : "index.html";
+                }
+            }
+
+            // Iniciar la aplicación cuando el DOM esté listo
+            $(document).ready(() => new BartolitoApp());
+        </script>
+    </body>
+</html>

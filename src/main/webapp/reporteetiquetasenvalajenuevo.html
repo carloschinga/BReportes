@@ -1,0 +1,32 @@
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">
+      Reporte de Etiquetas Envalaje: Nueva version
+    </h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <!-- Columna de Secuencias -->
+      <div class="col-md-2 mb-3 border">
+        <br />
+        <h4>Bulto</h4>
+        <div class="form-group">
+          <label for="impresion-input">Numero:</label>
+          <input type="number" class="form-control" id="impresion-input" />
+        </div>
+        <button
+          type="button"
+          id="validate-impresion"
+          class="btn btn-primary mb-1"
+        >
+          <i class="fas fa-file-pdf"></i> Imprimir PDF
+        </button>
+      </div>
+    </div>
+    <script src="js/pdf-lib.min.js"></script>
+    <script
+      src="js/reporteetiquetaenvalajenuevo.js"
+      type="text/javascript"
+    ></script>
+  </div>
+</div>

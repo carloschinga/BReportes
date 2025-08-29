@@ -1,0 +1,511 @@
+<style>
+  .fuente-min {
+    font-size: 10px !important;
+  }
+
+  .con-lotes {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+  }
+
+  .sin-lotes {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+  }
+
+  .btn-filter-active {
+    font-weight: bold;
+    border-width: 2px;
+  }
+
+  /* Estilos para las celdas de la tabla */
+  .table tbody tr td {
+    padding: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* Asegurar que el texto sea legible sobre los fondos */
+  .con-lotes td,
+  .sin-lotes td {
+    color: #212529;
+  }
+
+  /* Asegurar que la tabla principal tenga el coloreado */
+  #tabla tbody tr {
+    transition: background-color 0.3s ease;
+  }
+
+  .filter-legend-container {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.btn-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.btn-legend:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-legend:active, .btn-legend.active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-legend .legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.btn-has-lots .legend-color {
+  background-color: #28a745; /* Verde para "Con Lotes" */
+}
+
+.btn-no-lots .legend-color {
+  background-color: #dc3545; /* Rojo para "Sin Lotes" */
+}
+
+.btn-has-lots.active {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-no-lots.active {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+/* Estilo para filas inventariadas */
+tr.inventariado {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+/* Estilo para botones de productos inventariados */
+.btn-lotes.btn-secondary {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Icono de verificación */
+.fa-check-circle {
+    font-size: 0.8em;
+}  
+</style>
+<input type="hidden" value="hol" id="comprobarexistencia" />
+<!-- Pagina -->
+<div class="card shadow mb-4 fuente-min">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary" id="titulo">
+      Toma de Inventario
+    </h6>
+  </div>
+  <div class="card-body">
+    <div class="filter-legend-container mb-3">
+      <div class="d-flex align-items-center">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Filtros de lotes">
+          <button type="button" class="btn btn-legend btn-has-lots">
+            <span class="legend-color"></span>
+            Con Lotes - 
+            <span id="cantidadConLotes"></span>
+          </button>
+          <button type="button" class="btn btn-legend btn-no-lots">
+            <span class="legend-color"></span>
+            Sin Lotes - 
+            <span id="cantidadSinLotes"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button class="btn btn-primary me-md-2" id="recargar">
+        <i class="fa fa-sync-alt"></i> Recargar
+      </button>
+      <button class="btn btn-primary me-md-2" id="volver">
+        <i class="fa fa-arrow-left"></i> Volver
+      </button>
+      <button type="button" class="btn btn-primary" id="btnOpenModalListar" data-bs-toggle="modal"
+        data-bs-target="#modalTraerLista" style="display: none">
+        Ver Mi Lista
+      </button>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalBuscarProducto"
+        id="btnOpenModalBuscar" style="display: none">
+        Crear Lista
+      </button>
+      <button class="btn btn-primary me-md-2" id="guardar">
+        <i class="fa fa-save"></i> Guardar
+      </button>
+    </div>
+    <hr />
+    <div class="form-group mt-3">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input search-filter" type="radio" name="searchOption" id="searchCodpro"
+          value="codpro" />
+        <label class="form-check-label" for="searchCodpro">Buscar por Codpro</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input search-filter" type="radio" name="searchOption" id="searchQR" value="qr"
+          checked />
+        <label class="form-check-label" for="searchQR">Buscar por Código de Barras</label>
+      </div>
+      <input type="text" id="searchInput" class="form-control mt-2" placeholder="Escanea para buscar..." />
+    </div>
+
+    <div class="table-responsive mt-3">
+      <table id="tabla" class="table table-bordered text-dark table-sm table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Codpro</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Acciones</th>
+            <th scope="col" style="display: none;">Qr</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Lotes -->
+<div class="modal fade" id="modalLotes" tabindex="-1" aria-labelledby="modalLotesLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg fuente-min">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLotesLabel">Lotes de:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="validar-container">
+          <label for="qrForValidate" class="form-label">Escanea el código QR</label>
+          <input type="text" class="form-control" id="qrForValidate" placeholder="Clickea para escanear..." />
+          <button class="btn btn-secondary btn-sm" style="margin-top: 5px;" id="btnSkip">
+            Saltar
+          </button>
+          <button class="btn btn-primary btn-sm" style="margin-top: 5px;" id="btnValidate">
+            Validar
+          </button>
+        </div>
+        <div id="lotes-container" style="display: none;">
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button" class="btn btn-sm btn-primary" id="btnAgregarFila">
+              <i class="fas fa-plus"></i> Agregar Lote Vacío
+            </button>
+          </div>
+          <table class="table table-bordered" id="tablaLotes">
+            <thead>
+              <tr>
+                <th>Lote</th>
+                <th>coe</th>
+                <th>coef</th>
+                <th>ste</th>
+                <th>stf</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" id="guardarLotes">
+          Agregar Conteo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Buscar Producto -->
+<div class="modal fade" id="modalBuscarProducto" tabindex="-1" aria-labelledby="modalBuscarProductoLabel"
+  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="modalBuscarProductoLabel">
+          Buscar y agregar productos
+        </h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-0">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified" id="productosTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="buscar-tab" data-bs-toggle="tab" data-bs-target="#buscar" type="button"
+              role="tab" aria-controls="buscar" aria-selected="true">
+              <i class="bi bi-search me-2"></i>Búsqueda Individual
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="laboratorio-tab" data-bs-toggle="tab" data-bs-target="#laboratorio"
+              type="button" role="tab" aria-controls="laboratorio" aria-selected="false">
+              <i class="bi bi-building me-2"></i>Por Laboratorio
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="excel-tab" data-bs-toggle="tab" data-bs-target="#excel" type="button"
+              role="tab" aria-controls="excel" aria-selected="false">
+              <i class="bi bi-file-earmark-excel me-2"></i>Desde Excel
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="barrido-tab" data-bs-toggle="tab" data-bs-target="#barrido" type="button"
+              role="tab" aria-controls="barrido" aria-selected="false">
+              <i class="bi bi-file-earmark-excel me-2"></i>Barrido
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content p-3">
+          <!-- Primer Tab - Búsqueda individual -->
+          <div class="tab-pane fade show active" id="buscar" role="tabpanel" aria-labelledby="buscar-tab">
+            <!-- Campo de búsqueda -->
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control" id="buscarProductoInput"
+                  placeholder="Buscar producto por nombre o código..." />
+                <button class="btn btn-outline-secondary" type="button" id="btnBuscarProducto">
+                  <i class="bi bi-search"></i> Buscar
+                </button>
+                <button class="btn btn-outline-danger" type="button" id="btnLimpiarBusqueda">
+                  <i class="bi bi-x-circle"></i> Limpiar
+                </button>
+              </div>
+            </div>
+
+            <!-- Resultados de búsqueda -->
+            <div class="table-responsive">
+              <table class="table table-hover" id="tablaResultadosBusqueda">
+                <thead class="table-light">
+                  <tr>
+                    <th width="20%">Código</th>
+                    <th>Nombre</th>
+                    <th width="15%">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="resultadosBusqueda">
+                  <tr>
+                    <td colspan="3" class="text-center">
+                      Ingrese un término de búsqueda
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="paginacionContainer" class="mt-2 mb-3"></div>
+
+            <!-- Productos seleccionados -->
+            <div class="border-top pt-3">
+              <h5 class="mb-3">
+                <i class="bi bi-cart-check me-2"></i>Productos a agregar
+              </h5>
+              <div class="table-responsive">
+                <table class="table table-bordered" id="tablaProductosSeleccionados">
+                  <thead class="table-primary">
+                    <tr>
+                      <th width="20%">Código</th>
+                      <th>Nombre</th>
+                      <th width="15%">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="productosSeleccionados">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="border-top pt-3 d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary" id="btnCloseModalList" data-bs-dismiss="modal">
+                <i class="bi bi-x-circle me-1"></i> Cancelar
+              </button>
+              <button type="button" class="btn btn-success ms-2" id="btnConfirmarProductos">
+                <i class="bi bi-check-circle me-1"></i> Confirmar productos
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Segundo Tab - Por laboratorio -->
+          <div class="tab-pane fade" id="laboratorio" role="tabpanel" aria-labelledby="laboratorio-tab">
+            <div class="d-flex flex-column gap-3">
+              <h5 class="text-center text-primary">
+                <i class="bi bi-building-gear me-2"></i>Agregar productos por
+                Laboratorio
+              </h5>
+
+              <div class="row g-3 align-items-center">
+                <div class="col-md-3">
+                  <label for="selectLaboratorio" class="col-form-label">Laboratorio:</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-select" id="selectLaboratorio">
+                    <option selected disabled value="">
+                      Seleccione un laboratorio
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="alert alert-info mt-2">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Se agregarán todos los productos asociados al laboratorio
+                seleccionado
+              </div>
+
+              <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-primary" id="btnAgregarPorLab">
+                  <i class="bi bi-plus-circle me-2"></i>Agregar productos
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tercer Tab - Desde Excel -->
+          <div class="tab-pane fade" id="excel" role="tabpanel" aria-labelledby="excel-tab">
+            <div class="d-flex flex-column gap-3">
+              <h5 class="text-center text-primary">
+                <i class="bi bi-file-earmark-excel me-2"></i>Cargar productos
+                desde Excel
+              </h5>
+
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                El archivo Excel debe contener una columna con los códigos de
+                producto (SKU)
+              </div>
+
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Seleccionar archivo Excel (.xlsx)</label>
+                <input class="form-control" type="file" id="formFile" accept=".xlsx, .xls" />
+              </div>
+
+              <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-primary" id="btnProcesarExcel">
+                  <i class="bi bi-upload me-2"></i>Procesar archivo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cuarto Tab - Barrido -->
+          <div class="tab-pane fade" id="barrido" role="tabpanel" aria-labelledby="barrido-tab">
+            <div class="d-flex flex-column gap-3">
+              <h5 class="text-center text-primary">
+                <i class="bi me-2"></i>Cargar todos los productos
+              </h5>
+
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Se cargaran todos los productos del inventario
+              </div>
+
+              <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-primary" id="btnProcesarBarrido">
+                  <i class="bi bi-upload me-2"></i>Procesar barrido
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Traer Lista -->
+<div class="modal fade" id="modalTraerLista" tabindex="-1" aria-labelledby="modalTraerListaLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="modalTraerListaLabel">
+          Lista de Productos del Inventario
+        </h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped" id="tablaListaProductos">
+            <thead class="table-light">
+              <tr>
+                <th width="15%">Código</th>
+                <th>Nombre</th>
+                <th width="15%">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpoTablaLista">
+              <tr>
+                <td colspan="3" class="text-center">
+                  Cargando lista de productos...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" id="btnAplicarSeleccion">
+          <i class="bi bi-check-circle me-1"></i> Aplicar selección
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+<!-- Bootstrap 5 CSS -->
+<link 
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+/>
+
+<!-- Popper.js (necesario para Bootstrap 4) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- CSS de Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Para traducción al español (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+
+<!-- Lodash -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+<script src="js/inventarioproductos.js" type="text/javascript"></script>
+</body>
+
+</html>

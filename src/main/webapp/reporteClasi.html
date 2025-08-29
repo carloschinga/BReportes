@@ -1,0 +1,442 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  rel="stylesheet"
+/>
+
+<style>
+  /* Estilos generales para cards */
+  .card {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+  }
+
+  .card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Estilos para los card-header */
+  .card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.5rem;
+  }
+
+  .card-header h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .card-header h6 i {
+    margin-right: 0.5rem;
+    color: #4e73df;
+  }
+
+  /* Estilos para botones */
+  .btn-report {
+    border-radius: 0.375rem;
+    padding: 0.375rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-report i {
+    font-size: 0.9rem;
+  }
+
+  .btn-report:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-report:active {
+    transform: translateY(0);
+  }
+
+  /* Estilos para select2 */
+  .select2-container {
+    width: 100% !important;
+    min-width: 250px;
+  }
+
+  .select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+  }
+
+  /* Estilos responsive */
+  @media (max-width: 768px) {
+    .card-header {
+      padding: 0.75rem;
+    }
+
+    .card-header h6 {
+      font-size: 1rem;
+    }
+
+    .btn-container {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .btn-report {
+      width: 100%;
+    }
+  }
+
+  /* Estilos específicos para el contenedor de botones */
+  .report-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  /* Separador visual */
+  .section-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 1.5rem 0;
+  }
+</style>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h6 class="m-0 font-weight-bold">
+      <i class="fas fa-stethoscope me-2"></i>
+      Reporte Consolidado del Petitorio por Médico
+    </h6>
+    <button class="btn btn-outline-secondary btn-sm" id="btnAtras">
+      <i class="fas fa-arrow-left me-1"></i>
+      Volver
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <select name="select-empresa" id="select-empresa" class="form-control">
+        <option value="">Seleccione una Empresa</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="input-month-year" class="form-label">Mes y Año</label>
+      <input
+        type="month"
+        class="form-control"
+        id="input-month-year"
+        name="input-month-year"
+        value="2024-01"
+      />
+    </div>
+    <div class="report-actions">
+      <button class="btn btn-success btn-report" id="btnimprimirexcel4">
+        <i class="fas fa-file-excel"></i> Excel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<!-- jQuery (debe ir primero) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Incluir antes de tu script JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $.fn.validarSession = function () {
+      $.getJSON("validarsesion", function (data) {
+        if (data.resultado === "ok") {
+          $("#lblUsuario").text(data.logi);
+        } else {
+          $(location).attr("href", "index.html");
+        }
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        $(location).attr("href", "index.html");
+      });
+    };
+
+    $("#btnAtras").click(function (e) {
+      $("#contenido").load("clasificadorCentroCosto.html");
+    });
+    $.fn.validarSession();
+
+    $.ajax({
+      url: "combosForClasi?opcion=9",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log("Respuesta completa:", response); // Debug
+
+        if (response.resultado === "ok") {
+          // Limpiar el select antes de llenarlo
+          $("#select-empresa").empty();
+          $("#select-empresa").append(
+            '<option value="">Seleccione una empresa</option>'
+          );
+
+          console.log("Data recibida:", response.data); // Debug
+
+          if (response.data && response.data.length > 0) {
+            $.each(response.data, function (index, empresa) {
+              console.log("Agregando empresa:", empresa); // Debug
+              $("#select-empresa").append(
+                new Option(empresa.empresa, empresa.id)
+              );
+            });
+            console.log(
+              "Total opciones agregadas:",
+              $("#select-empresa option").length - 1
+            );
+          } else {
+            console.log("No hay datos para mostrar");
+          }
+        } else if (response.mensaje === "nosession") {
+          $.fn.validarSession();
+        } else {
+          console.error("Error en respuesta:", response.mensaje);
+          alert(
+            "Error al cargar las empresas: " +
+              (response.mensaje || "Error desconocido")
+          );
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error AJAX:", { xhr, status, error });
+        console.error("Respuesta del servidor:", xhr.responseText);
+        alert("Error al cargar las empresas");
+      },
+    });
+
+    $("#btnimprimirexcel4").click(function () {
+      let empresa = $("#select-empresa").val();
+      let fecha = $("#input-month-year").val();
+      let isValid = true;
+
+      // Limpiar mensajes anteriores
+      $(".error-message").remove();
+
+      // Validar empresa
+      if (!empresa) {
+        $("#select-empresa").after(
+          '<div class="error-message text-danger">Por favor seleccione una empresa</div>'
+        );
+        isValid = false;
+      }
+
+      // Validar fecha
+      if (!fecha) {
+        $("#input-month-year").after(
+          '<div class="error-message text-danger">Por favor seleccione una fecha</div>'
+        );
+        isValid = false;
+      }
+
+      // Si hay errores, no continuar
+      if (!isValid) return;
+
+      let [año, mes] = fecha.split("-");
+
+      let mesNumero = parseInt(mes);
+      let añoNumero = parseInt(año);
+      //console.log(empresa, fecha);
+      let parametro = { empresa: empresa, ano: añoNumero, mes: mesNumero };
+      $.ajax({
+        url: "reporteCentroCosto",
+        method: "POST",
+        dataType: "json",
+        data: JSON.stringify(parametro),
+        success: function (response) {
+          console.log("Respuesta completa:", response); // Debug
+
+          if (response.resultado === "ok") {
+            console.log("Datos recibidos:", response.data);
+            try {
+              // Parsear los datos si vienen como string JSON
+              let datos;
+              if (typeof response.data === "string") {
+                datos = JSON.parse(response.data);
+              } else {
+                datos = response.data;
+              }
+
+              // Generar y descargar Excel
+              generarExcel(datos, empresa, añoNumero, mesNumero);
+            } catch (error) {
+              console.error("Error al procesar datos para Excel:", error);
+              alert("Error al generar el archivo Excel");
+            }
+          } else if (response.mensaje === "nosession") {
+            $.fn.validarSession();
+          } else {
+            console.error("Error en respuesta:", response.mensaje);
+            alert(
+              "Error al cargar las empresas: " +
+                (response.mensaje || "Error desconocido")
+            );
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error AJAX:", { xhr, status, error });
+          console.error("Respuesta del servidor:", xhr.responseText);
+          alert("Error al cargar las empresas");
+        },
+      });
+    });
+
+    function generarExcel(datos, empresa, ano, mes) {
+      try {
+        // Crear un nuevo workbook
+        const wb = XLSX.utils.book_new();
+
+        // Definir las cabeceras del Excel
+        const cabeceras = [
+          "Cuenta",
+          "Proc ID",
+          "Activ ID",
+          "Tarea ID",
+          "Activo ID",
+          "Prod ID",
+          "Cen Cost Resp",
+          "Cta Cte",
+          "TP",
+          "Sub Mov",
+          "Num Comp",
+          "Dia Det Item",
+          "Fecha",
+          "Glosa",
+          "Documento",
+          "Num Documento",
+          "Importe",
+          "Mes",
+          "Centro Costo",
+          "Cen Cost Descripción",
+          "Clasi Unid Opera ID",
+          "Unid Opera ID",
+          "Tipo Gasto ID",
+        ];
+
+        // Crear array para el Excel con cabeceras
+        const datosExcel = [];
+
+        // Agregar las cabeceras como primera fila
+        datosExcel.push(cabeceras);
+
+        // Procesar los datos del servlet
+        if (Array.isArray(datos) && datos.length > 0) {
+          // Si los datos ya son un array (JSON parseado)
+          datos.forEach((fila) => {
+            datosExcel.push([
+              fila.cuenta || "",
+              fila.procId || "",
+              fila.activId || "",
+              fila.tareaId || "",
+              fila.activoId || "",
+              fila.prodId || "",
+              fila.cenCostResp || "",
+              fila.ctaCte || "",
+              fila.tp || "",
+              fila.subMov || "",
+              fila.numComp || "",
+              fila.diaDetItem || "",
+              fila.fecha || "",
+              fila.glosa || "",
+              fila.documento || "",
+              fila.numDocumento || "",
+              fila.importe || "0.00",
+              fila.mes || "",
+              fila.centroCosto || "",
+              fila.cenCostDescripcion || "",
+              fila.clasiUnidOperaId || "",
+              fila.unidOperaId || "",
+              fila.tipoGastoId || "",
+            ]);
+          });
+        } else {
+          // Si no hay datos, agregar una fila vacía
+          datosExcel.push(Array(23).fill(""));
+        }
+
+        // Crear worksheet desde el array
+        const ws = XLSX.utils.aoa_to_sheet(datosExcel);
+
+        // Configurar el ancho de las columnas
+        const colWidths = [
+          { wch: 12 },
+          { wch: 10 },
+          { wch: 10 },
+          { wch: 10 },
+          { wch: 10 },
+          { wch: 10 },
+          { wch: 12 },
+          { wch: 10 },
+          { wch: 6 },
+          { wch: 10 },
+          { wch: 12 },
+          { wch: 12 },
+          { wch: 12 },
+          { wch: 30 },
+          { wch: 12 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 6 },
+          { wch: 12 },
+          { wch: 25 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 12 },
+        ];
+        ws["!cols"] = colWidths;
+
+        // Agregar la hoja al workbook
+        XLSX.utils.book_append_sheet(wb, ws, "Reporte Centro Costo");
+
+        // Generar nombre del archivo
+        const nombreMes = obtenerNombreMes(mes);
+        const nombreArchivo = `Reporte_CentroCosto_${empresa}_${nombreMes}_${ano}.xlsx`;
+
+        // Descargar el archivo
+        XLSX.writeFile(wb, nombreArchivo);
+
+        console.log("Excel generado y descargado:", nombreArchivo);
+        console.log("Total de filas de datos:", datos.length);
+      } catch (error) {
+        console.error("Error al generar Excel:", error);
+        alert("Error al generar el archivo Excel: " + error.message);
+      }
+    }
+
+    // Función auxiliar para obtener nombre del mes
+    function obtenerNombreMes(numeroMes) {
+      const meses = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ];
+      return meses[numeroMes - 1] || "Mes" + numeroMes;
+    }
+  });
+</script>

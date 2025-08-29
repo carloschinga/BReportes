@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Ventas</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .progress {
+        height: 25px;
+      }
+      .card {
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+      .metric-card {
+        text-align: center;
+        padding: 20px;
+      }
+      .metric-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #0d6efd;
+      }
+      .metric-label {
+        color: #6c757d;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid py-4">
+      <h1 class="text-center mb-4">Dashboard de Ventas</h1>
+
+      <!-- Información del Vendedor -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">Información del Vendedor</div>
+            <div class="card-body">
+              <div>
+                <h5 class="card-title" id="vendedorNombre"></h5>
+                <p class="card-text" id="vendedorId"></p>
+              </div>
+              <div>
+                <h5>
+                  <strong>Fecha de corte:</strong>
+                  <span id="fechaCorte"></span>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Venta Vendedor -->
+      <div class="row mb-4">
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value">Venta Total</div>
+            <div class="metric-label">Tipo de Venta</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card metric-card">
+            <div class="metric-value" id="ObjetivoVendedor"></div>
+            <div class="metric-label">Objetivo Mensual</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="objetivoCorteTotal"></div>
+            <div class="metric-label">Objetivo a la Fecha de Corte</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="ventaCorteTotal"></div>
+            <div class="metric-label">Venta a la Fecha de Corte</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="PorcAvanceVendedor"></div>
+            <div class="metric-label">% Avance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Venta Estratégicos -->
+      <div class="row mb-4">
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value">Venta Estratégicos</div>
+            <div class="metric-label">Tipo de Venta</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card metric-card">
+            <div class="metric-value" id="objetivoMensualEstrategico"></div>
+            <div class="metric-label">Objetivo Mensual</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="objetivoCorteEstrategico"></div>
+            <div class="metric-label">Objetivo a la Fecha de Corte</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="ventaCorteEstrategico"></div>
+            <div class="metric-label">Venta a la Fecha de Corte</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card metric-card">
+            <div class="metric-value" id="avanceEstrategico"></div>
+            <div class="metric-label">% Avance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfica de Avance -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">Avance de Ventas</div>
+            <div class="card-body">
+              <canvas id="avanceChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Detalles -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">Detalles Generales</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Objetivo Sucursal</th>
+                      <th>Objetivo Rol</th>
+                      <th>Objetivo Vendedor</th>
+                      <th>Ventas Realizadas</th>
+                      <th>Avance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaDetalles"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Función para formatear números como moneda
+      function formatearMoneda(valor) {
+        return new Intl.NumberFormat("es-PE", {
+          style: "currency",
+          currency: "PEN",
+        }).format(valor);
+      }
+
+      // Función para formatear porcentaje
+      function formatearPorcentaje(valor) {
+        return valor.toFixed(2) + "%";
+      }
+
+      // Función para actualizar el dashboard con los datos
+      function actualizarDashboard(datos) {
+        if (!datos || datos.length === 0) {
+          alert("No hay datos disponibles");
+          return;
+        }
+
+        // Actualizar información del vendedor
+        document.getElementById("vendedorNombre").textContent =
+          datos[0].VendedDesc;
+        document.getElementById("vendedorId").textContent =
+          "ID: " + datos[0].VendedId;
+
+        // Obtener el periodo y el mes del periodo
+        let periodo = datos[0].mesano; // -> 2025-05
+        let mesPeriodo = periodo.split("-")[1]; // -> 05
+        // Calcular dias del mesPeriodo
+        let diasDelMes = new Date(
+          new Date().getFullYear(),
+          mesPeriodo,
+          0
+        ).getDate(); // -> 31
+
+        console.log(diasDelMes);
+
+        // Calcular totales para Metricas Venta Vendedor
+        let totalObjetivo = datos[0].ObjetivoVendedor;
+        let totalVentas = datos[0].VentasReales;
+
+        // Si para los diasDelMes es a totalObjetivo, hallar por dia
+        let objDia = totalObjetivo / diasDelMes;
+
+        // Obtener fecha de corte
+        let fechaCorte = datos[0].fechaCorte; // -> 2025-06-19
+
+        // Renderizar fecha de corte
+        document.getElementById("fechaCorte").textContent = fechaCorte;
+
+        // obtener el dia de la fecha de corte
+        let diaCorte = fechaCorte.split("-")[2]; // -> 19
+
+        // Calcular objetivo a la fecha de corte
+        let objetivoCorteTotal = objDia * diaCorte;
+
+        // esto se calcula hallando cuanto porcentaje es totalVentas respecto a objetivoCorteTotal y multiplicando por 100
+        let porcentajeAvance = (totalVentas / objetivoCorteTotal) * 100;
+
+        // Actualizar métricas principales
+        document.getElementById("ObjetivoVendedor").textContent =
+          formatearMoneda(totalObjetivo);
+        document.getElementById("objetivoCorteTotal").textContent =
+          formatearMoneda(objetivoCorteTotal);
+        document.getElementById("ventaCorteTotal").textContent =
+          formatearMoneda(totalVentas);
+        document.getElementById("PorcAvanceVendedor").textContent =
+          formatearPorcentaje(porcentajeAvance);
+
+        // Obtener el objetivo mensual estratégico
+        let objetivoMensualEstrategico =
+          (datos[0].porc_estra * totalObjetivo) / 100;
+
+        // Calcular corte estratégico
+        let objetivoCorteEstrategico =
+          (objetivoMensualEstrategico / diasDelMes) * diaCorte;
+
+        // Calcular ventas reales estrategicas que es el porcentaje de porc_estra de totalVentas
+        let ventasRealesEstrategicas =
+          (totalVentas * datos[0].porc_estra) / 100;
+
+        // Avance estrategico
+        let avanceEstrategico =
+          (ventasRealesEstrategicas / objetivoCorteEstrategico) * 100;
+
+        // Actualizar Métricas Venta Estratégicos
+        document.getElementById("objetivoMensualEstrategico").textContent =
+          formatearMoneda(objetivoMensualEstrategico);
+        document.getElementById("objetivoCorteEstrategico").textContent =
+          formatearMoneda(objetivoCorteEstrategico);
+        document.getElementById("ventaCorteEstrategico").textContent =
+          formatearMoneda(ventasRealesEstrategicas);
+        document.getElementById("avanceEstrategico").textContent =
+          formatearPorcentaje(avanceEstrategico);
+
+        // Crear gráfica de avance
+        const ctx = document.getElementById("avanceChart").getContext("2d");
+
+        // Si solo hay un dato, igual debe funcionar
+        const labels = datos.map((d) => "Período " + d.CuotVtaMesId);
+        const ventasReales = datos.map((d) => d.VentasReales);
+        const objetivos = datos.map((d) => d.ObjetivoVendedor);
+
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Ventas Realizadas",
+                data: ventasReales,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+              },
+              {
+                label: "Objetivo",
+                data: objetivos,
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+              },
+              tooltip: {
+                enabled: true,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  // Si quieres mostrar valores enteros
+                  callback: function (value) {
+                    return value.toLocaleString("es-PE");
+                  },
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Período",
+                },
+              },
+            },
+          },
+        });
+
+        // Actualizar tabla de detalles
+        const tablaDetalles = document.getElementById("tablaDetalles");
+        tablaDetalles.innerHTML = "";
+        datos.forEach((d) => {
+          const fila = document.createElement("tr");
+          fila.innerHTML = `
+    <td>${formatearMoneda(d.ObjetivoSucursal)}</td>
+    <td>${formatearMoneda(d.ObjetivoRol)}</td>
+    <td>${formatearMoneda(d.ObjetivoVendedor)}</td>
+    <td>${formatearMoneda(d.VentasReales)}</td>
+    <td>${formatearPorcentaje(d.PorcAvanceVendedor)}</td>
+  `;
+          tablaDetalles.appendChild(fila);
+        });
+      }
+
+      // Aquí deberías cargar los datos desde tu backend
+      $.ajax({
+        type: "GET",
+        url: "CRUDrolobje?opcion=9",
+        dataType: "json",
+        success: function (response) {
+          if (response.resultado == "ok") {
+            actualizarDashboard(response.data);
+          }
+        },
+      });
+    </script>
+  </body>
+</html>

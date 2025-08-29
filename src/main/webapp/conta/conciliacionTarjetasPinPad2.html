@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Conciliacion de Tarjetas Izipay</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+        <!-- DataTables Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h3 class="mb-4">
+                <i class="fas fa-search me-2"></i>Conciliacion de Comprobante - Tarjetas Izipay
+            </h3>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label for="combo1" class="form-label">Sucursal</label>
+                    <select class="form-select" id="comboSucurzalIzipay" required></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="aniomes" class="form-label">Seleccionar Año-Mes:</label>
+                    <input type="month" class="form-control" id="aniomes" >
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="chkSinComprobante">
+                        <label class="form-check-label" for="chkSinComprobante">
+                            No Conciliado
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="btnBuscar" class="btn btn-primary w-100" >
+                        <i class="fas fa-search me-2"></i>Visualizar
+                    </button>
+                </div>
+            </div>
+
+            <hr/>
+
+            <h3 class="mb-3">
+                <i class="fas fa-search me-2"></i>Resultado
+            </h3>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <p id="txtSucursal">Resultado:</p>
+                </div>
+                <!--
+                <div class="col-md-4 d-flex align-items-end">
+                    <button id="btnConciliar" class="btn btn-success w-100" disabled>
+                        <i class="fas fa-check me-2"></i>Grabar Conciliación
+                    </button>
+                </div>
+                -->
+            </div>
+
+            <div class="table-responsive">
+                <table id="tablaConciliacion" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>N° Comprobante</th>
+                            <th>F.Pago</th>
+                            <th>Num Operación</th>
+                            <th>Monto</th>
+                            <th>REF</th>
+                            <th>Código</th>
+                            <th>Fecha Consumo</th>
+                            <th>Importe</th>
+                            <th>Comisión</th>
+                            <th>Neto Total</th>
+                            <th>Voucher</th>
+                            <th>Conciliado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">TOTAL:</th>
+                            <th id="totalImporte"></th>
+                            <th id="totalComision"></th>
+                            <th id="totalNeto"></th>
+                            <th colspan="5"></th>
+                            <th id="totalMonto"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- JS -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://kit.fontawesome.com/7e7e2e2e2e.js" crossorigin="anonymous"></script>
+
+        <!-- JSZip para exportar Excel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- DataTables Buttons + Excel -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+        <!-- pdfmake para PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+        <!-- Botón de impresión -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let hoy = new Date();
+                let anio = hoy.getFullYear();
+                let mes = String(hoy.getMonth() + 1).padStart(2, '0'); // agrega 0 si es <10
+                document.getElementById("aniomes").value = `${anio}-${mes}`;
+            });
+            $(document).ready(function () {
+
+                // Click en botón buscar
+                $('#btnBuscar').click(function () {
+                    let $btn = $(this);
+                    let unidComId = $('#comboSucurzalIzipay').val();
+                    let aniomes = $('#aniomes').val(); // formato yyyy-mm
+                    let periodo = aniomes.replace("-", ""); // convierte a yyyymm
+
+                    if (!unidComId || !aniomes) {
+                        alert("Seleccione sucursal y año-mes.");
+                        return;
+                    }
+
+                    $btn.prop('disabled', true).text("Cargando...");
+                    $.ajax({
+                        url: "conciliacioncomprobantetarjetasizipay",
+                        method: "GET",
+                        data: {
+                            empresaId: "03",
+                            unidComId: unidComId,
+                            periodo: periodo
+                        },
+                        dataType: "json",
+                        success: function (data) {
+
+                            const soloSinComprobante = $('#chkSinComprobante').is(':checked');
+                            if (soloSinComprobante) {
+                                data = data.filter(row => !row.Codigo || row.Codigo.trim() === '');
+                            }
+
+                            tabla.clear().rows.add(data).draw();
+                           
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error al obtener datos:", error);
+                        },
+                        complete: function () {
+                            // Rehabilitar botón cuando termine (éxito o error)
+                            $btn.prop('disabled', false).html('<i class="fas fa-search me-2"></i>Visualizar');
+                        }
+                    });
+                });
+
+
+
+
+                $.ajax({
+                    url: "sucurzaizipayservlet",
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        var $combo = $("#comboSucurzalIzipay");
+                        $combo.empty(); // limpiar
+                        $combo.append('<option value="">Seleccione...</option>');
+                        $.each(data, function (index, item) {
+                            $combo.append(
+                                    $('<option>', {
+                                        value: item.UnidComId,
+                                        text: item.Nombre
+                                    })
+                                    );
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error al cargar las sucursales:", error);
+                    }
+                });
+
+                // Inicializar DataTable
+                let tabla = $('#tablaConciliacion').DataTable({
+                    data: [],
+                    columns: [
+                        {data: 'fecha'},
+                        {data: 'VtaCabNumComp'},
+                        {data: 'TipFormPagId'},
+                        {data: 'ForPagnum_ope'},
+                        {data: 'ForPagMonto'},
+                        {data: 'REF'},
+                        {data: 'Codigo'},
+                        {data: 'Fecha_Consumo'},
+                        {data: 'Importe'},
+                        {data: 'Comision'},
+                        {data: 'Neto_Total'},
+                        {data: 'Voucher'},
+                        {data: null, // Nueva columna calculada
+                            defaultContent: "",
+                            render: function (data, type, row) {
+
+                                if (row.Codigo !== null) {
+                                    return '<span style="color:green;">✔️</span>';
+                                } else {
+                                    return '<span style="color:red;">❌</span>';
+                                }
+                            }
+                        }
+                    ],
+                    language: {
+                        url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                    },
+                    paging: false, // Desactiva la paginación
+                    lengthChange: false, // Oculta el selector de cantidad de registros
+                    info: false,
+                    columnDefs: [
+                        {
+                            targets: [6, 7, 8, 9, 10, 11, 12], // Índices de las últimas 4 columnas (0-based)
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css('background-color', '#e3f2fd');
+                            }
+                        }
+                    ],
+                    drawCallback: function () {
+                        // Aplicar estilo a las cabeceras de las últimas 4 columnas
+                        $('#tablaConciliacion thead th:nth-child(7), #tablaConciliacion thead th:nth-child(8), #tablaConciliacion thead th:nth-child(9), #tablaConciliacion thead th:nth-child(10), #tablaConciliacion thead th:nth-child(11), #tablaConciliacion thead th:nth-child(12), #tablaConciliacion thead th:nth-child(13)').css('background-color', '#e3f2fd');
+
+                    },
+                    footerCallback: function (row, data) {
+                        let totalImporte = 0;
+                        let totalComision = 0;
+                        let totalNeto = 0;
+                        let totalMonto = 0;
+
+                        data.forEach(function (row) {
+                            totalImporte += parseFloat(row.Importe) || 0;
+                            totalComision += parseFloat(row.Comision) || 0;
+                            totalNeto += (parseFloat(row.Importe) || 0) - (parseFloat(row.Comision) || 0);
+                            totalMonto += parseFloat(row.Neto_Total) || 0;
+                        });
+
+                        $('#totalImporte').html(totalImporte.toFixed(2));
+                        $('#totalComision').html(totalComision.toFixed(2));
+                        $('#totalNeto').html(totalNeto.toFixed(2));
+                        $('#totalMonto').html(totalMonto.toFixed(2));
+                    }
+                });
+
+
+            });
+        </script>
+
+    </body>
+</html>

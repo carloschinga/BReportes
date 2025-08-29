@@ -1,0 +1,58 @@
+<div class="container mt-4">
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="card-title m-0 font-weight-bold text-primary">Gestión de Almacenes</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tablaAlmacenes" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Almacén</th>
+                            <th>Código</th>
+                            <th>M3</th>
+                            <th>Número</th>
+                            <th>Ingresar</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <button class="btn btn-primary mt-3 float-end" id="agregarboton1">Agregar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Agregar/Editar -->
+<div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Almacén</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregar">
+                    <input type="hidden" id="codalmbar"> <!-- Campo oculto para ID -->
+                    <div class="mb-3">
+                        <label class="form-label">Almacén</label>
+                        <input type="text" class="form-control" id="almacen" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">M3</label>
+                        <input type="number" class="form-control" id="m3" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Número</label>
+                        <input type="text" class="form-control" id="numero" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/almacenes_bartolito.js" type="text/javascript"></script>

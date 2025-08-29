@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Kardex Almacén</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+        <!-- DataTables Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h3 class="mb-4">
+                <i class="fas fa-search me-2"></i>Kardex de Almacén
+            </h3>
+
+            <!-- Filtros -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label for="aniomes" class="form-label">Seleccionar Año-Mes:</label>
+                    <input type="month" class="form-control" id="aniomes" value="2024-08">
+                </div>
+                <div class="col-md-3">
+                    <label for="codalm" class="form-label">Seleccionar Almacén:</label>
+                    <select class="form-select" id="codalm">
+                        <option value="A1">ALMACEN PRINCIPAL</option>
+                        <option value="A2">ALMACEN ALEJANDRINA</option>
+                        <option value="A3">ALMACEN MASSALUD</option>
+                        <option value="A4">ALMACEN 7 SABORES</option>
+                        <option value="A5">ALMACEN DEL NIÑO</option>
+                        <option value="A6">ALMACEN LA MERCED</option>
+                        <option value="A7">ALMACEN SAN MARTIN</option>
+                        <option value="A8">ALMACEN ACEVEDO</option>
+                        <option value="A9">ALMACEN FARMA 28</option>
+                        <option value="AA">ALMACEN MUNISALUD</option>
+                        <option value="AB">ALMACEN ROCKYS</option>
+                        <option value="AC">ALMACEN GOYA</option>
+                        <option value="AI">ALMACEN DE INSUMOS</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <hr/>
+
+            <h3 class="mb-3">
+                <i class="fas fa-search me-2"></i>Resultado
+            </h3>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6" >
+                    <p id="txtSucursal">Resultado:</p>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="kardexTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-center align-middle">Código</th>
+                            <th rowspan="2" class="text-center align-middle">Fecha</th>
+                            <th colspan="3" class="text-center align-middle">Documento</th>
+                            <th rowspan="2" class="text-center align-middle">Tipo Operación</th>
+                            <th colspan="3" class="text-center align-middle">Entradas</th>
+                            <th colspan="3" class="text-center align-middle">Salidas</th>
+                            <th colspan="3" class="text-center align-middle">Saldo Final</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">Tipo</th>
+                            <th class="text-center align-middle">Serie</th>
+                            <th class="text-center align-middle">Número</th>
+
+                            <th class="text-center align-middle">Cantidad</th>
+                            <th class="text-center align-middle">Costo Uni</th>
+                            <th class="text-center align-middle">Costo Total</th>
+
+                            <th class="text-center align-middle">Cantidad</th>
+                            <th class="text-center align-middle">Costo Uni</th>
+                            <th class="text-center align-middle">Costo Total</th>
+
+                            <th class="text-center align-middle">Cantidad</th>
+                            <th class="text-center align-middle">Costo Uni</th>
+                            <th class="text-center align-middle">Costo Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- JS -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://kit.fontawesome.com/7e7e2e2e2e.js" crossorigin="anonymous"></script>
+
+
+        <!-- JSZip para exportar Excel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- DataTables Buttons + Excel -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+
+        <!-- pdfmake para PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+
+        <!-- Botón de impresión -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                let table = $('#kardexTable').DataTable({
+                    ajax: {
+                        url: 'kardexalmacenservlet',
+                        data: function (d) {
+                            let mesSeleccionado = $('#aniomes').val();
+                            d.aniomes = mesSeleccionado ? mesSeleccionado.replace('-', '') : '';
+                            d.codalm = $('#codalm').val();
+                        },
+                        dataSrc: function (json) {
+                            console.log('Datos recibidos:', json);
+                            return json; // o json.data según estructura
+                        }
+                    },
+                    columns: [
+                        {data: 'codpro'}, // Código (quizá no en PDF pero sí en tabla)
+                        {data: 'fecmov'}, // Fecha
+                        {data: 'tipo'}, // Tipo (Documento)
+                        {data: 'serie'}, // Serie (Documento)
+                        {data: 'numero'}, // Número (Documento)
+                        {data: 'operacion'}, // Tipo Operación
+                        {data: 'entradas_cant', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)},
+                        {data: 'coscom', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)}, // Costo Uni entradas
+                        {data: 'entradas_valor', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)},
+                        {data: 'salidas_cant', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)},
+                        {data: 'coscom', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)}, // Costo Uni salidas
+                        {data: 'salidas_valor', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)},
+                        {data: 'saldo_cant', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)},
+                        {data: 'coscom', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)}, // Costo Uni saldo
+                        {data: 'saldo_valor', className: 'text-end', render: $.fn.dataTable.render.number(',', '.', 2)}
+                    ],
+
+                    responsive: true,
+                    dom: 'Bfrtip', // Botones arriba
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Exportar a Excel',
+                            title: function () {
+                                let mes = $('#aniomes').val() || 'SinMes';
+                                let almacen = $('#codalm option:selected').text() || 'SinAlmacen';
+                                return 'Kardex_' + almacen.replace(/\s+/g, '_') + '_' + mes;
+                            },
+                            exportOptions: {columns: ':visible'}
+                        },
+
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'Exportar a PDF',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            exportOptions: {columns: ':visible'},
+                            customize: function (doc) {
+                                doc.pageMargins = [20, 120, 20, 40];
+
+                                let mes = $('#aniomes').val() || 'ENERO 2021';
+                                let almacen = $('#codalm option:selected').text() || '0006 - RED SALUD NORTE S.A.C.';
+                                let ruc = '20408027897';
+                                let direccion = 'AV. 28 DE JULIO Nº 584 - HUACHO';
+                                let fechaHoy = new Date().toLocaleDateString();
+
+                                doc['header'] = function (currentPage, pageCount) {
+                                    return {
+                                        margin: [20, 20, 20, 0],
+                                        stack: [
+                                            {text: 'REGISTRO DE INVENTARIO', bold: true, fontSize: 14, alignment: 'center'},
+                                            {text: ruc, fontSize: 9, alignment: 'center'},
+                                            {text: 'RED SALUD NORTE S.A.C.', fontSize: 11, alignment: 'center'},
+                                            {text: 'Periodo : ' + mes, fontSize: 9},
+                                            {text: 'Establecimiento : ' + almacen, fontSize: 9},
+                                            {text: 'Dirección : ' + direccion, fontSize: 9},
+                                            {text: 'Método de Valuación : PROMEDIO PONDERADO', fontSize: 8},
+                                            {text: 'Pág. ' + currentPage + ' de ' + pageCount, alignment: 'right', fontSize: 8, margin: [0, 5, 0, 0]},
+                                            {canvas: [{type: 'line', x1: 0, y1: 0, x2: 555, y2: 0, lineWidth: 1}]}
+                                        ]
+                                    };
+                                };
+
+                                doc['footer'] = function (page, pages) {
+                                    return {
+                                        margin: [20, 0, 20, 0],
+                                        columns: [
+                                            {text: 'Generado: ' + fechaHoy, alignment: 'center', fontSize: 8},
+                                            {text: 'Página ' + page.toString() + ' de ' + pages.toString(), alignment: 'right', fontSize: 8}
+                                        ]
+                                    };
+                                };
+
+                                let data = $('#kardexTable').DataTable().rows({search: 'applied'}).data().toArray();
+
+                                let grupos = {};
+                                data.forEach(row => {
+                                    let key = row.despro || 'Sin Producto';
+                                    if (!grupos[key])
+                                        grupos[key] = [];
+                                    grupos[key].push(row);
+                                });
+
+                                doc.content = [];
+
+                                Object.keys(grupos).forEach(producto => {
+                                    doc.content.push({
+                                        text: 'Existencia: ' + producto,
+                                        bold: true,
+                                        fontSize: 10,
+                                        margin: [0, 10, 0, 5]
+                                    });
+
+                                    let body = [
+                                        [
+                                            {text: 'Fecha', rowSpan: 2, bold: true, alignment: 'center'},
+                                            {text: 'Documento', colSpan: 4, bold: true, alignment: 'center'}, {}, {}, {},
+                                            {text: 'Entradas', colSpan: 3, bold: true, alignment: 'center'}, {}, {},
+                                            {text: 'Salidas', colSpan: 3, bold: true, alignment: 'center'}, {}, {},
+                                            {text: 'Saldo Final', colSpan: 3, bold: true, alignment: 'center'}, {}, {}
+                                        ],
+                                        [
+                                            {}, // Fecha (ya con rowspan)
+                                            {text: 'Tipo', bold: true, alignment: 'center'},
+                                            {text: 'Serie', bold: true, alignment: 'center'},
+                                            {text: 'Número', bold: true, alignment: 'center'},
+                                            {text: 'Operación', bold: true, alignment: 'center'},
+                                            {text: 'Cantidad', bold: true, alignment: 'center'},
+                                            {text: 'Costo Uni', bold: true, alignment: 'center'},
+                                            {text: 'Costo Total', bold: true, alignment: 'center'},
+                                            {text: 'Cantidad', bold: true, alignment: 'center'},
+                                            {text: 'Costo Uni', bold: true, alignment: 'center'},
+                                            {text: 'Costo Total', bold: true, alignment: 'center'},
+                                            {text: 'Cantidad', bold: true, alignment: 'center'},
+                                            {text: 'Costo Uni', bold: true, alignment: 'center'},
+                                            {text: 'Costo Total', bold: true, alignment: 'center'}
+                                        ]
+                                    ];
+
+                                    grupos[producto].forEach(r => {
+                                        body.push([
+                                            r.fecmov || '',
+                                            r.tipo || '',
+                                            r.serie || '',
+                                            r.numero || '',
+                                            r.operacion || '',
+                                            r.entradas_cant != null ? r.entradas_cant : '',
+                                            r.coscom != null ? r.coscom.toFixed(2) : '',
+                                            r.entradas_valor != null ? r.entradas_valor.toFixed(2) : '',
+                                            r.salidas_cant != null ? r.salidas_cant : '',
+                                            r.coscom != null ? r.coscom.toFixed(2) : '',
+                                            r.salidas_valor != null ? r.salidas_valor.toFixed(2) : '',
+                                            r.saldo_cant != null ? r.saldo_cant : '',
+                                            r.coscom != null ? r.coscom.toFixed(2) : '',
+                                            r.saldo_valor != null ? r.saldo_valor.toFixed(2) : ''
+                                        ]);
+                                    });
+
+                                    doc.content.push({
+                                        table: {
+                                            headerRows: 2,
+                                            widths: [40, 30, 30, 30, 70, 40, 50, 50, 40, 50, 50, 40, 50, 50],
+                                            body: body
+                                        },
+                                        fontSize: 7,
+                                        layout: {
+                                            hLineWidth: () => 0.7,
+                                            vLineWidth: () => 0.7,
+                                            hLineColor: () => '#000',
+                                            vLineColor: () => '#000',
+                                            paddingLeft: () => 4,
+                                            paddingRight: () => 4,
+                                            paddingTop: () => 2,
+                                            paddingBottom: () => 2
+                                        }
+                                    });
+
+                                    doc.content.push({text: '\n'});
+                                });
+                            }
+                        },
+
+                        {
+                            extend: 'print',
+                            text: 'Imprimir',
+                            title: '',
+                            exportOptions: {columns: ':visible'},
+                            customize: function (win) {
+                                let mes = $('#aniomes').val() || 'No especificado';
+                                let almacen = $('#codalm option:selected').text() || 'No especificado';
+                                $(win.document.body)
+                                        .prepend('<h3 style="text-align:center">Kardex - ' + almacen + ' (' + mes + ')</h3>');
+                            }
+                        }
+                    ],
+
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                    }
+                });
+
+                $('#aniomes, #codalm').on('change', function () {
+                    table.ajax.reload();
+                });
+            });
+
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,487 @@
+<style>
+    .message {
+        color: green;
+        font-weight: bold;
+    }
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+    .btn-group-actions {
+        white-space: nowrap;
+    }
+    #mensaje, #error {
+        display: none;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+    #mensaje {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    #error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+</style>
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="m-0">
+            <i class="fas fa-building me-2"></i>Gestión de Unidades Operativas
+        </h5>
+    </div>
+    <div class="card-body">
+        <!-- Botón Agregar -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="d-flex justify-content-end gap-2 flex-wrap">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="btnAgregarUnidad"
+                        >
+                        <i class="fas fa-plus me-2"></i>Agregar Unidad
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-responsive">
+            <table id="tablaUnidades" class="table table-striped table-bordered table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 80px">ID</th>
+                        <th>Descripción</th>
+                        <th style="width: 160px">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="modalCrear" tabindex="-1" role="dialog" aria-labelledby="modalCrearLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearLabel">
+                    <i class="fa fa-plus"></i> Crear Nueva Unidad Operativa
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    ></button>
+            </div>
+            <form id="formCrear">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="crearId">ID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="crearId" placeholder="Ingrese el ID" required maxlength="10">
+                        <small class="form-text text-muted">Máximo 10 caracteres</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="crearDescripcion">Descripción <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="crearDescripcion" placeholder="Ingrese la descripción" required maxlength="255">
+                        <small class="form-text text-muted">Máximo 255 caracteres</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-save me-2"></i>Crear
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">
+                    <i class="fa fa-edit"></i> Editar Unidad Operativa
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formEditar">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="editarId">ID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editarId" placeholder="ID" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editarDescripcion">Descripción <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editarDescripcion" placeholder="Ingrese la descripción" required maxlength="255">
+                        <small class="form-text text-muted">Máximo 255 caracteres</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fa fa-save me-2"></i>Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel">
+                    <i class="fa fa-trash"></i> Eliminar Unidad Operativa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <strong>¿Está seguro que desea eliminar esta unidad operativa?</strong>
+                </div>
+                <p>Esta acción no se puede deshacer.</p>
+                <div class="bg-light p-3 rounded">
+                    <strong>ID:</strong> <span id="eliminarId"></span><br>
+                    <strong>Descripción:</strong> <span id="eliminarDescripcion"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa fa-times me-2"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">
+                    <i class="fa fa-trash me-2"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DataTables CSS -->
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+    />
+
+<!-- DataTables JS -->
+<script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"
+></script>
+
+<!-- Bootstrap (opcional, si lo usas) -->
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    />
+
+<!-- Popper.js (necesario para Bootstrap 4) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Select2 CSS -->
+<link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet"
+    />
+
+<!-- Para traducción al español (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/es.js"></script>
+<script>
+    $(document).ready(function () {
+        let tabla;
+        let idEliminar = null;
+
+        // Inicializar componentes
+        inicializarDataTable();
+        configurarEventos();
+
+        function inicializarDataTable() {
+            var configTabla = {
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+                },
+                ajax: {
+                    url: "unidadoperativa?action=list",
+                    type: "GET",
+                    dataSrc: "",
+                    error: function (xhr, error, thrown) {
+                        console.error('Error al cargar datos:', error);
+                        mostrarError('Error al cargar los datos de la tabla');
+                    }
+                },
+                columns: [
+                    {
+                        data: "id",
+                        width: "80px"
+                    },
+                    {
+                        data: "descripcion"
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        width: "160px",
+                        render: function (data, type, row) {
+                            return `
+                                    <div class="btn-group btn-group-sm btn-group-actions" role="group">
+                                        <button class="btn btn-warning btn-editar" 
+                                                data-id="${row.id}" 
+                                                data-descripcion="${row.descripcion}" 
+                                                title="Editar">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-eliminar" 
+                                                data-id="${row.id}" 
+                                                data-descripcion="${row.descripcion}" 
+                                                title="Eliminar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
+                        }
+                    }
+                ],
+                responsive: true,
+                pageLength: 25,
+                order: [[0, "asc"]],
+                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                        '<"row"<"col-sm-12"tr>>' +
+                        '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            };
+
+            if ($.fn.DataTable.isDataTable("#tablaUnidades")) {
+                $("#tablaUnidades").DataTable().destroy();
+                $("#tablaUnidades").empty();
+            }
+
+            tabla = $("#tablaUnidades").DataTable(configTabla);
+        }
+
+        function configurarEventos() {
+            // Evento para abrir modal crear
+            $('#btnAgregarUnidad').on('click', function () {
+                abrirModalCrear();
+            });
+
+            // Eventos para botones de editar y eliminar (delegación de eventos)
+            $('#tablaUnidades').on('click', '.btn-editar', function () {
+                const id = $(this).data('id');
+                const descripcion = $(this).data('descripcion');
+                abrirModalEditar(id, descripcion);
+            });
+
+            $('#tablaUnidades').on('click', '.btn-eliminar', function () {
+                const id = $(this).data('id');
+                const descripcion = $(this).data('descripcion');
+                abrirModalEliminar(id, descripcion);
+            });
+
+            // Evento para confirmar eliminación
+            $('#btnConfirmarEliminar').on('click', function () {
+                confirmarEliminar();
+            });
+
+            // Evento submit para crear
+            $('#formCrear').on('submit', function (e) {
+                e.preventDefault();
+                crearUnidad();
+            });
+
+            // Evento submit para editar
+            $('#formEditar').on('submit', function (e) {
+                e.preventDefault();
+                actualizarUnidad();
+            });
+
+            // Limpiar formularios al cerrar modales
+            $('#modalCrear').on('hidden.bs.modal', function () {
+                limpiarFormularioCrear();
+            });
+
+            $('#modalEditar').on('hidden.bs.modal', function () {
+                limpiarFormularioEditar();
+            });
+        }
+
+        function abrirModalCrear() {
+            limpiarMensajes();
+            limpiarFormularioCrear();
+            $('#modalCrear').modal('show');
+        }
+
+        function abrirModalEditar(id, descripcion) {
+            limpiarMensajes();
+            $('#editarId').val(id);
+            $('#editarDescripcion').val(descripcion);
+            $('#modalEditar').modal('show');
+        }
+
+        function abrirModalEliminar(id, descripcion) {
+            limpiarMensajes();
+            idEliminar = id;
+            $('#eliminarId').text(id);
+            $('#eliminarDescripcion').text(descripcion);
+            $('#modalEliminar').modal('show');
+        }
+
+        function crearUnidad() {
+            const id = $("#crearId").val().trim();
+            const descripcion = $("#crearDescripcion").val().trim();
+
+            if (!id || !descripcion) {
+                mostrarError("Debe completar todos los campos obligatorios.");
+                return;
+            }
+
+            const btnSubmit = $('#formCrear button[type="submit"]');
+            btnSubmit.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Creando...');
+
+            $.post("unidadoperativa", {id: id, descripcion: descripcion})
+                    .done(function (response) {
+                        const mensaje = response?.message || "Unidad operativa creada exitosamente";
+                        mostrarMensaje(mensaje);
+                        $('#modalCrear').modal('hide');
+                        tabla.ajax.reload(null, false);
+                    })
+                    .fail(function (xhr) {
+                        let errorMsg = "Error al crear la unidad operativa";
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            errorMsg = response.error || errorMsg;
+                        } catch (e) {
+                            errorMsg = xhr.responseText || errorMsg;
+                        }
+                        mostrarError(errorMsg);
+                    })
+                    .always(function () {
+                        btnSubmit.prop('disabled', false).html('<i class="fa fa-save me-2"></i>Crear');
+                    });
+        }
+
+        function actualizarUnidad() {
+            const id = $("#editarId").val().trim();
+            const descripcion = $("#editarDescripcion").val().trim();
+
+            if (!id || !descripcion) {
+                mostrarError("Debe completar todos los campos obligatorios.");
+                return;
+            }
+
+            const btnSubmit = $('#formEditar button[type="submit"]');
+            btnSubmit.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Actualizando...');
+
+            $.ajax({
+                url: "unidadoperativa",
+                type: "PUT",
+                data: JSON.stringify({id: id, descripcion: descripcion}),
+                contentType: "application/json",
+                success: function (response) {
+                    const mensaje = response?.message || "Unidad operativa actualizada exitosamente";
+                    mostrarMensaje(mensaje);
+                    $('#modalEditar').modal('hide');
+                    tabla.ajax.reload(null, false);
+                },
+                error: function (xhr) {
+                    let errorMsg = "Error al actualizar la unidad operativa";
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        errorMsg = response.error || errorMsg;
+                    } catch (e) {
+                        errorMsg = xhr.responseText || errorMsg;
+                    }
+                    mostrarError(errorMsg);
+                },
+                complete: function () {
+                    btnSubmit.prop('disabled', false).html('<i class="fa fa-save me-2"></i>Actualizar');
+                }
+            });
+        }
+
+        function confirmarEliminar() {
+            if (!idEliminar) {
+                mostrarError("Error: ID no válido para eliminar");
+                return;
+            }
+
+            const btnEliminar = $('#btnConfirmarEliminar');
+            btnEliminar.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Eliminando...');
+
+            $.ajax({
+                url: "unidadoperativa?id=" + encodeURIComponent(idEliminar),
+                type: "DELETE",
+                success: function (response) {
+                    const mensaje = response?.message || "Unidad operativa eliminada exitosamente";
+                    mostrarMensaje(mensaje);
+                    $('#modalEliminar').modal('hide');
+                    tabla.ajax.reload(null, false);
+                    idEliminar = null;
+                },
+                error: function (xhr) {
+                    let errorMsg = "Error al eliminar la unidad operativa";
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        errorMsg = response.error || errorMsg;
+                    } catch (e) {
+                        errorMsg = xhr.responseText || errorMsg;
+                    }
+                    mostrarError(errorMsg);
+                },
+                complete: function () {
+                    btnEliminar.prop('disabled', false).html('<i class="fa fa-trash me-2"></i>Eliminar');
+                }
+            });
+        }
+
+        function mostrarMensaje(msg) {
+            limpiarMensajes();
+            $("#mensaje").text(msg).show();
+            setTimeout(function () {
+                $("#mensaje").fadeOut();
+            }, 5000);
+        }
+
+        function mostrarError(msg) {
+            limpiarMensajes();
+            $("#error").text(msg).show();
+            setTimeout(function () {
+                $("#error").fadeOut();
+            }, 8000);
+        }
+
+        function limpiarFormularioCrear() {
+            $("#crearId").val("");
+            $("#crearDescripcion").val("");
+            $('#formCrear').removeClass('was-validated');
+        }
+
+        function limpiarFormularioEditar() {
+            $("#editarId").val("");
+            $("#editarDescripcion").val("");
+            $('#formEditar').removeClass('was-validated');
+        }
+
+        function limpiarMensajes() {
+            $("#mensaje").hide().text("");
+            $("#error").hide().text("");
+        }
+    });
+</script>

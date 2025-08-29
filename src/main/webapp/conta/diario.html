@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario Maestro-Detalle</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diario Maestro-Detalle</h1>
+
+    <!-- Filtro por fecha -->
+    <form id="fechaForm">
+        <label for="fecha">Fecha (YYYY-MM-DD): </label>
+        <input type="date" id="fecha" name="fecha" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Tabla de cabeceras -->
+    <table id="cabecerasTable">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Se llenará dinámicamente con jQuery -->
+            <tr class="hidden" id="noDataRow">
+                <td colspan="3">No se encontraron resultados.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Detalles de Diario -->
+    <div id="detalleContainer" class="hidden">
+        <h2>Detalles</h2>
+        <table id="detalleTable">
+            <thead>
+                <tr>
+                    <th>Cuenta Corriente</th>
+                    <th>Monto</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Detalles cargados dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Función para hacer la solicitud AJAX y mostrar los resultados
+        function cargarCabeceras(fecha) {
+            $.ajax({
+                url: '../diarioservlet', // Llama al servlet
+                type: 'GET',
+                data: { fecha: fecha },
+                success: function(response) {
+                    const cabeceras = response.cabeceras;
+                    if (cabeceras.length > 0) {
+                        $('#noDataRow').addClass('hidden');
+                        $('#cabecerasTable tbody').empty(); // Limpiar las filas
+                        cabeceras.forEach(function(cabecera) {
+                            $('#cabecerasTable tbody').append(`
+                                <tr data-id="${cabecera.diaCabCompId}">
+                                    <td>${cabecera.fecha}</td>
+                                    <td>${cabecera.descripcion}</td>
+                                    <td><button class="verDetalleBtn">Ver Detalles</button></td>
+                                </tr>
+                            `);
+                        });
+
+                        // Mostrar el formulario de búsqueda y las cabeceras
+                        $('#cabecerasTable').removeClass('hidden');
+                    } else {
+                        $('#noDataRow').removeClass('hidden');
+                    }
+                },
+                error: function() {
+                    alert('Error al cargar los datos');
+                }
+            });
+        }
+
+        // Cargar los detalles de una cabecera seleccionada
+        function cargarDetalles(idCabecera) {
+            $.ajax({
+                url: '/diario/detalle',
+                type: 'GET',
+                data: { id: idCabecera },
+                success: function(response) {
+                    const detalles = response.detalles;
+                    $('#detalleTable tbody').empty(); // Limpiar las filas de detalles
+                    detalles.forEach(function(detalle) {
+                        $('#detalleTable tbody').append(`
+                            <tr>
+                                <td>${detalle.ctaCteId}</td>
+                                <td>${detalle.monto}</td>
+                                <td>${detalle.descripcion}</td>
+                            </tr>
+                        `);
+                    });
+                    $('#detalleContainer').removeClass('hidden');
+                },
+                error: function() {
+                    alert('Error al cargar los detalles');
+                }
+            });
+        }
+
+        // Enviar el formulario de fecha
+        $('#fechaForm').submit(function(event) {
+            event.preventDefault();
+            const fecha = $('#fecha').val();
+            cargarCabeceras(fecha);
+        });
+
+        // Mostrar los detalles cuando se hace clic en "Ver Detalles"
+        $(document).on('click', '.verDetalleBtn', function() {
+            const idCabecera = $(this).closest('tr').data('id');
+            cargarDetalles(idCabecera);
+        });
+    </script>
+</body>
+</html>

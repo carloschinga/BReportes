@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Permisos</title>
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        margin-top: 20px;
+        color: #1e1e1e;
+      }
+
+      .div-top-header {
+        display: flex;
+        color: #1e1e1e;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-weight: 500;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+        font-size: 18px;
+      }
+
+      .role-selector {
+        margin-bottom: 30px;
+      }
+
+      .select-roles {
+        background: #fff;
+        color: #222;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 16px;
+        min-width: 220px;
+        outline: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .role-option {
+        position: relative;
+      }
+
+      .role-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .role-option label {
+        display: block;
+        padding: 15px;
+        background-color: #f0f4ff;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+        color: #1e1e1e;
+      }
+
+      .role-option input:checked + label {
+        background-color: #e0e7ff;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+
+      .role-option label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn {
+        padding: 8px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #2563eb;
+        color: #fff;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      .btn-update:hover {
+        background-color: var(--secondary-color);
+      }
+
+      @media (max-width: 600px) {
+        .roles-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="card">
+      <div class="div-top-header">
+        <h1>Gestión de Permisos</h1>
+      </div>
+
+      <div class="role-selector">
+        <div class="section-title">Actualizar permisos para:</div>
+        <select class="select-roles" aria-label="Seleccionar rol"></select>
+      </div>
+
+      <div class="section-title">Módulos disponibles:</div>
+      <div class="roles-grid">
+        <div class="empty-pages-info">
+          <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
+            <rect width="48" height="48" rx="12" fill="#e0e7ef" />
+            <path
+              d="M16 24h16M16 30h10"
+              stroke="#2563eb"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <rect
+              x="12"
+              y="12"
+              width="24"
+              height="24"
+              rx="4"
+              stroke="#2563eb"
+              stroke-width="2"
+              fill="#fff"
+            />
+          </svg>
+          <div class="empty-pages-title">Seleccione un permiso</div>
+          <div class="empty-pages-desc">
+            Elija un permiso del combo superior para visualizar las páginas
+            asociadas.
+          </div>
+        </div>
+      </div>
+
+      <button id="btnActualizar" class="btn">Actualizar Permisos</button>
+    </div>
+    <script src="js/grupospermisos.js" type="text/javascript"></script>
+  </body>
+</html>

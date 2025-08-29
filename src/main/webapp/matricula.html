@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Matricula 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+        <link href="css/showLoading.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body id="page-top">
+        <div class="transparentCover"></div>
+        <div class="loading"></div>
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <center> <h3 class="card-title">Nueva Matrícula</h3></center>
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-12">                                        
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Buscar Alumno</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6 col-xl-6">
+                                                            <input type="hidden" id="txtCodigoAlumno" value="1" >
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtBuscarAlumno" value=""
+                                                                   placeholder="Ingrese Apellido o Razón Social a buscar...">
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3">                         
+                                                            <button class="btn btn-primary btn-user btn-block" id="btnBuscar">Buscar</button>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3" id="loading" style="display:none">                         
+                                                            <div>
+                                                                <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-3 col-xl-3">                         
+                                                            <button class="btn btn-secondary btn-user btn-block" id="btnCancelar">Cancelar</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="alert alert-warning" id="aleAdvertencia" style="display:none;" role="alert">
+                                                    Debe ingresar mínimamente 2 caracteres para buscar...
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <div id="resultadoBusqueda" class="form-group" style="display:none">
+                                                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Codigo</th>   
+                                                                    <th>Nombre</th>   
+                                                                    <th>Num. Docu.</th>   
+                                                                    <th>Cod.Est.</th>   
+                                                                    <th>Seleccionar</th>   
+                                                                </tr>
+                                                            </thead>                                                        
+                                                        </table>
+                                                        <button class="btn btn-primary btn-user" id="btnNuevo">Agregar Alumno</button>
+                                                    </div>
+                                                </div>
+                                                <!-- Circle Buttons (Default) -->                    
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="divListadoServicio" style="display:none">
+                                    <div class="col">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary" id="lblTitulodeServicios">Listado de Matriculas del Alumno</h6>
+                                                <input type="hidden" id="txtCodiServ" value=""/>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="exampleDetaServicios" class="table table-striped table-bordered" style="width:100%" >
+                                                        <thead>
+                                                            <tr>     
+                                                                <th>Código</th>                  
+                                                                <th>Aula</th>                                                       
+                                                                <th>Anio</th> 
+                                                                <th>Alumno</th>                                                                 
+                                                                <th>Acción</th> 
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <button class="btn btn-primary btn-user" id="btnAgregarServicio">Agregar Matricula</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.container-fluid -->
+                        </div>
+                        <br/>
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <div id="footer"></div>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+            </div>
+            <!-- End of Page Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="salir">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo Cliente Modal-->
+        <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">Código:
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtCodigo" value="Automático" readonly>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Tipo Doc.
+                                    <select name="cmbTipodocu" class="form-control form-control-user"
+                                            id="cmbTipoDocu">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Número de Documento
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtNumeDocu" maxlength="15">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Codigo SIAGIE
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtCodiMinedu" maxlength="15">
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="row">
+                            <div class="col">
+                                <div id="divPaterno" class="form-group">Ap. Paterno
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtPaterno" maxlength="70">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div id="divMaterno" class="form-group">Ap. Materno
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtMaterno" maxlength="70">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div id="divNombre" class="form-group">Nombre
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtNombre" maxlength="70">
+                                </div>   
+                            </div>
+                        </div>
+
+                        <div class="row">                            
+                            <div class="col">
+                                <div class="form-group">Email
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtMail" maxlength="50">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Celular
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtCelular1" maxlength="15">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Ubigeo
+                                    <select name="cmbUbig" class="form-control form-control-user"
+                                            id="cmbUbig">
+                                    </select></div>
+                            </div>
+                        </div>
+                        <div class="row">                           
+                            <div class="col">
+                                <div class="form-group">Via
+                                    <select name="cmbVia" class="form-control form-control-user"
+                                            id="cmbVia">
+                                    </select></div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Direccion:
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtDireccion" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Numero:
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtNumero" maxlength="5">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">Interior:
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtInterior" maxlength="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">   
+                            <div class="col"> 
+                                <div class="form-group">Referencia:
+                                    <input type="text" class="form-control form-control-user"
+                                           id="txtReferencia" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="col"> 
+                                <div class="form-group">Genero:
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="rdbHombre" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            VARON
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="rdbMujer" >
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            MUJER
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning" id="advAgregarCliente" style="display:none;" role="alert">
+                            Debe completar todos los datos para poder registrar el alumno.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="btnAceptarCambios">Aceptar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo Servicio Modal-->
+        <div class="modal fade" id="nuevoServicioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">       
+                    <div class="card ">
+                        <div class="card-header ">
+                            <h6 class="m-0 font-weight-bold text-primary" id="lblTituloServicio">Registrar nueva Matricula</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">Año de Matricula:
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select id="cmbAnio" class="form-control form-control-user">
+                                        </select>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">Nivel
+                                <div class="row">
+                                    <div class="col-12">
+                                        <select id="cmbViewNivel" class="form-control form-control-user">
+                                        </select></div>
+                                </div>
+                            </div>    
+                            <div class="form-group">Aula
+                                <div class="row">
+                                    <div class="col-12">
+                                        <select id="cmbViewAula" class="form-control form-control-user">
+                                        </select></div>
+                                </div>
+                            </div>         
+                            <div class="alert alert-warning" id="advAgregarServicio" style="display:none;" role="alert">                                
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-primary btn-user " id="btnGrabar">Grabar Servicio</button>
+                                <div class="col-sm-6 col-md-3 col-xl-3" id="loadingNuevaMatri" style="display:none">                         
+                                    <div>
+                                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmar Instalacion Modal-->
+        <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea generar el Servicio de Instalación?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="xxxx">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmar Suspencion  Modal-->
+        <div class="modal fade" id="modalSuspender" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea <b>Suspender</b> el Servicio?                        
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnSuspenderServicio">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmar Anular  Modal-->
+        <div class="modal fade" id="modalAnular" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                Alumno Seleccionado: 
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control-user" id="txtNombAlumnoAnular" value="" disabled/>
+                            </div>                            
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                Matricula Seleccionada: 
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control-user" id="txtNombAulaAnular" value="" disabled/>
+                            </div>                            
+                        </div><br/>
+                        <div class="row">
+                            <div class="col">
+                                ¿Realmente desea <b>Anular</b> la matricula?                        
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnAnularServicio">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmar Restablecer  Modal-->
+        <div class="modal fade" id="modalRestablecer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea <b>Restablecer</b> el Servicio?                        
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnRestablecerServicio">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>        
+        <script src="js/matricula.js" type="text/javascript"></script>
+        
+    </body>
+
+</html>

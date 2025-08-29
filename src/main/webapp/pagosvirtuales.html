@@ -1,0 +1,404 @@
+<div class="card mb-4">   
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold mb-2 text-primary">Conciliacion de Pagos Virtuales</h6>
+    </div>
+    <div class="card-body">
+
+        <div class="row  mb-3">
+
+            <form id="uploadForm" style="display: flex;justify-content: center;align-items: center;">
+                <!-- <label for="fileInput"  >Selecciona un archivo de texto:</label>
+                 <input type="file" id="fileInput" accept=".txt"><br><br>
+                 <button type="submit" class="btn btn-primary">Enviar</button>-->
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="fileInput">Para Cargar archivo debe hacer click aquí:</label>
+                    <input type="file" id="fileInput" accept=".txt">
+                    <button type="submit" class="btn btn-primary">Subir a Bartolito</button>
+                </div>
+            </form>
+
+        </div>
+
+        <hr/>
+        <div class="container mt-4">
+            <h5 class="text-center mb-4"><b>VER MOVIMIENTOS IZIPAY</b></h5>
+
+            <!-- Filtros de búsqueda -->
+            <div class="row mb-3">
+                <div class="col-md-3 mb-2">
+                    <label for="fechaini" class="form-label">Fecha Inicio:</label>
+                    <input type="date" id="fechaini" class="form-control">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="fechafin" class="form-label">Fecha Fin:</label>
+                    <input type="date" id="fechafin" class="form-control">
+                </div>
+                <div class="col-md-3 mb-2 d-flex align-items-end">
+                    <button id="btnBuscar" class="btn btn-primary w-100">Buscar</button>
+                </div>
+                <div class="col-md-3 mb-2 d-flex align-items-end">
+                    <button id="btnAprobar" class="btn btn-primary w-100">Aprobar</button>
+                </div>
+                <div class="col-md-3 mb-2 d-flex align-items-end">
+                    <select class="form-select" id="botica">
+                        <option value="008501716" data-codigo2="001041427" selected>BOTICA LA MERCED</option>
+                        <option value="008855057" data-codigo2="001042405">BOTICA SAN MARTIN</option>
+                        <option value="008501731" data-codigo2="001041426">BOTICA ACEVEDO</option>
+                        <option value="008479403" data-codigo2="001041442">BOTICA MUNISALUD</option>
+                        <option value="008709561">DELIVERY FARMA 28</option>
+                        <option value="008089498" data-codigo2="001048409">BOTICA ROKYS</option>
+                        <option value="008895807" data-codigo2="001041439">BOTICA</option>
+                        <option value="001874462">BOTICA NIÑO - PINPAD</option>
+                        <option value="005549821">BOTICA NIÑO - MAGISTRALES</option>
+                        <option value="008666865">BOTICA NIÑO - EMERGENCIA</option>
+                        <option value="005550442">BOTICA NIÑO - 4TO P</option>
+                        <option value="008488705" data-codigo2="001041441">BOTICA MAS SALUD</option>
+                        <option value="008899903" data-codigo2="001041430">BOTICA 28 DE JULIO</option>
+                        <option value="008488746" data-codigo2="001041440">BOTICA 7 SABORES</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Tabla de resultados -->
+            <div class="table-responsive">
+                <table id="tablaDatos" class="table table-striped table-bordered table-sm" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Voucher</th>
+                            <th>Fecha</th>
+                            <th>Forma Pago</th>
+                            <th>Tipo Comprob.</th>
+                            <th>N° Comp.</th>
+                            <th>Pinpad Importe</th>
+                            <th>Lolfar Importe</th>
+                            <th>Status</th>
+                            <th>Comisión</th>
+                            <th>IGV</th>
+                            <th>Neto Parcial</th>
+                            <th>Neto Total</th>
+                            <th>Fecha Abono</th>
+                            <th>Referencia Pago</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                let fechaini;
+                let fechafin;
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                const Toast2 = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 30000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                $("#fechaini").on("change", function () {
+                    const fechainiVal = $(this).val(); // Obtener el valor de fechaini
+                    $("#fechafin").val(fechainiVal); // Establecer el mismo valor en fechafin
+
+                    if (fechainiVal) {
+                        // Calcular la fecha máxima (30 días después)
+                        const fechaInicio = new Date(fechainiVal);
+                        fechaInicio.setDate(fechaInicio.getDate() + 30);
+
+                        // Formatear la fecha máxima en formato YYYY-MM-DD
+                        const maxFecha = fechaInicio.toISOString().split("T")[0];
+
+                        // Establecer el atributo max en fechafin
+                        $("#fechafin").attr("max", maxFecha);
+                    }
+                });
+                $('#uploadForm').on('submit', function (e) {
+                    e.preventDefault();
+                    const file = $('#fileInput')[0].files[0];
+                    if (!file) {
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Seleccione un archivo valido."
+                        });
+                        return;
+                    }
+
+                    Toast2.fire({
+                        icon: "info",
+                        title: "Subiendo datos, espere por favor..."
+                    });
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const fileContent = event.target.result;
+                        $.ajax({
+                            url: 'upload', // EndPoint de tu servidor que maneja la importación
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({data: fileContent}),
+                            success: function (response) {
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Datos importados correctamente."
+                                });
+                            },
+                            error: function () {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Error al importar los datos."
+                                });
+                            }
+                        });
+                    };
+                    reader.readAsText(file);
+                });
+                let tabla = $('#tablaDatos').DataTable({
+                    ajax: null, // Sin datos iniciales
+                    "order": [[2, 'asc']],
+                    columns: [
+                        {data: "codigo", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "Voucher", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "fecha", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "docpag", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "tdodes", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "numcomp", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "importe", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "importlolfar", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "Status", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "comision", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "igv", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "netoparcial", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "netototal", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {data: "fechaabono", render: function (data) {
+                                return data ? data : '';
+                            }},
+                        {
+                            data: "refpag",
+                            render: function (data) {
+                                return data ? data : '';
+                            }
+                        }
+                    ],
+                    language: {
+                        decimal: "",
+                        emptyTable: "No hay datos disponibles",
+                        info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                        infoEmpty: "Mostrando desde el 0 al 0 del total de 0 registros",
+                        infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                        thousands: ",",
+                        lengthMenu: "Mostrar _MENU_ registros por página",
+                        loadingRecords: "Cargando...",
+                        processing: "Procesando...",
+                        search: "Buscar:",
+                        zeroRecords: "No se encontraron coincidencias",
+                        paginate: {
+                            first: "Primero",
+                            last: "Última",
+                            next: "Siguiente",
+                            previous: "Anterior"
+                        },
+                        aria: {
+                            sortAscending: ": activar para ordenar la columna de forma ascendente",
+                            sortDescending: ": activar para ordenar la columna de forma descendente"
+                        }
+                    },
+                    responsive: true,
+                    paging: false,
+                    "createdRow": function (row, data, dataIndex) {
+                        // Accede a la propiedad 'checkenvio' desde 'data' en lugar de 'row'
+                        if (data.refpag === undefined || data.refpag === '') {
+                            $(row).addClass('table-danger');
+                        } else if (data.estado === "A") {
+                            $(row).addClass('table-warning');
+                        }
+                    },
+                    dom: 'Bfrtip', // Define la posición de los botones
+                    buttons: [
+                        {
+                            extend: 'copy', // Botón de Copiar
+                            text: 'Copiar',
+                            className: 'btn btn-info',
+                            exportOptions: {
+                                columns: ':not(.novisible)' // Excluye las columnas con la clase novisible
+                            }
+                        },
+                        {
+                            extend: 'csv', // Botón de CSV
+                            text: 'CSV',
+                            className: 'btn btn-primary',
+                            exportOptions: {
+                                columns: ':not(.novisible)' // Excluye las columnas
+                            }
+                        },
+                        {
+                            extend: 'excel', // Botón de Excel
+                            text: 'Excel',
+                            className: 'btn btn-success',
+                            exportOptions: {
+                                columns: ':not(.novisible)' // Excluye las columnas
+                            }
+                        },
+                        {
+                            extend: 'pdf', // Botón de PDF
+                            text: 'PDF',
+                            className: 'btn btn-danger',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            exportOptions: {
+                                columns: ':not(.novisible)' // Excluye las columnas
+                            }
+                        },
+                        {
+                            extend: 'print', // Botón de Imprimir
+                            text: 'Imprimir',
+                            className: 'btn btn-warning',
+                            exportOptions: {
+                                columns: ':not(.novisible)' // Excluye las columnas
+                            }
+                        }
+                    ]
+                });
+                $('#botica').on('change', function () {
+                    const codigoSeleccionado = $(this).val(); // Obtén el valor del <select>
+                    const dataCodigo2 = $('#botica option:selected').data('codigo2'); // Obtén el data-codigo2
+
+                    // Crear un filtro combinado, considerando ambos valores
+                    const filterValue = codigoSeleccionado + '|' + dataCodigo2; // Concatenamos los dos valores
+
+                    // Aplicar el filtro en la columna 0 (codigo)
+                    tabla.column(0).search(filterValue, true, false).draw();
+
+                });
+                function swapDateFormat(fecha) {
+                    let partes = fecha.split('-'); // Divide en [año, mes, día]
+                    return `${partes[2]}-${partes[1]}-${partes[0]}`; // Reorganiza como año-día-mes
+                }
+
+                function addDayAndSwapFormat(fecha) {
+                    let partes = fecha.split('-'); // Divide en [año, mes, día]
+                    let fechaObj = new Date(partes[0], partes[1] - 1, partes[2]); // Crea el objeto Date (mes - 1 porque los meses son 0-indexados)
+
+                    // Suma 1 día
+                    fechaObj.setDate(fechaObj.getDate() + 1);
+
+                    // Obtén la nueva fecha con el día incrementado
+                    let nuevoDia = ("0" + fechaObj.getDate()).slice(-2);
+                    let nuevoMes = ("0" + (fechaObj.getMonth() + 1)).slice(-2);
+                    let nuevoAño = fechaObj.getFullYear();
+
+                    // Devuelve la fecha en formato día-mes-año
+                    return `${nuevoDia}-${nuevoMes}-${nuevoAño}`;
+                }
+                $('#btnBuscar').on('click', function () {
+                    const codigoSeleccionado = $("#botica").val(); // Obtén el valor del <select>
+                    const dataCodigo2 = $('#botica option:selected').data('codigo2'); // Obtén el data-codigo2
+
+                    // Crear un filtro combinado, considerando ambos valores
+                    const filterValue = codigoSeleccionado + '|' + dataCodigo2; // Concatenamos los dos valores
+                    console.log(filterValue);
+                    fechaini = swapDateFormat($('#fechaini').val());
+                    fechafin = addDayAndSwapFormat($('#fechafin').val());
+
+                    if (!fechaini || !fechafin) {
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Seleccione ambas fechas."
+                        });
+                        return;
+                    }
+
+                    // Actualizar la fuente de datos de DataTables
+                    tabla.ajax.url('CRUDMovimientosIzipay?opcion=1&fechaini=' + fechaini + '&fechafin=' + fechafin).load(function () {
+                        tabla.column(0).search(filterValue, true, false).draw();
+                    });
+                });
+                $('#btnAprobar').on('click', function () {
+
+                    if (!fechaini || !fechafin) {
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Liste registros primero para aprobarlos."
+                        });
+                        return;
+                    }
+                    $.ajax({
+                        url: 'CRUDMovimientosIzipay',
+                        method: 'GET',
+                        data: {opcion: 2, fechaini: fechaini, fechafin: fechafin,cod1:$("#botica").val(),cod2:($('#botica option:selected').data('codigo2')?$('#botica option:selected').data('codigo2'):"")},
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.resultado === "ok") {
+                                if (response.mensaje === "S") {
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: "Datos aprobados correctamente."
+                                    });
+
+                                    tabla.ajax.url('CRUDMovimientosIzipay?opcion=1&fechaini=' + fechaini + '&fechafin=' + fechafin).load();
+                                } else {
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Error al actualizar los datos."
+                                    });
+                                }
+                            } else {
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Error al actualizar los datos."
+                                });
+                            }
+                        },
+                        error: function () {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Error al realizar la solicitud."
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</div>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <center> <h3 class="card-title">Gestión de Plan</h3></center>
+
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+
+                                        <!-- Circle Buttons -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Listado </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button class="btn btn-primary btn-user" id="btnNuevo">Agregar Plan</button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <select id="cmbTipoPlanl" class="form-control form-control-user">
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="table-responsive">
+                                                <table id="example" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <tr>                                                   
+                                                            <th>Nombre</th>   
+                                                            <th>Monto</th>   
+                                                            <th>Seleccionar</th>   
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+                                                </div>
+
+
+                                                <!-- Circle Buttons (Default) -->                    
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <div id="footer"></div>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+
+
+        <!--  Modal Confirmar anular-->
+        <div class="modal fade" id="anularModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Anular?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"><input type="hidden" id="txtCodigoAnular"/>
+                        ¿Realmente desea anular este Plan?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="btnAnularPlan">Anular</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="salir">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tituloModal">Agregar Plan</h5>
+                        <input id="accion" type="hidden" value="1"/>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>                   
+                    <div class="modal-body">
+                        <table style="width: 100%">
+                            <tr><td>Codigo: </td><td><input type="text" id="txtCodigo" class="form-control form-control-user" disabled=""/></td></tr>
+                            <tr><td>Nombre: </td><td><input type="text" id="txtNombre" class="form-control form-control-user"/></td></tr>
+                            <tr><td>Monto: </td><td><input type="text" id="txtMonto" class="form-control form-control-user"/>
+                                    <input type="hidden" id="txtEstado" />
+                                </td></tr>
+
+
+                            <tr><td>Tipo Plan: </td><td>
+                                    <select id="cmbTipoPlan" class="form-control form-control-user" disabled>
+
+                                    </select></td></tr>                            
+
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="button" id="btnGrabar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
+        <script>
+            let table;
+            $(document).ready(function () {
+                
+                $.getJSON("validarsesion", function (data) {
+                    if (data.resultado === "ok") {
+                        //CARGA DE INTERFACES
+                        $('#topbar').load('topbar.html');
+                        $('#sidebar').load('sidebar.html');
+                        $('#footer').load('footer.html');
+
+                        $.getJSON("tipoplancrud", {tipo: 1}, function (data) {
+                            $("#cmbTipoPlan").empty();
+                            $("#cmbTipoPlanl").empty();
+                            for (const element of data.data) {
+                                $("#cmbTipoPlan").append("<option value=" + element.codiTipoPlan + ">" + element.nombTipoPlan + "</option>");
+                                $("#cmbTipoPlanl").append("<option value=" + element.codiTipoPlan + ">" + element.nombTipoPlan + "</option>");
+
+                            }
+                            table.ajax.reload();
+                        });
+                        //PROGRAMACION DE FUNCIONALIDADES
+                        table = $('#example').DataTable({
+                            language: {
+                                decimal: "",
+                                emptyTable: "No hay datos",
+                                info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                                infoEmpty: "Mostrando desde el 0 al 0 del total de  0 registros",
+                                infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                                infoPostFix: "",
+                                thousands: ",",
+                                lengthMenu: "Mostrar _MENU_ registros por página",
+                                loadingRecords: "Cargando...",
+                                processing: "Procesando...",
+                                search: "Buscar:",
+                                zeroRecords: "No se ha encontrado nada  atraves de ese filtrado.",
+                                paginate: {
+                                    first: "Primero",
+                                    last: "Última",
+                                    next: "Siguiente",
+                                    previous: "Anterior"
+                                },
+                                aria: {
+                                    sortAscending: ": activate to sort column ascending",
+                                    sortDescending: ": activate to sort column descending"
+                                }
+                            },
+                            /*dom: 'Bfrtip',
+                             buttons: [
+                             'copy', 'csv', 'excel', 'pdf', 'print'
+                             ],*/
+                            paging: false,
+                            ajax: {
+                                url: 'planCRUD',
+                                type: 'POST',
+                                data: function (d) {
+                                    d.tipo = 1, d.tipoPlan = $('#cmbTipoPlanl').val();
+                                }
+                            },
+                            columns: [
+                                {data: 'nombPlan'},
+                                {data: 'montPlan'},
+                                {data: 'codiPlan',
+                                    render: function (data, type, row, meta) {
+                                        return "<button onclick=seleccionarPlan(" + data + ") class=\"btn btn-success btn-user \">Modificar</button>";
+                                        /*return "<button onclick=seleccionarPlan(" + data + ") class=\"btn btn-success btn-user \">Modificar</button>\n\
+                                    <button onclick=anularPlan(" + data + ") class=\"btn btn-danger btn-user \">Anular</button>";*/
+                                    }
+                                }
+                            ]
+                        });
+
+
+
+                    } else {
+                        $(location).attr('href', "index.html");
+                    }
+
+
+                });
+                $("#btnGrabar").click(function () {
+
+                    $("#btnGrabar").prop("disabled", true);
+                    let accion = $("#accion").val();
+                    var modal = $('#modalAgregar');
+                    //Metodo Agregar Plan
+                    if (accion === "1") {
+                        let nombre = $("#txtNombre").val();
+                        let monto = $("#txtMonto").val();
+                        let tipoPlan = $("#cmbTipoPlan").val();
+                        let estado = $("#txtEstado").val();
+
+                        let parametro = {tipo: 3, nombre: nombre, monto: monto, estado: estado, tipoPlan: tipoPlan};
+
+                        $.getJSON("planCRUD", parametro, function (data) {
+                            table.ajax.reload();
+                            modal.modal('hide');
+                        });
+                    } else {
+                        //Metodo Modificar Plan
+                        let codigo = $("#txtCodigo").val();
+                        let nombre = $("#txtNombre").val();
+                        let monto = $("#txtMonto").val();
+                        let tipoPlan = $("#cmbTipoPlan").val();
+                        let estado = $("#txtEstado").val();
+
+                        let parametro = {tipo: 4, codigo: codigo, nombre: nombre, monto: monto, estado: estado, tipoPlan: tipoPlan};
+                        $.getJSON("planCRUD", parametro, function (data) {
+                            table.ajax.reload();
+
+
+
+
+                            modal.modal('hide');
+                        });
+                    }
+                    $("#btnGrabar").prop("disabled", false);
+                });
+
+                $("#btnNuevo").click(function () {
+                    $("#tituloModal").val("Agregar Plan");
+                    $("#accion").val("1");
+                    $("#txtCodigo").val("AUTOMATICO");
+                    $("#txtNombre").val("");
+                    $("#txtMonto").val("");
+                    $("#cmbTipoPlan").val($("#cmbTipoPlanl").val());
+
+                    $("#modalAgregar").modal("show");
+                });
+
+
+                //CERRAR SESIÓN   
+                $("#salir").click(function () {
+                    $.getJSON("cerrarsesion", function (data) {});
+                    $(location).attr('href', "index.html");
+                });
+
+                $("#cmbTipoPlanl").on('change', function () {
+                    table.ajax.reload();
+                });
+
+                $("#btnAnularPlan").click(function () {
+                    let codigo = $("#txtCodigoAnular").val();
+                    let parametro = {tipo: 5, codigo: codigo};
+                    $.getJSON("planCRUD", parametro, function (data) {
+                        if (data.resultado === "ok") {
+                            table.ajax.reload();
+                            $("#anularModal").modal("hide");
+                        } else {
+                            alert("Error al Anular");
+                        }
+                    });
+                });
+
+
+
+
+            });
+            function seleccionarPlan(code) {
+                let parametro = {tipo: 2, codigo: code};
+                $.getJSON("planCRUD", parametro, function (data) {
+                    //console.log(data);
+                    $("#tituloModal").val("Modificar Plan");
+                    $("#accion").val("0");
+                    $("#txtCodigo").val(code);
+                    $("#txtNombre").val(data.data[0].nombPlan);
+                    $("#txtMonto").val(data.data[0].montPlan);
+                    $("#txtEstado").val(data.data[0].estdPlan);
+                    //console.log(data.data[0].estdPlan);
+                    $("#cmbTipoPlan").val($("#cmbTipoPlanl").val());
+
+                    $("#modalAgregar").modal("show");
+                });
+                //$("#resultadoBusqueda").hide();
+
+            }
+            function anularPlan(code) {
+                $(document).ready(function () {
+                    $("#txtCodigoAnular").val(code);
+                    $("#anularModal").modal("show");
+                });
+            }
+        </script>
+
+    </body>
+
+</html>

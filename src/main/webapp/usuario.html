@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <!--<div id="sidebar"></div>-->
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <div id="topbar"></div>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        <!-- Begin Page Content -->
+                        <br/>
+                        <div class="card ">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <!-- Circle Buttons -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Gestión de Usuario</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive"> 
+                                                    <button class="btn btn-primary btn-user" id="btnNuevo">Agregar Usuario</button>
+                                                    <table class="table table-bordered w-100" id="dataTable" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Codigo</th>
+                                                                <th>DNI</th>
+                                                                <th>Usuario</th>
+                                                                <th>Rol</th>
+                                                                <th>Acciones</th>
+                                                        </thead>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Codigo</th>
+                                                                <th>DNI</th>
+                                                                <th>Usuario</th>
+                                                                <th>Rol</th>
+                                                                <th>Acciones</th>   
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>                                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Main Content -->
+
+                        <!-- Footer -->
+                        <div id="footer"></div>
+                        <!-- End of Footer -->
+
+                    </div>
+                    <!-- End of Content Wrapper -->
+
+                </div>        
+                <!-- End of Page Wrapper -->
+
+
+                <!-- Logout Modal-->
+
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-primary" id="salir">Salir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Agregar y EditarUsuario Modal-->
+                <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="lblTituloAgregarUsuario">Agregar Usuario</h5>
+                                    <hr class="sidebar-divider my-0">
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+
+                                <div id="card">
+                                    <div class="card-body">
+                                        <div class="form-group">Código:
+                                            <input type="text" class="form-control form-control-user" id="txtCodigo" value="Automático" readonly>                                        
+                                        </div>
+                                        <div class="form-group">DNI
+                                            <input type="text" class="form-control form-control-user" id="txtDni" maxlength="8" required>
+                                        </div>
+                                        <div class="form-group">NOMBRE:
+                                            <input type="text" class="form-control form-control-user" id="txtNUsuario"  required>
+                                        </div>
+                                        <div class="form-group">Nivel de Usuario:
+                                            <select class="form-control" id="cmbRol">
+                                                <option value="1">ADMINISTRADOR</option>
+                                                <option value="2">USUARIO</option>
+                                            </select>
+                                        </div>                               
+                                        <div id="contenedorDivAdicional"></div>
+                                        <div id="contenedorDivAdicional2"></div>
+                                    </div>                                
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                    <button id="btnAceptar" class="btn btn-primary"  >Aceptar</button>                            
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Bootstrap core JavaScript-->
+                <script src="vendor/jquery/jquery.min.js"></script>
+                <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                <script src="js/index.js" type="text/javascript"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="js/sb-admin-2.min.js"></script>
+                <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
+                <!-- Incluye Bootstrap CSS y JS en tu página -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">      
+
+
+                <script>
+                    let banderaAgregar = false;
+                    $(document).ready(function () {
+                        $.getJSON("validarsesion", function (data) {
+                            if (data.resultado === "ok") {
+                                //CARGA DE INTERFACES Y PARAMETROS GENERALES
+                                $('#footer').load('footer.html');
+                                $('#topbar').load('topbar.html');
+
+                                // Realizar la solicitud AJAX para listar los datos
+                                $.ajax({
+                                    url: '/LogisticaServicio/webresources/crudusuario/listar',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        // Parsear los datos recibidos y crear la tabla DataTable
+                                        var datos = response.datos[0]; // Obtener el primer elemento del array datos, que es la cadena JSON
+
+                                        var objetos = JSON.parse(datos);
+
+                                        //console.log(datos);
+
+
+                                        table = $('#dataTable').DataTable({
+                                            paging: false,
+                                            ordering: false,
+                                            info: false,
+                                            searching: false,
+                                            data: objetos, // Usar los datos parseados
+                                            columns: [
+                                                {data: 'codiUsua'},
+                                                {data: 'ndniUsua'},
+                                                {data: 'logiUsua'},
+                                                {
+                                                    data: 'niveUsua',
+                                                    render: function (response, type, row, meta) {
+                                                        console.log(response);
+                                                        var nivel = parseInt(response); // Convertir a entero
+                                                        if (!isNaN(nivel)) { // Verificar si es un número
+                                                            if (nivel === 1) {
+                                                                return "ADMINISTRADOR";
+                                                            } else if (nivel === 2) {
+                                                                return "USUARIO";
+                                                            }
+                                                        }
+                                                        return "Otro";
+                                                    }
+                                                },
+
+                                                {
+                                                    data: 'codiUsua',
+                                                    render: function (data, type, row, meta) {
+                                                        return "<button onclick=seleccionarUsuario(" + data + ") class=\"btn btn-success btn-user\">Modificar</button>";
+                                                    }
+                                                }
+                                            ]
+
+                                        });
+                                        $('#dataTable').on('click', '.btn-user', function () {
+                                            var data = table.row($(this).parents('tr')).data();
+                                            var nivel = parseInt(data.niveUsua); // Convertir a número
+
+                                            console.log("nivel: " + nivel + ", tipo de dato: " + typeof nivel);
+
+                                            if (data) {
+                                                $("#txtCodigo").val(data.codiUsua);
+                                                $("#txtDni").val(data.ndniUsua);
+                                                $("#txtNUsuario").val(data.logiUsua);
+
+                                                // Limpiar el select antes de agregar las opciones
+                                                $('#cmbRol').empty();
+
+                                                if (!isNaN(nivel)) { // Verificar si es un número válido
+                                                    if (nivel === 1) {
+                                                        $('#cmbRol').append('<option value="1" selected>ADMINISTRADOR</option>');
+                                                        $('#cmbRol').append('<option value="2">USUARIO</option>');
+                                                    } else if (nivel === 2) {
+                                                        $('#cmbRol').append('<option value="1">ADMINISTRADOR</option>');
+                                                        $('#cmbRol').append('<option value="2" selected>USUARIO</option>');
+                                                    } else {
+                                                        $('#cmbRol').append('<option value="2" selected>xd</option>');
+                                                    }
+                                                } else {
+                                                    // Manejar el caso donde nivel no es un número válido
+                                                    console.error("El nivel no es un número válido:", nivel);
+                                                }
+                                            }
+                                        });
+
+
+
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                    }
+                                });
+                            } else {
+                                $(location).attr('href', "index.html");
+                            }
+                        });
+
+                        //PROGRAMACION DE EVENTOS
+                        $("#btnNuevo").click(function () {
+                            $("#divAdicional, #mensajeAcceso").hide();
+                            $("#cmbRol").empty();
+                            $("#cmbRol").prop("disabled", false);
+                            banderaAgregar = true;
+
+                            $("#txtCodigo").val("AUTOMATICO");
+                            $("#txtDni").val("");
+                            $("#txtNUsuario").val("");
+                            let url = decodeURIComponent($.fn.getCookie("globalhost")) + "/LogisticaServicio/webresources/crudrol/listar";
+
+                            $.getJSON(url, function (data) {
+                                for (const element of data.data) {
+                                    $("#cmbRol").append("<option value=" + element.codiRol + ">" + element.nombRol + "</option>");
+                                }
+                            });
+                            $("#lblTituloAgregarUsuario").text("Agregar Usuario");
+                            $("#modalAgregar").modal("show");
+                        });
+                        $("#btnAceptar").click(function () {
+                            $("#btnAceptar").prop("disabled", true);
+                            let codigo = $("#txtCodigo").val();
+                            let dni = $("#txtDni").val();
+                            let usuario = $("#txtNUsuario").val();
+                            let passCifrada = CryptoJS.SHA256($("#txtNUsuario").val()).toString();
+                            let nivel = $("#cmbRol").val();
+
+                            var url = decodeURIComponent($.fn.getCookie("globalhost")) + "/LogisticaServicio/webresources/crudusuario";
+                            url += "?ndniUsua=" + encodeURIComponent(dni);
+                            url += "&logiUsua=" + encodeURIComponent(usuario);
+                            url += "&niveUsua=" + encodeURIComponent(nivel);
+                            url += "&passUsua=" + encodeURIComponent(passCifrada);
+
+                            var url2 = decodeURIComponent($.fn.getCookie("globalhost")) + "/LogisticaServicio/webresources/crudusuario";
+                            url2 += "?codiUsua=" + encodeURIComponent(codigo);
+                            url2 += "&ndniUsua=" + encodeURIComponent(dni);
+                            url2 += "&logiUsua=" + encodeURIComponent(usuario);
+                            url2 += "&niveUsua=" + encodeURIComponent(nivel);
+
+
+                            if (banderaAgregar) {
+                                $.ajax({
+                                    url: url,
+                                    type: "POST",
+                                    dataType: "json", // No es necesario especificar contentType
+                                    success: function (data) {
+                                        if (data.resultado === "ok") {
+                                            // location.reload();
+                                            $("#modalAgregar").modal("hide");
+                                        } else {
+                                            alert("Error al agregar usuario");
+                                        }
+                                        $("#btnAceptar").prop("disabled", false);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error:", xhr.responseText);
+                                        alert("Error al agregar usuario: " + xhr.responseText);
+                                        $("#btnAceptar").prop("disabled", false);
+                                    }
+                                });
+                            } else {
+                                $.ajax({
+                                    url: url2,
+                                    type: "PUT",
+                                    dataType: "json", // No es necesario especificar contentType
+                                    success: function (data) {
+                                        if (data.resultado === "ok") {
+                                            location.reload();
+                                            $("#modalAgregar").modal("hide");
+                                        } else {
+                                            alert("Error al agregar usuario");
+                                        }
+                                        $("#btnAceptar").prop("disabled", false);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error:", xhr.responseText);
+                                        alert("Error al agregar usuario: " + xhr.responseText);
+                                        $("#btnAceptar").prop("disabled", false);
+                                    }
+                                });
+                            }
+
+                        });
+
+                        //CERRAR SESIÓN
+                        $("#salir").click(function () {
+                            $.getJSON("cerrarsesion", function (data) {});
+                            $(location).attr('href', "index.html");
+                        });
+                    });
+                    function seleccionarUsuario(code) {
+                        // $("#cmbRol").prop("disabled", true);
+                        //   $("#cmbRol").empty();
+                        $("#lblTituloAgregarUsuario").text("Modificar Usuario");
+                        $("#modalAgregar").modal("show");
+                        banderaAgregar = false;
+                        console.log(banderaAgregar);
+                        /*      var divAdicional = $(
+                         "<div id='divAdicional' class='alert alert-info' role='alert'>" +
+                         "Solo los usuarios con roles de <strong>Super Usuario</strong> y <strong>Administrador</strong> tienen permisos para \n\
+                         cambiar el rol de otro usuario en la sección de <strong>asignacion.html</strong>." +
+                         "</div>"
+                         );
+                         $("#contenedorDivAdicional").html(divAdicional); 
+                         
+                         
+                         var divAdicional2 = $(
+                         "<div id='mensajeAcceso' class='alert alert-warning' role='alert'>" +
+                         "Acceso restringido: Solo <strong>Super Usuario</strong> y <strong>Administrador</strong> pueden entrar a <strong>asignacion.html</strong>." +
+                         "</div>");
+                         
+                         $("#contenedorDivAdicional2").html(divAdicional2); */
+
+                        /**$.getJSON("rolCRUD", {accion: 1}, function (data) {
+                         for (const element of data.data) {
+                         $("#cmbRol").append("<option value=" + element.codiRol + ">" + element.nombRol + "</option>");
+                         }
+                         let parametro = {accion: 5, codigo: code};
+                         $.getJSON("usuarioCRUD", parametro, function (data) {
+                         $("#txtCodigo").val(code);
+                         $("#txtDni").val(data.ndniUsua);
+                         $("#txtNUsuario").val(data.logiUsua);
+                         $("#cmbRol").val(data.niveUsua);
+                         //$("#modalAgregar").modal("show");
+                         });
+                         });**/
+
+                    }
+                </script>
+                <script src="js/cripto.min.js" type="text/javascript"></script>
+                </body>
+
+                </html>

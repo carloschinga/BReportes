@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d76237d-f1a9-47be-90d4-eb1ba9b06989">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterLolfar.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="codalm" class="java.lang.String"/>
+	<parameter name="codinv" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from(
+select sum(case when cant=0 then 0 else 1 end) as registrado,sum(case when cant=0 then 1 else 0 end) as pendiente
+from
+(
+select v.codpro,count(t.codpro) as cant from fa_stock_vencimientos v
+left join inventario_almacen a on a.codalm=v.codalm and codinv=$P{codinv} 
+left join inventario_toma t on t.codpro=v.codpro and t.codinvalm=a.codinvalm
+inner join fa_productos p on p.codpro=v.codpro
+where (v.qtymov>0 or v.qtymov_m>0) and v.codalm=$P{codalm}  and p.estado='S'
+group by v.codpro
+) d 
+) dd
+unpivot (cant for tipo in(registrado,pendiente)) as input]]>
+	</queryString>
+	<field name="cant" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cant"/>
+		<property name="com.jaspersoft.studio.field.label" value="cant"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="229" splitType="Stretch">
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="20" y="20" width="200" height="200" uuid="91bd980e-ebea-4acc-90ac-0307e9e0d07f"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset minPercentage="1.0">
+					<keyExpression><![CDATA[$F{tipo}+"("+$F{cant}+")"]]></keyExpression>
+					<valueExpression><![CDATA[$F{cant}]]></valueExpression>
+					<labelExpression><![CDATA[$F{tipo}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</title>
+	<summary>
+		<band height="248" splitType="Stretch">
+			<subreport>
+				<reportElement x="10" y="30" width="270" height="50" uuid="d4e817d4-a65f-4221-8841-ba2ddfd6425c"/>
+				<subreportParameter name="codalm">
+					<subreportParameterExpression><![CDATA[$P{codalm}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codinv">
+					<subreportParameterExpression><![CDATA[$P{codinv}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreportependientesconteo.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="10" y="0" width="270" height="30" uuid="57453a3f-bd9a-435e-bfdb-9eadc500a827"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Items Pendientes de Conteo]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

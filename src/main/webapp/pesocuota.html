@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Cuotas Diarias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilo opcional para mejor visualización */
+        .peso-dia {
+            text-align: right;
+        }
+        #diasContainer .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Distribución Diaria de Objetivos por Farmacia</h5>
+            </div>
+            <div class="card-body">
+
+                <!-- Fila de selección -->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="selectObjetivo">Objetivo:</label>
+                        <select id="selectObjetivo" class="form-control">
+                            <option value="">Cargando...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="selectFarmacia">Farmacia:</label>
+                        <select id="selectFarmacia" class="form-control">
+                            <option value="">Cargando...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 d-flex align-items-end">
+                        <button id="consultarMonto" class="btn btn-info btn-block">Consultar Monto</button>
+                    </div>
+                </div>
+
+                <!-- Monto asignado -->
+                <div class="form-row">
+                    <div class="form-group col-md-4 offset-md-8">
+                        <label for="montoAsignado">Monto asignado (S/):</label>
+                        <input type="text" id="montoAsignado" class="form-control font-weight-bold text-success" readonly>
+                    </div>
+                </div>
+
+                <!-- Información adicional del objetivo -->
+                <div id="infoSeleccion" class="mb-3 text-muted small">
+                    <!-- Aquí puedes mostrar el mes/año si deseas -->
+                </div>
+
+                <hr>
+
+                <!-- Contenedor de inputs por día -->
+                <div class="row" id="diasContainer">
+                    <!-- Aquí se generan los inputs dinámicamente -->
+                </div>
+
+                <!-- Botón para guardar distribución -->
+                <div class="text-right">
+                    <button class="btn btn-success mt-3" id="guardarDistribucion">
+                        Guardar Distribución
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/pesocuota.js"></script>
+</body>
+</html>

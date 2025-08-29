@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="diades" pageWidth="200" pageHeight="100" columnWidth="100" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="91f377dc-91f5-40c5-8496-a060148a0182">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.jrdax"/>
+	<parameter name="actomedico" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT concat('dx  ',diacod,' - ',diades) as diag
+FROM "HechRecetasCli" rece
+	inner join "HechDiagnosRecetasCli" diag ON 
+	 rece."ActoMedico" = diag."ActoMedico" where rece.ActoMedico= $P{actomedico} 
+	 group by diacod,diades]]>
+	</queryString>
+	<field name="diag" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="diag"/>
+		<property name="com.jaspersoft.studio.field.label" value="diag"/>
+	</field>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField textAdjust="ScaleFont">
+				<reportElement x="0" y="0" width="199" height="10" uuid="0fc564cf-dba7-4556-bb39-7b6756584c0e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diag}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

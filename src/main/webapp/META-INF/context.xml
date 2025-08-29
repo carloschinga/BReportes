@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/BReportes1"/>
+<Context path="/BReportes" unloadDelay="30000">
+  <!-- Sin DataSource - usando JPA persistence.xml -->
+</Context>

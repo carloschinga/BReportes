@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <link href="vendor/datatables/select.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <div id="divtopbar"></div>
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-4 text-gray-800">Servicio de Traslado</h1>
+                        <div class="row">
+                            <div class="col">                              
+                                <!-- Circle Buttons -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Buscar Cliente</h6>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <input type="hidden" id="txtCodigoCliente" >
+                                                    <input type="text" class="form-control form-control-user"
+                                                           id="txtBuscarCliente" 
+                                                           placeholder="Ingrese Cliente a buscar...">
+                                                </div>
+                                                <div class="col-2">                         
+                                                    <button class="btn btn-primary btn-user btn-block" id="btnBuscar">Buscar</button>
+                                                </div>
+                                                <div class="col-2">                         
+                                                    <button class="btn btn-secondary btn-user btn-block" id="btnCancelar">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-warning" id="aleAdvertencia" style="display:none;" role="alert">
+                                            Debe ingresar mínimo 2 caracteres para buscar cliente...
+                                        </div>
+                                        <div id="resultadoBusqueda" class="form-group">
+                                            <table id="example" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>   
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>  
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!--<button class="btn btn-primary btn-user" id="btnNuevo">Agregar Cliente</button>-->
+                                        </div>
+                                        <!-- Circle Buttons (Default) -->                    
+
+                                    </div>
+                                </div>                                 
+                                <div class="row" id="divListadoServicio">
+                                    <div class="col">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Listado de Servicios</h6>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <table id="exampleDetaServicios" class="table table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tipo</th>                                                       
+                                                            <th>Plan</th>                                                       
+                                                            <th>Direccion</th>                                                      
+                                                            <th>Estado</th> 
+                                                            <th align="center">Seleccionar</th> 
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+
+                                            </div>
+                                        </div></div></div>
+                            </div>
+                            <div class="col">
+                                <div class="row" id="divServicio">
+                                    <div class="col-lg-10">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Registrar la nueva dirección</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">Plan:
+                                                    <select id="cmbTipoPlanl" class="form-control form-control-user">
+                                                        <option value="0">DESCONOCIDO</option>
+                                                        <option value="1">DUOS</option>
+                                                        <option value="2">INTERNET</option>
+                                                        <option value="3">NEGOCIO</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select id="cmbPlan" class="form-control form-control-user"></select>
+                                                </div>
+                                                <hr/>
+                                                <div class="form-group">
+                                                    <select id="cmbUbigeo" class="form-control form-control-user"></select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <select id="cmbVia" class="form-control form-control-user"></select></div>
+                                                        <div class="col-9">
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtDireccion" placeholder="Ingrese aquí la dirección"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtNumero" placeholder="Número"></div>
+                                                        <div class="col-3">
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtInterior" placeholder="Interior"></div> 
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control form-control-user"
+                                                                   id="txtReferencia" placeholder="Ingrese aquí la referencia">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-primary btn-user " id="btnGrabar">Registrar Servicio</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+
+                <div id="divfooter"></div>
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="button" id="btnCerrarSesion">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Información</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Realmente desea generar el Traslado del Servicio?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnGrabarEditar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="vendor/datatables/dataTables.select.min.js" type="text/javascript"></script>
+
+        <script>
+            let table, tableServicios;
+            let codiServSelecc;
+            $(document).ready(function () {
+                //CARGA DE HTML INTERFAZ
+                $("#divsidebar").load("sidebar.html");
+                $("#divfooter").load("footer.html");
+                $("#divtopbar").load("topbar.html");
+                $("#divModalCerrar").load("topbar.html");
+
+                //PROGRAMACION DE FUNCIONALIDADES
+
+                table = $('#example').DataTable({
+                    language: {
+                        decimal: "",
+                        emptyTable: "No hay datos",
+                        info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                        infoEmpty: "Mostrando desde el 0 al 0 del total de  0 registros",
+                        infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                        infoPostFix: "",
+                        thousands: ",",
+                        lengthMenu: "Mostrar _MENU_ registros por página",
+                        loadingRecords: "Cargando...",
+                        processing: "Procesando...",
+                        search: "Buscar:",
+                        zeroRecords: "No se ha encontrado nada  atraves de ese filtrado.",
+                        paginate: {
+                            first: "Primero",
+                            last: "Última",
+                            next: "Siguiente",
+                            previous: "Anterior"
+                        },
+                        aria: {
+                            sortAscending: ": activate to sort column ascending",
+                            sortDescending: ": activate to sort column descending"
+                        }
+                    },
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                    ajax: {
+                        url: 'clienteCRUD',
+                        type: 'POST',
+                        data: function (d) {
+                            d.tipo = 1,
+                                    d.nombre = $('#txtBuscarCliente').val();
+                        }
+                    },
+                    columns: [
+                        {data: 'codiClie'},
+                        {data: 'raznSociClie'},
+                        {data: 'codiClie',
+                            render: function (data, type, row, meta) {
+                                return "<button onclick=seleccionar(" + data + ") class=\"btn btn-success btn-user \">Seleccionar</button>";
+                            }
+                        }
+                    ]
+                });
+
+
+                tableServicios = $('#exampleDetaServicios').DataTable({
+                    language: {
+                        decimal: "",
+                        emptyTable: "No hay datos",
+                        info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                        infoEmpty: "Mostrando desde el 0 al 0 del total de  0 registros",
+                        infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                        infoPostFix: "",
+                        thousands: ",",
+                        lengthMenu: "Mostrar _MENU_ registros por página",
+                        loadingRecords: "Cargando...",
+                        processing: "Procesando...",
+                        search: "Buscar:",
+                        zeroRecords: "No se ha encontrado nada  atraves de ese filtrado.",
+                        paginate: {
+                            first: "Primero",
+                            last: "Última",
+                            next: "Siguiente",
+                            previous: "Anterior"
+                        },
+                        aria: {
+                            sortAscending: ": activate to sort column ascending",
+                            sortDescending: ": activate to sort column descending"
+                        }
+                    },
+                    select: {
+                        style: 'single'
+                    },
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                    ajax: {
+                        url: 'mostrarDetaServicio',
+                        type: 'POST',
+                        data: function (d) {
+                            d.tipo = 9,
+                                    d.codigo = $('#txtCodigoCliente').val();
+                        }
+                    },
+                    columns: [
+                        {data: 'tipoplan',
+                            render: function (data, type, row, meta) {
+                                switch (data) {
+                                    case "0":
+                                        return "DESCONOCIDO";
+                                        break;
+                                    case "1":
+                                        return "DUOS";
+                                        break;
+                                    case "2":
+                                        return "INTERNET";
+                                        break;
+                                    case "3":
+                                        return "NEGOCIO";
+                                        break;
+                                }
+                            }
+                        },
+                        {data: 'nombPlan'},
+                        {data: 'direccion'},
+                        {data: 'estdServ', width: 25,
+                            render: function (data, type, row, meta) {
+                                if (data === 'X')
+                                    return "<font color='red'>SUSPENDIDO</font>  ";
+                                else
+                                    return "ALTA";
+                            }
+                        },
+                        {data: 'codiServ', width: 25,
+                            render: function (data, type, row, meta) {
+                                return '  <input type="radio"  name="touchbutton" value="' + data + '" >';
+                            }
+                        }
+                    ]
+                });
+
+
+                $('#exampleDetaServicios').on('click', 'tr', function (e) {
+
+                    var vals = $('input', this).map(function () {
+                        return this.value;
+                    }).get();
+                    codiServSelecc = vals.join();
+                    //alert();
+                });
+
+                $.getJSON("planCRUD", {tipo: 1, tipoPlan: $('#cmbTipoPlanl').val()}, function (data) {
+                    $("#cmbPlan").empty();
+                    for (const element of data.data) {
+                        $("#cmbPlan").append("<option value=" + element.codiPlan + ">" + element.nombPlan + "</option>");
+                    }
+                });
+                $.getJSON("viaCRUD", {tipo: 9}, function (data) {
+                    for (const element of data) {
+                        $("#cmbVia").append("<option value=" + element.codiVia + ">" + element.nombVia + "</option>");
+                    }
+                });
+                $.getJSON("ubigeoCRUD", {tipo: 9}, function (data) {
+                    for (const element of data) {
+                        $("#cmbUbigeo").append("<option value=" + element.codiUbig + ">" + element.nombUbig + "</option>");
+                    }
+                });
+                $.getJSON("tipodocuCRUD", {tipo: 9}, function (data) {
+                    for (const element of data) {
+                        if (element.codiTipoDocu === "02") {
+                            $("#cmbTipoDocu").append("<option value=" + element.codiTipoDocu + " selected>" + element.nombTipoDocu + "</option>");
+                        } else {
+                            $("#cmbTipoDocu").append("<option value=" + element.codiTipoDocu + ">" + element.nombTipoDocu + "</option>");
+                        }
+                    }
+                });
+
+                $("#divServicio").hide();
+                $("#txtCodigoCliente").hide();
+                $("#resultadoBusqueda").hide();
+                $("#divRazonSocial").hide();
+
+                $("#btnGrabar").click(function () {
+                    //alert("hola");
+                    //$("#modalConfirmar").modal("show");
+
+                    window.$('#modalConfirmar').modal();
+                    console.log("aa");
+                });
+                $("#btnGrabarEditar").click(function () {
+                    let codiclie = $("#txtCodigoCliente").val();
+                    let plan = $("#cmbPlan").val();
+                    let ubigeo = $("#cmbUbigeo").val();
+                    let via = $("#cmbVia").val();
+                    let direccion = $("#txtDireccion").val();
+                    let numero = $("#txtNumero").val();
+                    let interior = $("#txtInterior").val();
+                    let referencia = $("#txtReferencia").val();
+                    let parametro = {codi: codiServSelecc, tipo: 3, plan: plan, codiclie: codiclie, ubigeo: ubigeo, via: via, direccion: direccion,
+                        numero: numero, interior: interior, referencia: referencia};
+                    $.getJSON("traslado", parametro, function (data) {
+                        if (data.resultado === "ok") {
+                            $("#modalConfirmar").modal("hide");
+                            $("#divServicio").hide();
+                            $("#divListadoServicio").hide();
+
+
+                            $("#btnBuscar").prop("disabled", false);
+                            $("#resultadoBusqueda").hide();
+                            $("#txtBuscarCliente").val("");
+                            $("#txtCodigoCliente").val("");
+                            $("#txtBuscarCliente").prop("disabled", false);
+                            $("#divServicio").hide();
+                            $("#txtBuscarCliente").focus();
+
+                            // window.open("mostarrecibo?numeReci=" + data.numerReci, 'Reporte', 'width=800, height=600');
+                            //  console.log("a");
+
+                            //alert("Correctamente ok");
+
+                        }
+
+
+                    });
+
+                });
+                $("#btnAceptar").click(function () {
+
+                    $("#btnAceptar").prop("disabled", true);
+                    let codigo = $("#txtCodigo").val();
+                    let tipodocu = $("#cmbTipoDocu").val();
+                    let numedocu = $("#txtNumeDocu").val();
+                    let paterno = $("#txtPaterno").val();
+                    let materno = $("#txtMaterno").val();
+                    let nombre = $("#txtNombre").val();
+                    let razon = $("#txtRazon").val();
+                    let celular = $("#txtCelular").val();
+                    let mail = $("#txtMail").val();
+                    let sexo = "";
+                    if ($('#rdbHombre').is(':checked')) {
+                        sexo = "H";
+                    } else {
+                        sexo = "M";
+                    }
+
+                    let parametro = {tipo: 3, codigo: codigo, codiTipoDocu: tipodocu, numeDocu: numedocu,
+                        appaClie: paterno, apmaClie: materno, nombClie: nombre,
+                        raznSociClie: razon, numeCeluClie: celular, mailClie: mail, sexoClie: sexo};
+
+
+                    $.getJSON("clienteCRUD", parametro, function (data) {
+                        if (data.resultado === "ok") {
+                            seleccionar(data.codigo);
+                            $("#modalAgregar").modal("hide");
+                        }
+                        $("#btnAceptar").prop("disabled", false);
+                    });
+
+
+
+
+                });
+                $("#cmbTipoDocu").change(function () {
+                    if ($(this).val() === "99") {
+                        $("#divPaterno").hide();
+                        $("#divMaterno").hide();
+                        $("#divNombre").hide();
+                        $("#divSexo").hide();
+                        $("#divRazonSocial").show();
+                    } else {
+                        $("#divPaterno").show();
+                        $("#divMaterno").show();
+                        $("#divNombre").show();
+                        $("#divSexo").show();
+                        $("#divRazonSocial").hide();
+
+
+                    }
+                    //alert($(this).val());
+                });
+                $("#btnNuevo").click(function () {
+
+                    $("#txtNumeDocu").val("");
+                    $("#txtPaterno").val("");
+                    $("#txtMaterno").val("");
+                    $("#txtNombre").val("");
+                    $("#txtRazon").val("");
+                    $("#txtCelular").val("");
+                    $("#txtMail").val("");
+                    $("#modalAgregar").modal("show");
+                });
+                $("#btnCancelar").click(function () {
+                    $("#btnBuscar").prop("disabled", false);
+                    $("#resultadoBusqueda").hide();
+                    $("#txtBuscarCliente").val("");
+                    $("#txtCodigoCliente").val("");
+                    $("#txtBuscarCliente").prop("disabled", false);
+                    $("#divServicio").hide();
+                    $("#txtBuscarCliente").focus();
+                });
+                $("#btnBuscar").click(function () {
+                    let nombreAbuscar = $("#txtBuscarCliente").val();
+                    $('#aleAdvertencia').hide();
+                    if (nombreAbuscar.length >= 2) {
+                        $("#btnBuscar").prop("disabled", true);
+                        table.ajax.reload();
+                        $("#resultadoBusqueda").show();
+                        $("#btnBuscar").prop("disabled", false);
+                    } else {
+                        $('#aleAdvertencia').slideDown();
+                    }
+                });
+                $("#txtNombreCliente").on('keydown', function (e) {
+                    if (e.which === 8) {
+                        $("#resultadoBusqueda").hide();
+                        return false;
+                    }
+                });
+                $("#cmbTipoPlanl").on('change', function () {
+                    $.getJSON("planCRUD", {tipo: 1, tipoPlan: $('#cmbTipoPlanl').val()}, function (data) {
+                        $("#cmbPlan").
+                                empty();
+                        for (const element of data.data) {
+                            $("#cmbPlan").append("<option value=" + element.codiPlan + ">" + element.nombPlan + "</option>");
+                        }
+                    });
+                });
+
+                //CERRAR SESIÓN
+                $("#btnCerrarSesion").click(function () {
+                    $.getJSON("cerrarSesion", function (data) {
+                        if (data.resultado === "ok") {
+                            $(window).attr('location', 'index.html');
+                        }
+                    });
+                });
+                $("#btnSalir").click(function () {
+                    $("#logoutModal").show("modal");
+
+                });
+
+
+            });
+            function seleccionar(code) {
+                $(document).ready(function () {
+                    $("#btnBuscar").prop("disabled", true);
+                    $("#txtCodigoCliente").val(code);
+                    let parametro = {tipo: 2, codigo: code};
+                    $.getJSON("clienteCRUD", parametro, function (data) {
+                        tableServicios.ajax.reload();
+                        $("#txtBuscarCliente").val(data.raznSociClie);
+                        $("#txtBuscarCliente").prop("disabled", true);
+                        $("#divServicio").show();
+                        $("#divListadoServicio").show();
+                    });
+                    $("#resultadoBusqueda").hide();
+
+                });
+            }
+        </script>
+
+    </body>
+
+</html>

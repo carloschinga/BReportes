@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>Reporte Caja Resumen</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+        <!-- DataTables Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+        <style>
+            /* Asegura que el menú tenga z-index alto si lo necesitas */
+            #mainMenu {
+                position: relative;
+                z-index: 2000;
+            }
+
+            /* Alerts no bloquean clicks */
+            #alertPlaceholder .alert {
+                position: relative;
+                z-index: 1050;
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <div id="mainMenu">
+            <!-- Aquí estaría tu menú principal -->
+        </div>
+
+        <div class="container py-4">
+            <h2 class="mb-4 text-center">REPORTE CAJA RESUMEN</h2>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <form id="filterForm" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Sistema (Sucursal)</label>
+                            <select id="sistemas" class="form-select" required>
+                                <option value="" disabled selected>Seleccione una sucursal</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Desde</label>
+                            <input id="fecha1" type="datetime-local" class="form-control" required disabled>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Hasta</label>
+                            <input id="fecha2" type="datetime-local" class="form-control" required disabled>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Cajero</label>
+                            <select id="usuarios" class="form-select" disabled></select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Apertura (Caja)</label>
+                            <input id="aperturas" type="text" class="form-control" required disabled>
+                        </div>
+
+                        <div class="col-12 text-end">
+                            <button id="generar" type="button" class="btn btn-primary">Generar PDF</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="alertPlaceholder"></div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://kit.fontawesome.com/7e7e2e2e2e.js" crossorigin="anonymous"></script>
+
+
+        <!-- JSZip para exportar Excel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- DataTables Buttons + Excel -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+
+        <!-- pdfmake para PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+
+        <!-- Botón de impresión -->
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                const $sistemas = $('#sistemas');
+                const $usuarios = $('#usuarios');
+                const $aperturas = $('#aperturas');
+                const $btnGenerar = $('#generar');
+
+                // placeholder inicial (no seleccionable)
+                $sistemas.append('<option value="" disabled selected>Seleccione una sucursal</option>');
+                $usuarios.append('<option value="" disabled selected>Seleccione un usuario</option>');
+                $aperturas.append('<option value="" disabled selected>Seleccione fechas y sistema</option>');
+
+                // dejar dependientes deshabilitados al inicio
+                $usuarios.prop('disabled', true);
+                $aperturas.prop('disabled', true);
+                $btnGenerar.prop('disabled', true);
+
+                // cargar sistemas
+                function cargarSistemas() {
+                    $.ajax({
+                        url: 'comboscajaservlet',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {opcion: '1'},
+                        success: function (data) {
+                            if (!Array.isArray(data)) {
+                                console.error('Respuesta invalida (sucursales):', data);
+                                alert('Error al cargar sucursales, revisa consola.');
+                                return;
+                            }
+                            $sistemas.find('option').not(':first').remove();
+                            data.forEach(function (suc) {
+                                $sistemas.append(`<option value="${suc.id}">${suc.nombre}</option>`);
+                            });
+                            $sistemas.find('option:first').prop('disabled', true).prop('selected', true);
+                        },
+                        error: function (xhr, status, err) {
+                            console.error('Error AJAX sucursales:', err);
+                            alert('No se pudieron cargar sucursales. Revisa la consola del navegador y los logs del servidor.');
+                        }
+                    });
+                }
+
+                // cargar usuarios para siscod
+                function cargarUsuarios(siscod) {
+                    $.ajax({
+                        url: 'comboscajaservlet',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {opcion: '2', siscod: siscod},
+                        success: function (data) {
+                            if (!Array.isArray(data)) {
+                                console.error('Respuesta invalida (usuarios):', data);
+                                $usuarios.find('option').not(':first').remove();
+                                $usuarios.prop('disabled', true);
+                                return;
+                            }
+                            $usuarios.find('option').not(':first').remove();
+                            data.forEach(function (u) {
+                                $usuarios.append(`<option value="${u.id}">${u.nombre}</option>`);
+                            });
+                            $usuarios.prop('disabled', false);
+                            $usuarios.find('option:first').prop('disabled', true).prop('selected', true);
+                        },
+                        error: function (xhr, status, err) {
+                            console.error('Error AJAX usuarios:', err);
+                            $usuarios.find('option').not(':first').remove();
+                            $usuarios.prop('disabled', true);
+                        }
+                    });
+                }
+
+                // evita que el placeholder quede seleccionado (seguridad extra)
+                let lastValidSistema = "";
+                $sistemas.on('change', function () {
+                    const val = $(this).val();
+                    if (!val || val === "") {
+                        if (lastValidSistema)
+                            $(this).val(lastValidSistema);
+                        else
+                            $(this).val("");
+                        return;
+                    }
+                    lastValidSistema = val;
+
+                    // habilitar fechas (por si estaban deshabilitadas)
+                    $('#fecha1, #fecha2').prop('disabled', false);
+
+                    // limpiar dependientes
+                    $usuarios.find('option').not(':first').remove();
+                    $usuarios.prop('disabled', true);
+                    $aperturas.find('option').not(':first').remove();
+                    $aperturas.prop('disabled', true);
+                    $btnGenerar.prop('disabled', true);
+
+                    // cargar usuarios (cajeros)
+                    cargarUsuarios(val);
+
+                    // Aperturas: según dijiste, será input manual; si tienes endpoint para aperturas lo llamas aquí.
+                    // Por ahora dejamos aperturas habilitado para que el usuario ingrese manualmente o seleccione.
+                    $aperturas.prop('disabled', false); // si prefieres mantenerlo deshabilitado, comentar esta línea
+
+                    checkHabilitarGenerar();
+                });
+
+                $usuarios.on('change', checkHabilitarGenerar);
+                $aperturas.on('change', checkHabilitarGenerar);
+                $('#fecha1, #fecha2').on('change', checkHabilitarGenerar);
+
+                function checkHabilitarGenerar() {
+                    // regla de habilitación: se requiere siscod + fecha1 + fecha2 + invnum_aper (apertura)
+                    const tieneSistema = $sistemas.val() && $sistemas.val() !== "";
+                    const tieneF1 = $('#fecha1').val() && $('#fecha1').val() !== "";
+                    const tieneF2 = $('#fecha2').val() && $('#fecha2').val() !== "";
+                    const tieneAper = $aperturas.val() && $aperturas.val() !== "";
+                    if (tieneSistema && tieneF1 && tieneF2 && tieneAper) {
+                        $btnGenerar.prop('disabled', false);
+                    } else {
+                        $btnGenerar.prop('disabled', true);
+                    }
+                }
+
+                // evento Generar PDF
+                $btnGenerar.on('click', function () {
+                    const payload = {
+                        P_siscod: $sistemas.val(),
+                        P_fecha1: formatLocalToSql($('#fecha1').val()),
+                        P_fecha2: formatLocalToSql($('#fecha2').val()),
+                        P_invnum_aper: $aperturas.val(),
+                        P_usecod: $usuarios.val() || null,
+                        formato: 'pdf'
+                    };
+
+                    fetch('reportajesevlet?token=' + encodeURIComponent(miToken), {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                        body: new URLSearchParams(payload)
+                    })
+                            .then(resp => {
+                                if (!resp.ok)
+                                    throw new Error('Error generando PDF: ' + resp.statusText);
+                                return resp.blob();
+                            })
+                            .then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = 'reporte_caja_resumen.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                a.remove();
+                                window.URL.revokeObjectURL(url);
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert('Error al generar PDF. Revisa la consola.');
+                            });
+                });
+
+                // helper: format datetime-local (browser) -> 'YYYY-MM-DD HH:MM:SS'
+                function formatLocalToSql(dateTimeLocal) {
+                    if (!dateTimeLocal)
+                        return '';
+                    const d = new Date(dateTimeLocal);
+                    const pad = n => String(n).padStart(2, '0');
+                    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+                }
+
+                // inicio
+                cargarSistemas();
+
+                // Llamar a cargarAperturas cuando cambien sistema o fechas
+                function cargarAperturasIfReady() {
+                    const siscod = $('#sistemas').val();
+                    const f1_local = $('#fecha1').val();
+                    const f2_local = $('#fecha2').val();
+
+                    if (!siscod || !f1_local || !f2_local) {
+                        // limpiar select de aperturas
+                        $('#aperturas').find('option').not(':first').remove();
+                        $('#aperturas').prop('disabled', true);
+                        return;
+                    }
+
+                    const f1 = formatLocalToSql(f1_local); // 'YYYY-MM-DD HH:MM:SS'
+                    const f2 = formatLocalToSql(f2_local);
+
+                    // Petición AJAX
+                    $.ajax({
+                        url: 'comboscajaservlet',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {
+                            opcion: '3',
+                            siscod: siscod,
+                            fecha1: f1,
+                            fecha2: f2
+                        },
+                        success: function (data) {
+                            if (!Array.isArray(data)) {
+                                console.error('Aperturas respuesta inválida', data);
+                                $('#aperturas').find('option').not(':first').remove();
+                                $('#aperturas').prop('disabled', true);
+                                return;
+                            }
+                            const $ap = $('#aperturas');
+                            $ap.find('option').not(':first').remove();
+                            data.forEach(function (a) {
+                                $ap.append(`<option value="${a.id}">${a.label}</option>`);
+                            });
+                            $ap.prop('disabled', false);
+                            $ap.find('option:first').prop('disabled', true).prop('selected', true);
+                            checkHabilitarGenerar(); // si depende de aperturas
+                        },
+                        error: function (xhr, status, err) {
+                            console.error('Error al cargar aperturas:', err);
+                            $('#aperturas').find('option').not(':first').remove();
+                            $('#aperturas').prop('disabled', true);
+                        }
+                    });
+                }
+
+// enganchar eventos
+                //$('#sistemas').on('change', cargarAperturasIfReady);
+                $('#fecha1, #fecha2').on('change', cargarAperturasIfReady);
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,310 @@
+
+<div class="card">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" id="titulo">Aplicar Fraccion a productos</h6>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <!-- First Column -->
+                <div class="col-12 col-md-6">
+                    <!-- Linea -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-2">
+                            <label for="filtroLaboratorio" class="form-label mb-0">Linea</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="txtCodigoTipo" placeholder="Codigo" disabled>
+                        </div>
+                        <div class="col-5 input-group">
+                            <input type="text" class="form-control" id="txtNombreTipo" placeholder="Nombre" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="btnBuscarTipo">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button" id="btnEliminarTipo" style="display: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Laboratorio -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-2">
+                            <label for="filtroLaboratorio" class="form-label mb-0">Laborat.</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="txtCodigoLaboratorio" placeholder="Codigo" disabled>
+                        </div>
+                        <div class="col-5 input-group">
+                            <input type="text" class="form-control" id="txtNombreLaboratorio" placeholder="Nombre" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="btnBuscarLaboratorio">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button" id="btnEliminarLaboratorio" style="display: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Familia -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-2">
+                            <label for="filtroFamilia" class="form-label mb-0">Familia</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="txtCodigoFamilia" placeholder="Codigo" disabled>
+                        </div>
+                        <div class="col-5 input-group">
+                            <input type="text" class="form-control" id="txtNombreFamilia" placeholder="Nombre" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="btnBuscarFamilia">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button" id="btnEliminarFamilia" style="display: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Column -->
+                <div class="col-12 col-md-6">
+                    <!-- Genérico -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-2">
+                            <label for="filtroGenerico" class="form-label mb-0">Genérico</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="txtCodigoGenerico" placeholder="Codigo" disabled>
+                        </div>
+                        <div class="col-5 input-group">
+                            <input type="text" class="form-control" id="txtNombreGenerico" placeholder="Nombre" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="btnBuscarGenerico">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button" id="btnEliminarGenerico" style="display: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Producto -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-2">
+                            <label for="filtroGenerico" class="form-label mb-0">Producto</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" id="txtCodigoProducto" placeholder="Codigo" disabled>
+                        </div>
+                        <div class="col-5 input-group">
+                            <input type="text" class="form-control" id="txtNombreProducto" placeholder="Nombre" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="btnBuscarProducto">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger" type="button" id="btnEliminarProducto" style="display: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="table-responsive">
+            <table id="tabladatos" class="table table-striped table-bordered text-dark table-sm">
+                <thead id="cabecera">
+                    <tr>
+                        <th scope="col">CodPro</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Cant. por Blister</th>
+                        <th scope="col">Aplicar Fraccion</th>
+                        <th scope="col">Cant. MasterPack</th>
+                        <th scope="col">Aplicar MasterPack</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductos">
+
+                </tbody>
+            </table>
+            <div id="loadingproductos" style="display:none" >
+                <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Laboratorio-->
+<div id="modal-laboratorio" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Seleccione laboratorio</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div  class="table-responsive"  style="position: relative; height: 470px;overflow-y: auto">
+                    <table id="table-laboratorio" class="table table-striped table-bordered text-dark table-sm" style="color:black;margin: 0 auto;" >
+                        <thead  style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr> 
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Elegir</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="loadinglaboratorio" style="display:none" >
+                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Familia-->
+<div id="modal-familia" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Seleccione Familia</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div  class="table-responsive"  style="position: relative; height: 470px;overflow-y: auto">
+                    <table id="table-familia" class="table table-striped table-bordered text-dark table-sm" style="color:black;margin: 0 auto;" >
+                        <thead  style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr> 
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Elegir</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="loadingfamilia" style="display:none" >
+                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal generico-->
+<div id="modal-generico" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Seleccione Generico</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div  class="table-responsive"  style="position: relative; height: 470px;overflow-y: auto">
+                    <table id="table-generico" class="table table-striped table-bordered text-dark table-sm" style="color:black;margin: 0 auto;" >
+                        <thead  style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr> 
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Elegir</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="loadinggenerico" style="display:none" >
+                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal linea-->
+<div id="modal-tipo" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Seleccione tipo de producto</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div  class="table-responsive"  style="position: relative; height: 470px;overflow-y: auto">
+                    <table id="table-tipo" class="table table-striped table-bordered text-dark table-sm" style="color:black;margin: 0 auto;" >
+                        <thead  style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr> 
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Elegir</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="loadingtipo" style="display:none" >
+                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal linea-->
+<div id="modal-producto" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Seleccione producto</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div  class="table-responsive"  style="position: relative; height: 470px;overflow-y: auto">
+                    <table id="table-producto" class="table table-striped table-bordered text-dark table-sm" style="color:black;margin: 0 auto;" >
+                        <thead  style="position: sticky;top: 0;z-index: 1;background-color: #fff;">
+                            <tr> 
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Elegir</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="loadingtipo" style="display:none" >
+                        <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/aplicFrac.js" type="text/javascript"></script>

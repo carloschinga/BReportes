@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Fact 2.0 </title>
+        <!-- Custom fonts for this template-->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this page -->
+        <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <div id="divsidebar"></div>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <div id="divtopbar"></div>
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-4 text-gray-800">Gestión de Celular</h1>
+
+                        <div class="row">
+
+                            <div class="col-lg-6">
+
+                                <!-- Circle Buttons -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Buscar Cliente</h6>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <input type="text" id="txtCodigoCliente">
+                                                    <input type="text" class="form-control form-control-user"
+                                                           id="txtBuscarCliente" 
+                                                           placeholder="Ingrese Cliente a buscar...">
+                                                </div>
+                                                <div class="col-2">                         
+                                                    <button class="btn btn-primary btn-user btn-block" id="btnBuscar">Buscar</button>
+                                                </div>
+                                                <div class="col-2">                         
+                                                    <button class="btn btn-secondary btn-user btn-block" id="btnCancelar">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div class="alert alert-warning" id="aleAdvertencia" style="display:none;" role="alert">
+                                                    Debe ingresar mínimo 2 caracteres para buscar cliente...
+                                                </div>
+                                        <div id="resultadoBusqueda" class="form-group">
+                                            <table id="example" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>   
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>  
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <button class="btn btn-primary btn-user" id="btnNuevo">Agregar Cliente</button>
+                                        </div>
+                                        <!-- Circle Buttons (Default) -->                    
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divServicio">
+                            <div class="col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Listado de Celulares</h6>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="modal-body" >
+
+                                            <table id="exampleCelular" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>   
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Codigo</th>   
+                                                        <th>Nombre</th>  
+                                                        <th>Seleccionar</th>   
+                                                    </tr>
+                                                </tfoot>
+                                            </table
+                                       
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary btn-user " id="btnAgregarCelular">AgregarCelular</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+
+                <div id="divfooter"></div>
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Realmente quiere Salir?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Haga clic en Aceptar para Cerrar Sesión.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="button" id="btnCerrarSesion">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">Código:
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtCodigo" value="Automático" readonly>
+                        </div>
+                        <div class="form-group">Tipo de Documento
+                            <select name="cmbTipodocu" class="form-control form-control-user"
+                                    id="cmbTipoDocu">
+                            </select>
+
+                        </div>
+                        <div class="form-group">Número de Documento
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtNumeDocu">
+                        </div>
+                        <div id="divPaterno" class="form-group">Ap. Paterno
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtPaterno">
+                        </div>
+                        <div id="divMaterno" class="form-group">Ap. Materno
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtMaterno">
+                        </div>
+                        <div id="divNombre" class="form-group">Nombre
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtNombre">
+                        </div>
+                        <div id="divRazonSocial" class="form-group">Razón social
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtRazon">
+                        </div>
+                        <div class="form-group">Celular
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtCelular">
+                        </div>
+                        <div class="form-group">Email
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtMail">
+                        </div>
+                        <div id="divSexo" class="form-group">Sexo
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="rdbHombre" checked>
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    HOMBRE
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="rdbMujer" >
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    MUJER
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-primary" id="btnAceptar">Aceptar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAgregarNumero" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Número de Celular</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">Celular
+                            <input type="text" class="form-control form-control-user"
+                                   id="txtCelularNuevo">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnGrabarEditar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
+
+        <script>
+            let tableCelular;
+            $(document).ready(function () {
+                //CARGA DE HTML INTERFAZ
+                $("#divsidebar").load("sidebar.html");
+                $("#divfooter").load("footer.html");
+                $("#divtopbar").load("topbar.html");
+                $("#divModalCerrar").load("topbar.html");
+
+                //PROGRAMACION DE FUNCIONALIDADES
+                table = $('#example').DataTable({
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                    ajax: {
+                        url: 'clienteCRUD',
+                        type: 'POST',
+                        data: function (d) {
+                            d.tipo = 1,
+                                    d.nombre = $('#txtBuscarCliente').val();
+                        }
+                    },
+                    columns: [
+                        {data: 'codiClie'},
+                        {data: 'raznSociClie'},
+                        {data: 'codiClie',
+                            render: function (data, type, row, meta) {
+                                return "<button onclick=seleccionar(" + data + ") class=\"btn btn-success btn-user \">Seleccionar</button>";
+                            }
+                        }
+                    ]
+                });
+
+                tableCelular = $('#exampleCelular').DataTable({
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                    ajax: {
+                        url: 'celularCRUD',
+                        type: 'POST',
+                        data: function (d) {
+                            d.tipo = 1,
+                                    d.codigo = $('#txtCodigoCliente').val();
+                        }
+                    },
+                    columns: [
+                        {data: 'codiCelu'},
+                        {data: 'numeCelu'},
+                        {data: 'codiCelu',
+                            render: function (data, type, row, meta) {
+                                return "<button onclick=eliminar(" + data + ") class=\"btn btn-success btn-user \">Eliminar</button>";
+                            }
+                        }
+                    ]
+                });
+
+
+
+                $("#divServicio").hide();
+                $("#txtCodigoCliente").hide();
+                $("#resultadoBusqueda").hide();
+                $("#divRazonSocial").hide();
+
+                $("#btnAgregarCelular").click(function () {
+
+
+                    window.$('#modalAgregarNumero').modal();
+                    //console.log("aa");
+                });
+                $("#btnGrabarEditar").click(function () {
+                    let codigo= $("#txtCodigoCliente").val();
+                    let celular = $("#txtCelularNuevo").val();
+                    let parametro = {tipo: 3, codigo: codigo, celular: celular};
+                    $.getJSON("celularCRUD", parametro, function (data) {
+                        if (data.resultado === "ok") {
+                            tableCelular.ajax.reload();
+                            //seleccionar(data.codigo);
+                            $("#modalAgregarNumero").modal("hide");
+                        }
+                        //$("#btnAceptar").prop("disabled", false);
+                    });
+
+
+                });
+                $("#btnAceptar").click(function () {
+
+                    $("#btnAceptar").prop("disabled", true);
+                    let codigo = $("#txtCodigo").val();
+                    let tipodocu = $("#cmbTipoDocu").val();
+                    let numedocu = $("#txtNumeDocu").val();
+                    let paterno = $("#txtPaterno").val();
+                    let materno = $("#txtMaterno").val();
+                    let nombre = $("#txtNombre").val();
+                    let razon = $("#txtRazon").val();
+                    let celular = $("#txtCelular").val();
+                    let mail = $("#txtMail").val();
+                    let sexo = "";
+                    if ($('#rdbHombre').is(':checked')) {
+                        sexo = "H";
+                    } else {
+                        sexo = "M";
+                    }
+
+                    let parametro = {tipo: 3, codigo: codigo, codiTipoDocu: tipodocu, numeDocu: numedocu,
+                        appaClie: paterno, apmaClie: materno, nombClie: nombre,
+                        raznSociClie: razon, numeCeluClie: celular, mailClie: mail, sexoClie: sexo};
+
+
+                    $.getJSON("clienteCRUD", parametro, function (data) {
+                        if (data.resultado === "ok") {
+                            seleccionar(data.codigo);
+                            $("#modalAgregar").modal("hide");
+                        }
+                        $("#btnAceptar").prop("disabled", false);
+                    });
+
+
+
+
+                });
+                $("#cmbTipoDocu").change(function () {
+                    if ($(this).val() === "99") {
+                        $("#divPaterno").hide();
+                        $("#divMaterno").hide();
+                        $("#divNombre").hide();
+                        $("#divSexo").hide();
+                        $("#divRazonSocial").show();
+                    } else {
+                        $("#divPaterno").show();
+                        $("#divMaterno").show();
+                        $("#divNombre").show();
+                        $("#divSexo").show();
+                        $("#divRazonSocial").hide();
+
+
+                    }
+                    //alert($(this).val());
+                });
+                $("#btnNuevo").click(function () {
+
+                    $("#txtNumeDocu").val("");
+                    $("#txtPaterno").val("");
+                    $("#txtMaterno").val("");
+                    $("#txtNombre").val("");
+                    $("#txtRazon").val("");
+                    $("#txtCelular").val("");
+                    $("#txtMail").val("");
+                    $("#modalAgregar").modal("show");
+                });
+                $("#btnCancelar").click(function () {
+                    $("#btnBuscar").prop("disabled", false);
+                    $("#resultadoBusqueda").hide();
+                    $("#txtBuscarCliente").val("");
+                    $("#txtCodigoCliente").val("");
+                    $("#txtBuscarCliente").prop("disabled", false);
+                    $("#divServicio").hide();
+                    $("#txtBuscarCliente").focus();
+                });
+                $("#btnBuscar").click(function () {
+                    let nombreAbuscar = $("#txtBuscarCliente").val();
+                    $('#aleAdvertencia').hide();
+                    if (nombreAbuscar.length >= 2) {
+                        $("#btnBuscar").prop("disabled", true);
+                        table.ajax.reload();
+                        $("#resultadoBusqueda").show();
+                        $("#btnBuscar").prop("disabled", false);
+                    } else {
+                        $('#aleAdvertencia').slideDown();
+                    }
+                });
+                $("#txtNombreCliente").on('keydown', function (e) {
+                    if (e.which === 8) {
+                        $("#resultadoBusqueda").hide();
+                        return false;
+                    }
+                });
+
+                //CERRAR SESIÓN
+                $("#btnCerrarSesion").click(function () {
+                    $.getJSON("cerrarSesion", function (data) {
+                        if (data.resultado === "ok") {
+                            $(window).attr('location', 'index.html');
+                        }
+                    });
+                });
+                $("#btnSalir").click(function () {
+                    $("#logoutModal").show("modal");
+
+                });
+            });
+            function seleccionar(code) {
+                $(document).ready(function () {
+                    $("#btnBuscar").prop("disabled", true);
+                    $("#txtCodigoCliente").val(code);
+
+
+                    let parametro = {tipo: 2, codigo: code};
+                    $.getJSON("clienteCRUD", parametro, function (data) {
+                        $("#txtBuscarCliente").val(data.data[0].raznSociClie);
+                        $("#txtBuscarCliente").prop("disabled", true);
+                        $("#divServicio").show();
+                        let parametro = {tipo: 1, codigo: code};
+                        $.getJSON("celularCRUD", parametro, function (data) {
+                            tableCelular.ajax.reload();
+                        });
+
+                    });
+                    $("#resultadoBusqueda").hide();
+                });
+            }
+
+            function eliminar(code) {
+                alert(code)
+            }
+
+
+        </script>
+
+    </body>
+
+</html>

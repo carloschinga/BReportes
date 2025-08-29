@@ -1,0 +1,53 @@
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Registro de Almacenes</h5>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <button class="btn btn-primary mb-2" id="btnNuevoAlmacen"><i class="fas fa-plus-circle"></i> Nuevo Almacén</button>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="codigo">Código:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="codigo" disabled>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="btnBuscar"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="descripcion">Descripción:</label>
+            <input type="text" class="form-control" id="descripcion" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="establecimiento">Establecimiento:</label>
+            <select class="form-control" id="establecimiento" disabled>
+                <option value="1" selected>Clinica Central</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Estados:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="registro" disabled>
+                <label class="form-check-label" for="registro">Registro</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="valorizados" disabled>
+                <label class="form-check-label" for="valorizados">Considerar en Valorizados</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="transito" disabled>
+                <label class="form-check-label" for="transito">Considerar como Almacén en Tránsito</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="defecto" disabled>
+                <label class="form-check-label" for="defecto">Considerar como Almacén por Defecto</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success" id="btnGuardar" disabled><i class="fas fa-save"></i> Guardar</button>
+            <button class="btn btn-danger" id="btnEliminar" disabled><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </div>
+    </div>
+</div>

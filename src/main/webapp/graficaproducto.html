@@ -1,0 +1,626 @@
+
+<html lang="es">
+
+    <head>
+
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Producto</title>
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.min.css">
+        <link href="css/personalizado.css" rel="stylesheet" type="text/css"/>
+    </head><!-- comment -->
+    <body>
+        <div class="card">
+            <div class="card-header">
+                <div id="datosproducto">
+
+                </div>
+            </div>
+            <div class="card-body">
+
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div>Indicadores Venta</div>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Descripcion
+                                    </th>
+                                    <th>
+                                        Cantidad
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Stock Mínimo</th>
+                                    <td id="tab_stkmin2"></td>
+                                </tr>
+                                <tr>
+                                    <th>Stock Almacén</th>
+                                    <td id="ta_stkalm"></td>
+                                </tr>
+                                <tr>
+                                    <th>Meses</th>
+                                    <td id="ta_repone"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="nombre-grafica">Unidades Vendidas</div>
+                        <div id="chart-container2" style="height: 80%;">
+                            <canvas id="myAreaChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>Stock Establecimientos</div>
+                        <div class="table-responsive" style="position: relative; height: 90%; overflow-y: auto">
+                            <table id="table-establecimientos" class="table table-bordered text-dark table-sm table-striped" style="color:black;">
+                                <thead style="position: sticky; top: 0; z-index: 1; background-color: #fff;">
+                                    <tr>
+                                        <th>Almacen</th>
+                                        <th>Stock E</th>
+                                        <th>Stock F</th>
+                                        <th>Meses</th>
+                                        <th>Stkmin2</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div id="loadingproductos" style="display: none;">
+                                <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>Indicador de Compra</div>
+                        <table id="table-indicadorcompra" class="table table-bordered text-dark table-sm table-striped" style="color:black;">
+                            <thead style="position: sticky; top: 0; z-index: 1; background-color: #fff;">
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Proveedor</th>
+                                    <th>Costo</th>
+                                    <th>Cantidad</th>
+                                    <th>Fecha Creación</th>
+                                    <th>Documento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se insertarán los datos -->
+                            </tbody>
+                        </table>
+                        <div id="loadingproductos" style="display: none;">
+                            <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                        </div>
+                        <div>Compras Ultimos 12 Meses</div>
+                        <table id="table-ultimacompra" class="table table-bordered text-dark table-sm table-striped" style="color:black;">
+                            <thead style="position: sticky; top: 0; z-index: 1; background-color: #fff;">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Cant E</th>
+                                    <th>Fecha</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se insertarán los datos -->
+                            </tbody>
+                        </table>
+                        <div id="loadingproductos" style="display: none;">
+                            <center><img src="img/loader.gif" alt="cargando"/><br/>Un momento, por favor...</center>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="modal-grafica" class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="border: 1px solid #333; border-radius: 10px; box-shadow: 0 16px 24px rgba(0, 0, 0, 0.6);">
+                        <div class="modal-header">
+                            <p id="nombre-grafica2">Grafica:</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="chart-container" style='width: 100%; height: 400px;'>
+                                <canvas id="myAreaChart2" width="100" height="100"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+        <!-- Page level plugins -->
+        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+
+
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.colVis.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- pdfMake (necesario para exportar a PDF) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="vendor/chart.js/Chart.js" type="text/javascript"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $.fn.validarSession = function () {
+                    $.getJSON("validarsesion", function (data) {
+                        if (data.resultado === "ok") {
+                            $("#lblUsuario").text(data.logi);
+                        } else {
+                            $(location).attr('href', "index.html");
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        $(location).attr('href', "index.html");
+                    });
+                };
+                let peticiongrafica;
+                let peticiongrafica2;
+                let myLineChart2;
+                let myLineChart;
+                const params = new URLSearchParams(window.location.search);
+                const codpro = params.get("codpro"); // "Juan"
+                listarTablaDistribucion(codpro);
+
+
+                $.fn.graficar = function (codalm) {
+                    if (myLineChart2) {
+                        myLineChart2.destroy();
+                    }
+                    console.log(listagraficas);
+                    if (listagraficas[codalm] === undefined) {
+                        $("#nombre-grafica2").html("<p style='color:red;'>NO HAY VENTAS EN ESTE ESTABLECIMIENTO</p>");
+                    } else {
+                        var ctx = document.getElementById("myAreaChart2").getContext('2d');
+                        myLineChart2 = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: listagraficas[codalm]["fec"],
+                                datasets: [{
+                                        label: "Ventas",
+                                        lineTension: 0.3,
+                                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                                        borderColor: "rgba(78, 115, 223, 1)",
+                                        pointRadius: 3,
+                                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                                        pointHoverRadius: 3,
+                                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                                        pointHitRadius: 10,
+                                        pointBorderWidth: 2,
+                                        data: listagraficas[codalm]["ventas"],
+                                        fill: true,
+                                        tension: 0.1
+                                    }]
+                            },
+                            options: {
+                                animation: {
+                                    onComplete: function () {
+                                        var chartInstance = this.chart;
+                                        var ctx = chartInstance.ctx;
+                                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                                        ctx.textAlign = 'center';
+                                        ctx.textBaseline = 'bottom';
+                                        ctx.fillStyle = 'black';
+                                        this.data.datasets.forEach(function (dataset, i) {
+                                            var meta = chartInstance.controller.getDatasetMeta(i);
+                                            meta.data.forEach(function (bar, index) {
+                                                var data = dataset.data[index];
+                                                var offsetY = bar._model.y - 10; // Ajusta el offset vertical según tu necesidad
+                                                if (offsetY < 40) {
+                                                    offsetY = bar._model.y + 20; // Ajuste alternativo si la etiqueta se sale arriba del gráfico
+                                                }
+                                                ctx.fillText(data, bar._model.x, offsetY);
+                                            });
+                                        });
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                },
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: false
+                                },
+                                interaction: {
+                                    mode: 'none' // Desactivar todas las interacciones
+                                },
+                                hover: {
+                                    mode: null, // Desactivar hover
+                                    onHover: null // No hacer nada en hover
+                                    , animationDuration: 0
+                                }
+                            }
+                        });
+                    }
+                };
+                function listarTablaDistribucion(codpro) {
+                    $.fn.validarSession();
+
+                    if (codpro !== null) {
+                        var tabla = $('#table-establecimientos').DataTable();
+                        if (tabla) {
+                            tabla.destroy();
+                        }
+                        $("#nombre-grafica").text("CARGANDO...");
+                        if (myLineChart) {
+                            myLineChart.destroy();
+                        }
+                        if (peticiongrafica) {
+                            peticiongrafica.abort();
+                            console.log('Solicitud abortada');
+                        }
+                        if (peticiongrafica2) {
+                            peticiongrafica2.abort();
+                            console.log('Solicitud abortada');
+                        }
+                        $('#vista-table-establecimientos').show();
+                        $('#datosproducto').html("Cargando...");
+                        listagraficas = {};
+                        tabla = $('#table-establecimientos').DataTable({
+                            searching: false,
+                            paging: false,
+                            language: {
+                                decimal: "",
+                                emptyTable: "No hay datos",
+                                info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                                infoEmpty: "Mostrando desde el 0 al 0 del total de  0 registros",
+                                infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                                infoPostFix: "",
+                                thousands: ",",
+                                lengthMenu: "Mostrar _MENU_ registros por página",
+                                loadingRecords: "Cargando...",
+                                processing: "Procesando...",
+                                search: "Buscar:",
+                                zeroRecords: "No se ha encontrado nada  atraves de ese filtrado.",
+                                paginate: {
+                                    first: "Primero",
+                                    last: "Última",
+                                    next: "Siguiente",
+                                    previous: "Anterior"
+                                },
+                                aria: {
+                                    sortAscending: ": activate to sort column ascending",
+                                    sortDescending: ": activate to sort column descending"
+                                }
+                            }, ajax: {
+                                url: 'CRUDFaStockAlmacenes?opcion=4',
+                                type: 'POST',
+                                data: function (d) {
+                                    d.codpro = codpro;
+                                },
+                                beforeSend: function () {
+                                    $("#loadingproductos").css("display", "block");
+                                }, complete: function () {
+                                    $("#loadingproductos").css("display", "none");
+                                }
+                            },
+                            columns: [
+                                {data: 'desalm',
+                                    "render": function (data, type, row) {
+                                        return '<a href="#" class="open-modal name-link" data-toggle="modal" data-target="#myModal" data-codalm="' + row.codalm + '">' + data + '</a>';
+                                    }
+                                },
+                                {data: 'stkalm',
+                                    "render": function (data, type, row) {
+                                        return data ? data : "";
+                                    }
+                                },
+                                {data: 'stkalm_m',
+                                    "render": function (data, type, row) {
+                                        return data ? data : "";
+                                    }
+                                },
+                                {data: 'meses',
+                                    "render": function (data, type, row) {
+                                        return data ? data.toFixed(2) : "";
+                                    }
+                                },
+                                {data: 'stkmin2',
+                                    "render": function (data, type, row) {
+                                        return data ? data.toFixed(2) : "";
+                                    }
+                                }
+
+                            ], initComplete: function (settings, json) {
+                                peticiongrafica = $.getJSON("distribucion?opcion=4", {codpro: codpro}, function (data) {
+                                    $("#tab_stkmin2").text(data.stkmin2 ? data.stkmin2.toFixed(2) : "");
+                                    $("#ta_stkalm").text(data.stkalm ? data.stkalm.toFixed(2) : "");
+                                    $("#ta_repone").text(data.meses ? data.meses.toFixed(2) : "");
+                                    $("#tab_stkmin2").text(data.stkmin2);
+                                    $("#nombre-grafica").text("Unidades vendidas de todos los establecimientos:");
+                                    if (myLineChart) {
+                                        myLineChart.destroy();
+                                    }
+                                    console.log(listagraficas);
+                                    if (data.ventas12 === undefined) {
+                                        $("#nombre-grafica").html("<p style='color:red;'>NO HAY VENTAS EN ESTE PRODUCTO</p>");
+                                    } else {
+                                        data.ventas12 = data.ventas12.map(value => Math.round(value));
+                                        var ctx = document.getElementById("myAreaChart").getContext('2d');
+                                        myLineChart = new Chart(ctx, {
+                                            type: 'line',
+                                            data: {
+                                                labels: data.fechas12,
+                                                datasets: [{
+                                                        label: "Ventas",
+                                                        lineTension: 0.3,
+                                                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                                                        borderColor: "rgba(78, 115, 223, 1)",
+                                                        pointRadius: 3,
+                                                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                                                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                                                        pointHoverRadius: 3,
+                                                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                                                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                                                        pointHitRadius: 10,
+                                                        pointBorderWidth: 2,
+                                                        data: data.ventas12,
+                                                        fill: true,
+                                                        tension: 0.1
+                                                    }]
+                                            },
+                                            options: {
+                                                animation: {
+                                                    onComplete: function () {
+                                                        var chartInstance = this.chart;
+                                                        var ctx = chartInstance.ctx;
+                                                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                                                        ctx.textAlign = 'center';
+                                                        ctx.textBaseline = 'bottom';
+                                                        ctx.fillStyle = 'black';
+                                                        this.data.datasets.forEach(function (dataset, i) {
+                                                            var meta = chartInstance.controller.getDatasetMeta(i);
+                                                            meta.data.forEach(function (bar, index) {
+                                                                var data = dataset.data[index];
+                                                                var offsetY = bar._model.y - 10; // Ajusta el offset vertical según tu necesidad
+                                                                if (offsetY < 20) {
+                                                                    offsetY = bar._model.y + 20; // Ajuste alternativo si la etiqueta se sale arriba del gráfico
+                                                                }
+                                                                ctx.fillText(data, bar._model.x, offsetY);
+                                                            });
+                                                        });
+                                                    }
+                                                },
+                                                scales: {
+                                                    yAxes: [{
+                                                            type: 'linear', // Tipo de escala lineal
+                                                            ticks: {
+                                                                beginAtZero: true  // Comienza en cero si es necesario
+                                                            }
+                                                        }]
+                                                },
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                                plugins: {
+                                                    tooltip: {
+                                                        enabled: false // Desactivar tooltips
+                                                    }
+                                                },
+                                                legend: {
+                                                    display: false
+                                                },
+                                                interaction: {
+                                                    mode: 'none' // Desactivar todas las interacciones
+                                                },
+                                                hover: {
+                                                    mode: null, // Desactivar hover
+                                                    onHover: null, // No hacer nada en hover
+                                                    animationDuration: 0
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    var tablacompra = $('#table-indicadorcompra').DataTable();
+                                    if (tablacompra) {
+                                        tablacompra.destroy();
+                                    }
+                                    $('#table-indicadorcompra').DataTable({
+                                        paging: false,
+                                        searching: false,
+                                        info: false,
+                                        language: {
+                                            decimal: "",
+                                            emptyTable: "No hay datos disponibles",
+                                            info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                                            infoEmpty: "Mostrando desde el 0 al 0 del total de 0 registros",
+                                            infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                                            thousands: ",",
+                                            lengthMenu: "Mostrar _MENU_ registros por página",
+                                            loadingRecords: "Cargando...",
+                                            processing: "Procesando...",
+                                            search: "Buscar:",
+                                            zeroRecords: "No se encontraron coincidencias",
+                                            paginate: {
+                                                first: "Primero",
+                                                last: "Última",
+                                                next: "Siguiente",
+                                                previous: "Anterior"
+                                            },
+                                            aria: {
+                                                sortAscending: ": activar para ordenar la columna de forma ascendente",
+                                                sortDescending: ": activar para ordenar la columna de forma descendente"
+                                            }
+                                        },
+                                        ajax: {
+                                            url: 'CRUDProductos', // URL del servidor
+                                            type: 'GET', // Método de la solicitud
+                                            data: function (d) {
+                                                // Enviar los parámetros que necesitas con la solicitud
+                                                d.opcion = 12;
+                                                d.codpro = codpro;
+                                            },
+                                            dataSrc: function (json) {
+                                                if (json.resultado === "ok") {
+
+                                                    $('#datosproducto').html("<b>" + json.despro + "</b>(<b>" + codpro + "</b>)");
+                                                    return json.data; // Retornar los datos que necesita el DataTable
+                                                } else {
+                                                    if (json.mensaje === "nosession") {
+                                                        $.fn.validarSession();
+                                                    } else {
+                                                        alert("Error con el servidor al cargar los datos de la tabla.");
+                                                        return []; // Retorna un array vacío si no hay resultados
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "columns": [
+                                            {"data": "descrip"},
+                                            {"data": "desprv"},
+                                            {"data": "costo"},
+                                            {"data": "cant"},
+                                            {"data": "feccre"},
+                                            {"data": "doc"}
+                                        ], initComplete: function (settings, json) {
+
+                                            var ultimacompra = $('#table-ultimacompra').DataTable();
+                                            if (ultimacompra) {
+                                                ultimacompra.destroy();
+                                            }
+                                            $('#table-ultimacompra').DataTable({
+                                                paging: false,
+                                                searching: false,
+                                                info: false,
+                                                language: {
+                                                    decimal: "",
+                                                    emptyTable: "No hay datos disponibles",
+                                                    info: "Mostrando desde el _START_ al _END_ del total de _TOTAL_ registros",
+                                                    infoEmpty: "Mostrando desde el 0 al 0 del total de 0 registros",
+                                                    infoFiltered: "(Filtrados del total de _MAX_ registros)",
+                                                    thousands: ",",
+                                                    lengthMenu: "Mostrar _MENU_ registros por página",
+                                                    loadingRecords: "Cargando...",
+                                                    processing: "Procesando...",
+                                                    search: "Buscar:",
+                                                    zeroRecords: "No se encontraron coincidencias",
+                                                    paginate: {
+                                                        first: "Primero",
+                                                        last: "Última",
+                                                        next: "Siguiente",
+                                                        previous: "Anterior"
+                                                    },
+                                                    aria: {
+                                                        sortAscending: ": activar para ordenar la columna de forma ascendente",
+                                                        sortDescending: ": activar para ordenar la columna de forma descendente"
+                                                    }
+                                                },
+                                                ajax: {
+                                                    url: 'CRUDProductos', // URL del servidor
+                                                    type: 'GET', // Método de la solicitud
+                                                    data: function (d) {
+                                                        // Enviar los parámetros que necesitas con la solicitud
+                                                        d.opcion = 13;
+                                                        d.codpro = codpro;
+                                                    },
+                                                    dataSrc: function (json) {
+                                                        if (json.resultado === "ok") {
+                                                            return json.data; // Retornar los datos que necesita el DataTable
+                                                        } else {
+                                                            if (json.mensaje === "nosession") {
+                                                                $.fn.validarSession();
+                                                            } else {
+                                                                alert("Error con el servidor al cargar los datos de la tabla.");
+                                                                return []; // Retorna un array vacío si no hay resultados
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "columns": [
+                                                    {"data": "desprv"},
+                                                    {"data": "cante"},
+                                                    {"data": "feccre"},
+                                                    {"data": "precio"}
+                                                ], initComplete: function (settings, json) {
+                                                    peticiongrafica2 = $.getJSON("distribucion?opcion=3", {codpro: codpro}, function (data) {
+                                                        //$("#tab_stkmin2").text(data.stkmin2);
+                                                        //$("#ta_stkalm").text(data.stkalm);
+                                                        //if (data.stkmin2 - data.stkalm > 0) {
+                                                        //    $("#ta_repone").text(data.stkmin2 - data.stkalm);
+                                                        //}
+                                                        $("#nombre-grafica").text("Unidades vendidas de todos los establecimientos:");
+                                                        listagraficas = data.data;
+                                                        for (const key in listagraficas) {
+                                                            if (listagraficas[key].ventas) {
+                                                                listagraficas[key].ventas = listagraficas[key].ventas.map(value => Math.round(value));
+                                                            }
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    }
+                }
+                ;
+
+                $('#table-establecimientos').on('click', '.name-link', function (e) {
+                    if (listagraficas.TOTAL !== undefined) {
+                        $('#modal-grafica').modal('show');
+                        $("#nombre-grafica2").text("Unidades vendidas de: " + this.innerText);
+                        e.preventDefault();
+                        var codigo = String($(this).data('codalm'));
+                        $.fn.graficar(codigo);
+                    }
+                });
+            });
+        </script>
+    </body><!-- comment -->
+</html>

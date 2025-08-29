@@ -1,0 +1,499 @@
+<style>
+  /* Estilo para los botones de acción */
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Mejor alineación de iconos */
+  .btn i {
+    vertical-align: middle;
+  }
+
+  /* Estilo para el dropdown */
+  .dropdown-menu {
+    font-size: 0.9rem;
+  }
+
+  /* Ajuste fino para la barra de progreso */
+  .progress-container {
+    min-width: 200px;
+  }
+
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .progress {
+    flex-grow: 1;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+  }
+
+  .refresh-progress {
+    padding: 0;
+    color: #6c757d;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .refresh-progress:hover {
+    color: #0056b3;
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 2px #000;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+  }
+
+  .progress-bar {
+    transition: width 0.6s ease;
+  }
+</style>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary" id="titulo">Inventario</h6>
+  </div>
+  <div class="card-body">
+    <div
+      class="d-grid gap-2 d-md-flex justify-content-md-end mb-2"
+      id="divagregar"
+    >
+      <button class="btn btn-primary me-md-2" id="recargar">
+        <i class="fa fa-sync-alt"></i> Recargar
+      </button>
+      <button
+        class="btn btn-primary me-md-2"
+        id="agregar"
+        style="display: none"
+      >
+        <i class="fa fa-plus"></i> Agregar
+      </button>
+    </div>
+    <hr />
+    <div class="table-responsive">
+      <table
+        id="tabla"
+        class="table table-bordered text-dark table-sm table-striped"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MODAL AGREGAR -->
+  <div
+    class="modal fade"
+    id="modalagregar"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Agregar una Orden de inventario
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="nombre"
+              placeholder="nombre"
+            />
+            <label for="nombre">Nombre</label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inventarioType"
+              value="estatico"
+              id="captura"
+            />
+            <label class="form-check-label" for="captura">
+              Inventario Estatico
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inventarioType"
+              value="dinamico"
+              id="direccionado"
+            />
+            <label class="form-check-label" for="direccionado">
+              Inventario Perpetuo Dinamico
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button" class="btn btn-primary" id="confirmaragregar">
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="modalAvance"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="modalTraerListaLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="modalTraerListaLabel">
+          Detalle de Avance del Inventario
+        </h1>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Resumen general -->
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="card border-primary">
+              <div class="card-body text-center">
+                <h5 class="card-title">Progreso Global</h5>
+                <div class="progress mb-2" style="height: 25px">
+                  <div
+                    class="progress-bar progress-bar-striped bg-success"
+                    role="progressbar"
+                    id="progresoGlobalBar"
+                    style="width: 0%"
+                  >
+                    <span class="progress-text fw-bold">0%</span>
+                  </div>
+                </div>
+                <p class="card-text">
+                  <span id="txtProgresoGlobal">0</span>% completado
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-info">
+              <div class="card-body text-center">
+                <h5 class="card-title">Farmacias Involucradas</h5>
+                <h2 class="text-info" id="totalFarmacias">0</h2>
+                <p class="card-text">participando en este inventario</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-warning">
+              <div class="card-body text-center">
+                <h5 class="card-title">Productos Totales</h5>
+                <h2 class="text-warning" id="totalProductos">0</h2>
+                <p class="card-text">a ser inventariados</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestañas para diferentes vistas -->
+        <ul class="nav nav-tabs mb-3" id="inventarioTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="farmacias-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#farmacias"
+              type="button"
+              role="tab"
+            >
+              Por Farmacia
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="categorias-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#categorias"
+              type="button"
+              role="tab"
+            >
+              Por Categoría
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="productos-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#productos"
+              type="button"
+              role="tab"
+            >
+              Por Productos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="conteos-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#conteos"
+              type="button"
+              role="tab"
+            >
+              Por Conteo
+            </button>
+          </li>
+        </ul>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="inventarioTabContent">
+          <!-- Tab Farmacias -->
+          <div class="tab-pane fade show active" id="farmacias" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-hover" id="tablaFarmacias">
+                <thead class="table-light">
+                  <tr>
+                    <th width="20%">Farmacia</th>
+                    <th width="15%">Progreso</th>
+                    <th width="15%">Conteos</th>
+                    <th width="15%">Productos</th>
+                    <th width="15%">Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="cuerpoTablaFarmacias">
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      Cargando información de farmacias...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab Categorías -->
+          <div class="tab-pane fade" id="categorias" role="tabpanel">
+            <!-- Tabs internos para categorías -->
+            <ul class="nav nav-tabs mb-3" id="categoriasTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="categorias-filtros-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#categorias-filtros"
+                  type="button"
+                  role="tab"
+                >
+                  Vista con Filtros
+                </button>
+              </li>
+            </ul>
+
+            <!-- Contenido de los tabs internos -->
+            <div class="tab-content" id="categoriasTabContent">
+              <!-- Tab Vista con Filtros -->
+              <div
+                class="tab-pane fade"
+                id="categorias-filtros"
+                role="tabpanel"
+              >
+                <div class="row mb-3">
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-text">Farmacia:</span>
+                      <select class="form-select" id="filtroFarmacia">
+                        <option value="todas">Todas las farmacias</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-text">Conteo:</span>
+                      <select class="form-select" id="filtroConteo">
+                        <option value="todas">Todos los conteos</option>
+                        <option value="General">General</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-text">Categoría:</span>
+                      <select class="form-select" id="filtroCategoria">
+                        <option value="todas">Todas las categorías</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="tablaCategoriasFiltros">
+                    <thead class="table-light">
+                      <tr>
+                        <th width="20%" class="sortable" data-sort="nombre">
+                          Categoría
+                        </th>
+                        <th width="15%" class="sortable" data-sort="farmacia">
+                          Farmacia
+                        </th>
+                        <th width="15%" class="sortable" data-sort="conteo">
+                          Conteo
+                        </th>
+                        <th width="10%" class="sortable" data-sort="total">
+                          Total
+                        </th>
+                        <th
+                          width="10%"
+                          class="sortable"
+                          data-sort="inventariados"
+                        >
+                          Inventariados
+                        </th>
+                        <th width="10%" class="sortable" data-sort="pendientes">
+                          Pendientes
+                        </th>
+                        <th width="10%" class="sortable" data-sort="avance">
+                          % Avance
+                        </th>
+                        <th width="10%" class="sortable" data-sort="estado">
+                          Estado
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaCategorias">
+                      <tr>
+                        <td colspan="8" class="text-center">
+                          Cargando información por categorías...
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Productos Críticos -->
+          <div class="tab-pane fade" id="productos" role="tabpanel">
+            <!--
+              <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i> Cantidad de
+                productos con discrepancias entre el inventario físico y el
+                sistema
+              </div>
+              -->
+            <div class="table-responsive">
+              <table class="table table-hover" id="tablaProductosIdenticos">
+                <thead class="table-light">
+                  <tr>
+                    <th width="20%">Almacén</th>
+                    <th width="20%">Conteo</th>
+                    <th width="10%">Tot. Reg. Contabilizados</th>
+                    <th width="10%">Coincidencias</th>
+                    <th width="10">Diferencias</th>
+                    <th width="15%">% ERI</th>
+                    <th width="15%">Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="cuerpoTablaProductosIdenticos">
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      Cargando productos críticos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab Conteos -->
+          <div class="tab-pane fade" id="conteos" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-hover" id="tablaConteos">
+                <thead class="table-light">
+                  <tr>
+                    <th width="25%">Farmacia</th>
+                    <th width="30%">Conteo</th>
+                    <th width="15%">Estado</th>
+                    <th width="15%">Total Items de Inventario</th>
+                    <th width="15%">Progreso</th>
+                  </tr>
+                </thead>
+                <tbody id="cuerpoTablaConteos">
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      Cargando información de conteos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" id="btnExportarReporte">
+          <i class="bi bi-file-earmark-excel me-1"></i> Exportar a Excel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DataTables Core -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- DataTables Buttons (requeridos para exportar) -->
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="js/inventario.js" type="text/javascript"></script>

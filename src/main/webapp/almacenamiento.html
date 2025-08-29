@@ -1,0 +1,101 @@
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Almacenamiento</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-auto">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="codigo" placeholder="codigo" disabled  autocomplete="off">
+                    <label for="codigo">SKU o Codigo de barras</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="dropdown">
+                    <div class="form-floating mb-3">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Escribe algo..."  autocomplete="off">
+                        <label for="searchInput">Buscar Producto</label>
+                    </div>
+                    <ul class="dropdown-menu" id="dropdownMenu" style="width: 400px !important;max-height:400px; overflow-y:auto">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <b>Producto:</b> <div id="nombre"></div>
+        </div>
+        <div class="container">
+            <div class="table-responsive">
+                <table id="tabla" class="table table-bordered text-dark table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Lote</th>
+                            <th scope="col">Fecha de Vencimiento</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Ubicacion</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal-movimiento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Movimiento de Inventario</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="me-2"><b>Lote:</b></div>
+                            <div id="modal-lote"></div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="me-2"><b>Fecha Vencimiento:</b></div>
+                            <div id="modal-fecven"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="me-2"><b>Cantidad:</b></div>
+                            <div id="modal-cant"></div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="me-2"><b>Ubicación:</b></div>
+                            <div id="modal-ubic"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12 d-flex align-items-center">
+                            <div class="me-2"><b>Producto:</b></div>
+                            <div id="modal-producto"></div>
+                        </div>
+                    </div>
+                    <hr  class="border-2 border-primary" />
+                    <div><b>ORIGEN</b></div>
+                    <div class="ms-2">Ubicacion</div>
+                    <input class="form-control mb-4" type="text" id="origentxt" aria-label="" disabled readonly>
+                    <div><b>DESTINO</b></div>
+                    <div class="mb-2" id="destinaciones"></div>
+                    <button id="btn-agregar-ubic" class="btn btn-primary">Agregar Ubicación</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/almacenamiento.js" type="text/javascript"></script>

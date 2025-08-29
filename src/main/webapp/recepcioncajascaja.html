@@ -1,0 +1,75 @@
+<style>
+    #back-button {
+        position: fixed;
+        top: 100px; /* Altura inicial del botón */
+        right: 30px;
+        z-index: 1020;
+        transition: top 0.3s; /* Transición suave al cambiar la altura */
+    }
+    .card-header{
+        padding: 10px 35px 10px 15px;
+    }
+    .contenedor{
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+    }
+</style>
+<div class="card shadow mb-4">   
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" id="nombre">Recepción de Picking</h6>
+        <a href="#" id="back-button" class="btn btn-primary">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+    </div>
+    <div class="card-body no-border">
+        <div class="container">
+            <div class="table-responsive mb-2">
+                <table class="table table-bordered table-sm " id="example">
+                    <thead>
+                        <tr>
+                            <th scope="col">Secuencia</th>
+                            <th scope="col">Item Check</th>
+                            <th scope="col">Item Conforme</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Las filas se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="contenedor" id="lista">
+
+            </div>
+            <div id="divboton" style="display:none">
+                <div class="text-right">
+                    <button class="btn btn-success" id="grabar">Grabar recepción</button>
+                </div>
+            </div>
+            <div id="divbotonrep" style="display:none">
+                <div class="text-right">
+                    <button class="btn btn-info" id="reporte"><i class="fas fa-file-pdf"></i>Reporte Faltante - Excedente</button>
+                    <button class="btn btn-info" id="reporte-excel"><i class="fas fa-file-excel"></i>Reporte Excel Faltante - Excedente</button>
+                </div>
+            </div>
+            <div class="table-responsive mb-2" id="divdif" style="display:none">
+                <h3>Productos Inconformes</h3>
+                <table class="table table-bordered table-sm " id="faltantes">
+                    <thead>
+                        <tr>
+                            <th scope="col">Secuencia</th>
+                            <th scope="col">Codpro</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Dif</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Las filas se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/recepcioncajascaja.js" type="text/javascript"></script>

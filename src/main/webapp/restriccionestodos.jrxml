@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="restricciones" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08beae8f-478e-4326-a3d0-4200af9dffd4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterLolfar.jrdax"/>
+	<parameter name="codalm" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT p.*,a.desalm
+FROM restricciones_distribucion r
+	inner join fa_productos p ON 
+	 p.codpro = r.codpro
+	 inner join fa_almacenes a on a.codalm=r.codalm
+	 order by a.desalm]]>
+	</queryString>
+	<field name="codpro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpro"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpro"/>
+	</field>
+	<field name="despro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="despro"/>
+		<property name="com.jaspersoft.studio.field.label" value="despro"/>
+	</field>
+	<field name="codlab" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codlab"/>
+		<property name="com.jaspersoft.studio.field.label" value="codlab"/>
+	</field>
+	<field name="codgen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codgen"/>
+		<property name="com.jaspersoft.studio.field.label" value="codgen"/>
+	</field>
+	<field name="codfam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codfam"/>
+		<property name="com.jaspersoft.studio.field.label" value="codfam"/>
+	</field>
+	<field name="prisal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="prisal"/>
+		<property name="com.jaspersoft.studio.field.label" value="prisal"/>
+	</field>
+	<field name="codinf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codinf"/>
+		<property name="com.jaspersoft.studio.field.label" value="codinf"/>
+	</field>
+	<field name="codtip" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codtip"/>
+		<property name="com.jaspersoft.studio.field.label" value="codtip"/>
+	</field>
+	<field name="costod" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="costod"/>
+		<property name="com.jaspersoft.studio.field.label" value="costod"/>
+	</field>
+	<field name="cospro" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cospro"/>
+		<property name="com.jaspersoft.studio.field.label" value="cospro"/>
+	</field>
+	<field name="datmov" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datmov"/>
+		<property name="com.jaspersoft.studio.field.label" value="datmov"/>
+	</field>
+	<field name="datpri" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datpri"/>
+		<property name="com.jaspersoft.studio.field.label" value="datpri"/>
+	</field>
+	<field name="datinc" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datinc"/>
+		<property name="com.jaspersoft.studio.field.label" value="datinc"/>
+	</field>
+	<field name="datven" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datven"/>
+		<property name="com.jaspersoft.studio.field.label" value="datven"/>
+	</field>
+	<field name="prosta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prosta"/>
+		<property name="com.jaspersoft.studio.field.label" value="prosta"/>
+	</field>
+	<field name="datind" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datind"/>
+		<property name="com.jaspersoft.studio.field.label" value="datind"/>
+	</field>
+	<field name="datfid" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datfid"/>
+		<property name="com.jaspersoft.studio.field.label" value="datfid"/>
+	</field>
+	<field name="codbar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codbar"/>
+		<property name="com.jaspersoft.studio.field.label" value="codbar"/>
+	</field>
+	<field name="costod_r" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="costod_r"/>
+		<property name="com.jaspersoft.studio.field.label" value="costod_r"/>
+	</field>
+	<field name="stkfra" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="stkfra"/>
+		<property name="com.jaspersoft.studio.field.label" value="stkfra"/>
+	</field>
+	<field name="igvpro" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="igvpro"/>
+		<property name="com.jaspersoft.studio.field.label" value="igvpro"/>
+	</field>
+	<field name="utipro" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="utipro"/>
+		<property name="com.jaspersoft.studio.field.label" value="utipro"/>
+	</field>
+	<field name="moncod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="moncod"/>
+		<property name="com.jaspersoft.studio.field.label" value="moncod"/>
+	</field>
+	<field name="coscom" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="coscom"/>
+		<property name="com.jaspersoft.studio.field.label" value="coscom"/>
+	</field>
+	<field name="codpro_a" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpro_a"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpro_a"/>
+	</field>
+	<field name="recmen" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="recmen"/>
+		<property name="com.jaspersoft.studio.field.label" value="recmen"/>
+	</field>
+	<field name="despro_l" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="despro_l"/>
+		<property name="com.jaspersoft.studio.field.label" value="despro_l"/>
+	</field>
+	<field name="modfar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="modfar"/>
+		<property name="com.jaspersoft.studio.field.label" value="modfar"/>
+	</field>
+	<field name="promo_sta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="promo_sta"/>
+		<property name="com.jaspersoft.studio.field.label" value="promo_sta"/>
+	</field>
+	<field name="promo_can" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="promo_can"/>
+		<property name="com.jaspersoft.studio.field.label" value="promo_can"/>
+	</field>
+	<field name="promo_dto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="promo_dto"/>
+		<property name="com.jaspersoft.studio.field.label" value="promo_dto"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+	</field>
+	<field name="feccre" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="feccre"/>
+		<property name="com.jaspersoft.studio.field.label" value="feccre"/>
+	</field>
+	<field name="fecumv" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecumv"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecumv"/>
+	</field>
+	<field name="usecod" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="usecod"/>
+		<property name="com.jaspersoft.studio.field.label" value="usecod"/>
+	</field>
+	<field name="usenam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="usenam"/>
+		<property name="com.jaspersoft.studio.field.label" value="usenam"/>
+	</field>
+	<field name="hostname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="hostname"/>
+		<property name="com.jaspersoft.studio.field.label" value="hostname"/>
+	</field>
+	<field name="dtopro_a" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="dtopro_a"/>
+		<property name="com.jaspersoft.studio.field.label" value="dtopro_a"/>
+	</field>
+	<field name="canven" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="canven"/>
+		<property name="com.jaspersoft.studio.field.label" value="canven"/>
+	</field>
+	<field name="compro" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="compro"/>
+		<property name="com.jaspersoft.studio.field.label" value="compro"/>
+	</field>
+	<field name="compro_p" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="compro_p"/>
+		<property name="com.jaspersoft.studio.field.label" value="compro_p"/>
+	</field>
+	<field name="tcompro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tcompro"/>
+		<property name="com.jaspersoft.studio.field.label" value="tcompro"/>
+	</field>
+	<field name="puntos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="puntos"/>
+		<property name="com.jaspersoft.studio.field.label" value="puntos"/>
+	</field>
+	<field name="igvpro_c" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="igvpro_c"/>
+		<property name="com.jaspersoft.studio.field.label" value="igvpro_c"/>
+	</field>
+	<field name="codpro_s" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpro_s"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpro_s"/>
+	</field>
+	<field name="codclass" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codclass"/>
+		<property name="com.jaspersoft.studio.field.label" value="codclass"/>
+	</field>
+	<field name="stacontr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stacontr"/>
+		<property name="com.jaspersoft.studio.field.label" value="stacontr"/>
+	</field>
+	<field name="condcod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="condcod"/>
+		<property name="com.jaspersoft.studio.field.label" value="condcod"/>
+	</field>
+	<field name="stains" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stains"/>
+		<property name="com.jaspersoft.studio.field.label" value="stains"/>
+	</field>
+	<field name="tippro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tippro"/>
+		<property name="com.jaspersoft.studio.field.label" value="tippro"/>
+	</field>
+	<field name="tiprep" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tiprep"/>
+		<property name="com.jaspersoft.studio.field.label" value="tiprep"/>
+	</field>
+	<field name="stanarcot" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stanarcot"/>
+		<property name="com.jaspersoft.studio.field.label" value="stanarcot"/>
+	</field>
+	<field name="igvmod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="igvmod"/>
+		<property name="com.jaspersoft.studio.field.label" value="igvmod"/>
+	</field>
+	<field name="igvmod_c" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="igvmod_c"/>
+		<property name="com.jaspersoft.studio.field.label" value="igvmod_c"/>
+	</field>
+	<field name="codexi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codexi"/>
+		<property name="com.jaspersoft.studio.field.label" value="codexi"/>
+	</field>
+	<field name="ubidispro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ubidispro"/>
+		<property name="com.jaspersoft.studio.field.label" value="ubidispro"/>
+	</field>
+	<field name="staprdcanj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="staprdcanj"/>
+		<property name="com.jaspersoft.studio.field.label" value="staprdcanj"/>
+	</field>
+	<field name="ptosdtocanj" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ptosdtocanj"/>
+		<property name="com.jaspersoft.studio.field.label" value="ptosdtocanj"/>
+	</field>
+	<field name="codund" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codund"/>
+		<property name="com.jaspersoft.studio.field.label" value="codund"/>
+	</field>
+	<field name="codpro_digemid" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codpro_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpro_digemid"/>
+	</field>
+	<field name="estado_digemid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado_digemid"/>
+	</field>
+	<field name="fecumv_digemid" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecumv_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecumv_digemid"/>
+	</field>
+	<field name="tipoprod_digemid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipoprod_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipoprod_digemid"/>
+	</field>
+	<field name="codcovid_digemid" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codcovid_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="codcovid_digemid"/>
+	</field>
+	<field name="estadocovid_digemid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estadocovid_digemid"/>
+		<property name="com.jaspersoft.studio.field.label" value="estadocovid_digemid"/>
+	</field>
+	<field name="codpres" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpres"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpres"/>
+	</field>
+	<field name="categvta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="categvta"/>
+		<property name="com.jaspersoft.studio.field.label" value="categvta"/>
+	</field>
+	<field name="codgruvta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codgruvta"/>
+		<property name="com.jaspersoft.studio.field.label" value="codgruvta"/>
+	</field>
+	<field name="staimptobol" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="staimptobol"/>
+		<property name="com.jaspersoft.studio.field.label" value="staimptobol"/>
+	</field>
+	<field name="imptobol" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="imptobol"/>
+		<property name="com.jaspersoft.studio.field.label" value="imptobol"/>
+	</field>
+	<field name="codimgqull" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codimgqull"/>
+		<property name="com.jaspersoft.studio.field.label" value="codimgqull"/>
+	</field>
+	<field name="codclass2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codclass2"/>
+		<property name="com.jaspersoft.studio.field.label" value="codclass2"/>
+	</field>
+	<field name="codviaadm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codviaadm"/>
+		<property name="com.jaspersoft.studio.field.label" value="codviaadm"/>
+	</field>
+	<field name="codpais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codpais"/>
+		<property name="com.jaspersoft.studio.field.label" value="codpais"/>
+	</field>
+	<field name="stareqrefrig" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stareqrefrig"/>
+		<property name="com.jaspersoft.studio.field.label" value="stareqrefrig"/>
+	</field>
+	<field name="regsanit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="regsanit"/>
+		<property name="com.jaspersoft.studio.field.label" value="regsanit"/>
+	</field>
+	<field name="regsanit_fvenc" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="regsanit_fvenc"/>
+		<property name="com.jaspersoft.studio.field.label" value="regsanit_fvenc"/>
+	</field>
+	<field name="plazoentr" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="plazoentr"/>
+		<property name="com.jaspersoft.studio.field.label" value="plazoentr"/>
+	</field>
+	<field name="prisalbas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="prisalbas"/>
+		<property name="com.jaspersoft.studio.field.label" value="prisalbas"/>
+	</field>
+	<field name="cosbas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cosbas"/>
+		<property name="com.jaspersoft.studio.field.label" value="cosbas"/>
+	</field>
+	<field name="stadispvta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="stadispvta"/>
+		<property name="com.jaspersoft.studio.field.label" value="stadispvta"/>
+	</field>
+	<field name="despro_l_ant" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="despro_l_ant"/>
+		<property name="com.jaspersoft.studio.field.label" value="despro_l_ant"/>
+	</field>
+	<field name="diasvigins" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="diasvigins"/>
+		<property name="com.jaspersoft.studio.field.label" value="diasvigins"/>
+	</field>
+	<field name="factorins" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="factorins"/>
+		<property name="com.jaspersoft.studio.field.label" value="factorins"/>
+	</field>
+	<field name="qtyminvtains" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qtyminvtains"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtyminvtains"/>
+	</field>
+	<field name="qtymaxconcent" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qtymaxconcent"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtymaxconcent"/>
+	</field>
+	<field name="codindus" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codindus"/>
+		<property name="com.jaspersoft.studio.field.label" value="codindus"/>
+	</field>
+	<field name="codtri" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codtri"/>
+		<property name="com.jaspersoft.studio.field.label" value="codtri"/>
+	</field>
+	<field name="codcue" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codcue"/>
+		<property name="com.jaspersoft.studio.field.label" value="codcue"/>
+	</field>
+	<field name="codcue_inv" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codcue_inv"/>
+		<property name="com.jaspersoft.studio.field.label" value="codcue_inv"/>
+	</field>
+	<field name="tipptosprd" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipptosprd"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipptosprd"/>
+	</field>
+	<field name="montobasptos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="montobasptos"/>
+		<property name="com.jaspersoft.studio.field.label" value="montobasptos"/>
+	</field>
+	<field name="eqvptos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="eqvptos"/>
+		<property name="com.jaspersoft.studio.field.label" value="eqvptos"/>
+	</field>
+	<field name="desalm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="desalm"/>
+		<property name="com.jaspersoft.studio.field.label" value="desalm"/>
+	</field>
+	<group name="desalm" isStartNewColumn="true" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{desalm}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="5" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="49" width="310" height="20" uuid="6bae8c28-b57b-4d18-8901-1bc6cd131bd1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desalm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="60" height="20" uuid="0868db3c-0aae-4164-9c31-ddcbe4f55e06"/>
+				<text><![CDATA[ALMACEN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="6" width="160" height="12" uuid="c32ee39e-fa79-406d-9d4d-db2b71342e9b"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DROGERIA SAN BARTOLOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="6" width="140" height="12" uuid="34e910f7-94de-474c-9e94-2d793a1539ce"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE RESTRICCIONES PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="6" width="90" height="12" uuid="47cb3f64-c7b4-48e3-afcd-28ae0c068aa8"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresión:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="500" y="6" width="54" height="12" uuid="f8407019-df7f-41eb-88bc-d4f422a7b72f"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="50" y="0" width="100" height="20" uuid="5072a3ae-bb0f-4281-8031-71f1d00eb453">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28941476-94b8-4d47-a430-7908f18c2739"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="290" height="20" uuid="8183e02c-429c-49ac-8dd9-92659fc173e9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7241ebed-0549-4994-8d92-4fd98f94a679"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="20" uuid="7acb02f7-f7f5-47de-84eb-d69150297647">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28941476-94b8-4d47-a430-7908f18c2739"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Indice]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="50" y="0" width="100" height="20" uuid="d61906de-48f5-4ad5-b25d-cb36bcc65be8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28941476-94b8-4d47-a430-7908f18c2739"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codpro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="290" height="20" uuid="8ad10713-00b8-40c1-8bc5-e5a2ff732d98">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7241ebed-0549-4994-8d92-4fd98f94a679"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{despro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="20" uuid="45cd4090-4b2c-487c-ab2d-bbc142f52ca6"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="270" y="10" width="100" height="10" uuid="af964ae3-0f65-48c7-87fb-6f271df9a8d8"/>
+				<textElement textAlignment="Left">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="10" width="100" height="10" uuid="59e1bb28-ec1d-42ae-91cb-e200a765c2a4"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="9" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,595 @@
+
+<div class="container mt-4">
+    <h3 class="mb-4">
+        <i class="fas fa-search me-2"></i>Conciliacion de Tarjetas Izipay -  Comprobante
+    </h3>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label for="combo1" class="form-label">Sucursal</label>
+            <select class="form-select" id="combo1" required></select>
+        </div>
+        <div class="col-md-2">
+            <label for="combo2" class="form-label">Fecha de Abono</label>
+            <select class="form-select" id="combo2" required disabled></select>
+        </div>
+        <div class="col-md-2">
+            <label for="combo3" class="form-label">Monto</label>
+            <select class="form-select" id="combo3" required disabled></select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="chkSinComprobante">
+                <label class="form-check-label" for="chkSinComprobante">
+                    No Conciliado
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button id="btnBuscar" class="btn btn-primary w-100" disabled>
+                <i class="fas fa-search me-2"></i>Visualizar
+            </button>
+        </div>
+        
+    </div>
+
+    <hr/>
+
+    <h3 class="mb-3">
+        <i class="fas fa-search me-2"></i>Resultado
+    </h3>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6" >
+            <p id="txtSucursal"><b>Resultado:</b></p>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button id="btnConciliar" class="btn btn-success w-100" disabled>
+                <i class="fas fa-check me-2"></i>Conciliar
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="tablaConsiliacionTargeta" class="table table-striped table-bordered" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>FECHA CONSUMO</th>
+                    <th>IMPORTE</th>
+                    <th>COMISION</th>
+                    <th>NETO</th>
+                    <th>REF IZIPLAY</th>
+                    <th>F. COMPROBANTE</th>
+                    <th>N° COMPROBANTE</th>
+                    <th>N° OPERACION</th>
+                    <th>REF</th>
+                    <th>MONTO</th>
+                    <th>ESTADO</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2" class="text-end">TOTAL:</th>
+                    <th id="totalImporte"></th>
+                    <th id="totalComision"></th>
+                    <th id="totalNeto"></th>
+                    <th colspan="5"></th>
+                    <th id="totalMonto"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+<!-- Contenedor de notificaciones tipo toast -->
+<div id="notificacionesToast" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
+
+<script>
+    $(document).ready(function () {
+        let isProcessing = false;
+        let tabla;
+        let dataOriginal = [];
+        function resetSelect($select) {
+            $select.val('').prop('disabled', true).html('<option value="">Seleccione</option>');
+        }
+
+        function enableSelect($select) {
+            $select.prop('disabled', false);
+        }
+
+        function showSelectLoading($select) {
+            $select.html('<option value="">Cargando...</option>').prop('disabled', true);
+        }
+
+        function validateAllSelects() {
+            const hasValues = $('#combo1').val() !== '' && $('#combo2').val() !== '' && $('#combo3').val() !== '';
+            $('#btnBuscar').prop('disabled', !hasValues || isProcessing);
+        }
+
+        function updateConciliarButton() {
+            const hasData = tabla.data().count() > 0;
+            $('#btnConciliar').prop('disabled', !hasData);
+        }
+
+        function showLoading() {
+            isProcessing = true;
+            $('#btnBuscar').prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Procesando...');
+        }
+
+        function hideLoading() {
+            isProcessing = false;
+            $('#btnBuscar').html('<i class="fas fa-search me-2"></i>Visualizar');
+            validateAllSelects();
+        }
+
+        $('#combo1').on('change', function () {
+            const selectedValue = $(this).val();
+            resetSelect($('#combo2'));
+            resetSelect($('#combo3'));
+            if (selectedValue !== '') {
+                loadFechas(selectedValue);
+            } else {
+                validateAllSelects();
+            }
+        });
+
+        $('#combo2').on('change', function () {
+            const selectedValue = $(this).val();
+            const sucursalValue = $('#combo1').val();
+            resetSelect($('#combo3'));
+            if (selectedValue !== '' && sucursalValue !== '') {
+                loadMontos(sucursalValue, selectedValue);
+            } else {
+                validateAllSelects();
+            }
+        });
+
+        $('#combo3').on('change', function () {
+            validateAllSelects();
+        });
+
+        $('#btnBuscar').on('click', function () {
+            cargarDatos();
+        });
+        function cargarDatos() {
+            if ($('#combo1').val() && $('#combo2').val() && $('#combo3').val()) {
+
+                $('#txtSucursal').html('<b>Sucursal:</b> ' + $('#combo1 option:selected').text() + '\n' +
+                        '<b>FechaAbono: </b>' + $('#combo2 option:selected').text() + '\n' +
+                        '<b>Monto:</b> ' + $('#combo3 option:selected').text()
+                        );
+
+                showLoading();
+
+                $.ajax({
+                    url: 'combosConciliacionTarjetaServlet',
+                    type: 'GET',
+                    data: {
+                        opcion: '4',
+                        sucursal: $('#combo1').val(),
+                        fecha: $('#combo2').val(),
+                        monto: $('#combo3').val()
+                    },
+                    success: function (response) {
+                        hideLoading();
+
+                        refreshTabla(response);
+
+
+                    },
+                    error: function () {
+                        hideLoading();
+                        alert('Error al realizar la búsqueda');
+                    }
+                });
+            }
+        }
+
+       
+        function refreshTabla(data) {
+            // guardamos una copia cada vez que llegan nuevos datos desde AJAX
+            //dataOriginal = data;
+
+            const soloSinComprobante = $('#chkSinComprobante').is(':checked');
+            if (soloSinComprobante) {
+                data = data.filter(row => !row.VtaCabNumComp || row.VtaCabNumComp.trim() === '');
+            }
+
+            tabla.clear().rows.add(data).draw();
+            updateConciliarButton();
+
+        }
+
+
+        function validarDatosCompletos() {
+            const datos = tabla.data().toArray();
+
+            // Si no hay datos, deshabilitar el botón
+            if (datos.length === 0) {
+                $('#btnConciliar').prop('disabled', true);
+                return false;
+            }
+
+            // Verificar cada fila
+            for (let i = 0; i < datos.length; i++) {
+                const fila = datos[i];
+
+                // Verificar cada campo de la fila
+                for (let campo in fila) {
+                    const valor = fila[campo];
+
+                    // Si el campo está vacío, es null, undefined o solo espacios en blanco
+                    if (valor === null || valor === undefined || valor === '' ||
+                            (typeof valor === 'string' && valor.trim() === '')) {
+                        $('#btnConciliar').prop('disabled', true);
+                        return false;
+                    }
+                }
+            }
+
+            // Si llegamos aquí, todos los datos están completos
+            $('#btnConciliar').prop('disabled', false);
+            return true;
+        }
+
+        // Inicializar el botón como deshabilitado
+        // $('#btnConciliar').prop('disabled', true);
+
+        /* $('#btnConciliar').on('click', function () {
+         if (!$(this).prop('disabled')) {
+         mostrarNotificacion('Proceso de conciliación iniciado.');
+         }
+         });*/
+        // ===============================
+        // TOAST ÚNICO (sin X), reutilizable
+        // ===============================
+        function mostrarToast(mensaje) {
+            let $toast = $('#notificacionToastUnico');
+            if ($toast.length === 0) {
+                let $container = $('#notificacionesToast');
+                if ($container.length === 0) {
+                    $container = $('<div id="notificacionesToast" class="position-fixed top-0 end-0 p-3" style="z-index:2000;"></div>').appendTo('body');
+                }
+                $toast = $(`
+                    <div id="notificacionToastUnico" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                      <div class="d-flex"><div class="toast-body"></div></div>
+                    </div>
+                  `).appendTo($container);
+            }
+            $toast.find('.toast-body').text(mensaje);
+            const toast = bootstrap.Toast.getOrCreateInstance($toast[0], {autohide: true, delay: 2500});
+            toast.show();
+        }
+
+       
+
+
+        // ===============================
+        // BOTÓN CONCILIAR — llama al servlet que marca conciliado=1
+        // ===============================
+        $('#btnConciliar').on('click', function () {
+            const sucSel = $('#combo1').val(); // "codigo-unidComId"
+            const fechaAbono = $('#combo2').val(); // "YYYY-MM-DD"
+            let netoTotal = $('#combo3').val(); // "123.45"
+
+            if (!sucSel || !fechaAbono || !netoTotal) {
+                mostrarToast('Completa Sucursal, Fecha y Monto.');
+                return;
+            }
+
+            netoTotal = String(netoTotal).replace(',', '.').trim();
+
+            const partes = sucSel.split('-');
+            const codigo = partes[0] || null;
+            const unidComId = partes[1] ? parseInt(partes[1], 10) : null;
+
+            if (!codigo || !Number.isInteger(unidComId)) {
+                mostrarToast('Sucursal inválida.');
+                return;
+            }
+
+            const $btn = $(this);
+            const htmlOriginal = $btn.html();
+            $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Conciliando…');
+
+            console.log('Conciliar -> payload', {codigo, fechaAbono, netoTotal, unidComId});
+            mostrarToast('Procesando conciliación…');
+
+            $.ajax({
+                url: 'conciliartarjetasservlet',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                data: {codigo, fechaAbono, netoTotal, unidComId},
+                success: function (res) {
+                    console.log('Conciliar -> respuesta', res);
+
+                    if (res && Number(res.estadoConciliacion) === 1) {
+                        mostrarToast('Conciliación exitosa.');
+                        // 🔹 REFRESCAR LA TABLA para mostrar los datos actualizados
+                        //recargarGrilla();
+                        cargarDatos();
+                    } else {
+                        mostrarToast((res && res.mensaje) || 'No se pudo conciliar.');
+                    }
+                },
+                error: function (xhr) {
+                    console.log('Conciliar ERROR:', xhr.status, xhr.responseText);
+                    mostrarToast('Error al llamar al servidor.');
+                },
+                complete: function () {
+                    $btn.prop('disabled', false).html(htmlOriginal || '<i class="fas fa-check me-2"></i>Grabar Conciliación');
+                }
+            });
+        });
+
+
+
+        tabla = $("#tablaConsiliacionTargeta").DataTable({
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json",
+            },
+            columns: [
+                {data: "id", defaultContent: ""},
+
+                {data: "Fecha_Consumo", defaultContent: ""},
+                {data: "Importe", defaultContent: ""},
+                {data: "Comision", defaultContent: ""},
+                {data: null, // Nueva columna calculada
+                    defaultContent: "",
+                    render: function (data, type, row) {
+                        let resultado = row.Importe - row.Comision;
+                        return resultado.toFixed(2);
+                    }
+                },
+                {data: "REFIZIPAY", defaultContent: ""},
+                {data: "fecha", defaultContent: ""},
+                {data: "VtaCabNumComp", defaultContent: ""},
+                {data: "ForPagnum_ope", defaultContent: ""},
+                {data: "REF", defaultContent: ""},
+                {data: "ForPagMonto", defaultContent: ""},
+                {data: null, // Nueva columna calculada
+                    defaultContent: "",
+                    render: function (data, type, row) {
+                        if (Number(row.conciliado)) {
+                            return '<span style="color:green;">✔️</span>';
+                        } else {
+                            return '<span style="color:red;">❌</span>';
+                        }
+                    }
+                }
+
+            ],
+            data: [],
+            paging: false, // Desactiva la paginación
+            lengthChange: false, // Oculta el selector de cantidad de registros
+            info: false,
+            columnDefs: [
+                {
+                    targets: [6, 7, 8, 9, 10, 11], // Índices de las últimas 4 columnas (0-based)
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).css('background-color', '#e3f2fd');
+                    }
+                }
+            ],
+            drawCallback: function () {
+                // Aplicar estilo a las cabeceras de las últimas 4 columnas
+                $('#tablaConsiliacionTargeta thead th:nth-child(7), #tablaConsiliacionTargeta thead th:nth-child(8), #tablaConsiliacionTargeta thead th:nth-child(9), #tablaConsiliacionTargeta thead th:nth-child(10), #tablaConsiliacionTargeta thead th:nth-child(11), #tablaConsiliacionTargeta thead th:nth-child(12)').css('background-color', '#e3f2fd');
+                validarDatosCompletos();
+            },
+            footerCallback: function (row, data) {
+                let totalImporte = 0;
+                let totalComision = 0;
+                let totalNeto = 0;
+                let totalMonto = 0;
+
+                data.forEach(function (row) {
+                    totalImporte += parseFloat(row.Importe) || 0;
+                    totalComision += parseFloat(row.Comision) || 0;
+                    totalNeto += (parseFloat(row.Importe) || 0) - (parseFloat(row.Comision) || 0);
+                    totalMonto += parseFloat(row.ForPagMonto) || 0;
+                });
+
+                $('#totalImporte').html(totalImporte.toFixed(2));
+                $('#totalComision').html(totalComision.toFixed(2));
+                $('#totalNeto').html(totalNeto.toFixed(2));
+                $('#totalMonto').html(totalMonto.toFixed(2));
+            },
+            dom: 'Bfrtip', // 👈 Activa los botones
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Exportar a Excel',
+                    className: 'btn btn-primary',
+                    title: 'Conciliacion de Tarjetas',
+                    exportOptions: {
+                        columns: ':visible' // Exporta columnas visibles (puedes ajustar según tus necesidades)
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Exportar a PDF',
+                    title: 'Conciliacion de Tarjetas',
+                    className: 'btn btn-primary',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: ':visible',
+                        format: {
+                            body: function (data, row, column, node) {
+                                // Si la columna es la última (ESTADO)
+                                if (column === 11) {
+                                    if (typeof data === "string" && data.includes('✔️')) {
+                                        return "CONCILIADO";
+                                    } else {
+                                        return "NO CONCILIADO";
+                                    }
+                                }
+                                return data;
+                            }
+                        }
+                    },
+                    customize: function (doc) {
+                        const sucursal = $('#combo1 option:selected').text();
+                        const fechaAbono = $('#combo2 option:selected').text();
+                        const montoSeleccionado = $('#combo3 option:selected').text();
+
+                        const now = new Date();
+                        const fechaHoraImpresion = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+                        // Calcular totales
+                        const data = $('#tablaConsiliacionTargeta').DataTable().data().toArray();
+                        let totalImporte = 0, totalComision = 0, totalNeto = 0, totalMonto = 0;
+                        data.forEach(row => {
+                            const importe = parseFloat(row.Importe) || 0;
+                            const comision = parseFloat(row.Comision) || 0;
+                            const forPagMonto = parseFloat(row.ForPagMonto) || 0;
+                            totalImporte += importe;
+                            totalComision += comision;
+                            totalNeto += importe - comision;
+                            totalMonto += forPagMonto;
+                        });
+
+                        // Insertar "Bartolito App" al principio del contenido
+                        doc.content.splice(0, 0, {
+                            text: 'Bartolito 3.0',
+                            fontSize: 9,
+                            alignment: 'left',
+                            margin: [0, 0, 0, 5],
+                            italics: true
+                        });
+
+                        // Insertar encabezado debajo del título
+                        doc.content.splice(2, 0, {
+                            text: `Sucursal: ${sucursal}    Fecha: ${fechaAbono}    Monto: ${montoSeleccionado}`,
+                            margin: [0, 0, 0, 10],
+                            fontSize: 10,
+                            bold: true
+                        });
+
+                        // Insertar totales al final del documento
+                        doc.content.push({
+                            text: `\nTOTALES → Importe: ${totalImporte.toFixed(2)}   Comisión: ${totalComision.toFixed(2)}   Neto: ${totalNeto.toFixed(2)}   Monto: ${totalMonto.toFixed(2)}`,
+                            alignment: 'right',
+                            margin: [0, 10, 40, 0],
+                            fontSize: 10,
+                            bold: true
+                        });
+
+                        // Estilo general
+                        doc.defaultStyle.fontSize = 8;
+                        doc.styles.tableHeader.fontSize = 9;
+
+                        // Pie de página: número de página y fecha/hora
+                        doc.footer = function (currentPage, pageCount) {
+                            return {
+                                columns: [
+                                    {text: `Impreso: ${fechaHoraImpresion}`, alignment: 'left', margin: [40, 0, 0, 0]},
+                                    {text: `Página ${currentPage} de ${pageCount}`, alignment: 'right', margin: [0, 0, 40, 0]}
+                                ],
+                                fontSize: 8
+                            };
+                        };
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    title: 'Conciliacion_Tarjetas',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ]
+        });
+
+
+      
+
+        loadSucursales();
+
+        function loadSucursales() {
+            
+            showSelectLoading($('#combo1'));
+            $.ajax({
+                url: 'combosConciliacionTarjetaServlet',
+                type: 'GET',
+                data: {opcion: '1'},
+                dataType: 'json',
+                success: function (response) {
+                    const $select = $('#combo1');
+                    $select.html('<option value="">Seleccione</option>');
+                    if (response && Array.isArray(response)) {
+                        response.forEach(function (item) {
+                            $select.append('<option value="' + item.id + '">' + item.sucursal + '</option>');
+                        });
+                    }
+                    enableSelect($select);
+                    validateAllSelects();
+                },
+                error: function () {
+                    $('#combo1').html('<option value="">Error al cargar</option>');
+                    enableSelect($('#combo1'));
+                    validateAllSelects();
+                }
+            });
+        }
+
+        function loadFechas(sucursal) {
+            showSelectLoading($('#combo2'));
+            $.ajax({
+                url: 'combosConciliacionTarjetaServlet',
+                type: 'GET',
+                data: {opcion: '2', sucursal: sucursal},
+                dataType: 'json',
+                success: function (response) {
+                    const $select = $('#combo2');
+                    $select.html('<option value="">Seleccione</option>');
+                    if (response && Array.isArray(response)) {
+                        response.forEach(function (item) {
+                            $select.append('<option value="' + item.id + '">' + item.fecha + '</option>');
+                        });
+                    }
+                    enableSelect($select);
+                    validateAllSelects();
+                },
+                error: function () {
+                    $('#combo2').html('<option value="">Error al cargar</option>');
+                    enableSelect($('#combo2'));
+                    validateAllSelects();
+                }
+            });
+        }
+
+        function loadMontos(sucursal, fecha) {
+            showSelectLoading($('#combo3'));
+            $.ajax({
+                url: 'combosConciliacionTarjetaServlet',
+                type: 'GET',
+                data: {opcion: '3', sucursal: sucursal, fecha: fecha},
+                dataType: 'json',
+                success: function (response) {
+                    const $select = $('#combo3');
+                    $select.html('<option value="">Seleccione</option>');
+                    if (response && Array.isArray(response)) {
+                        response.forEach(function (item) {
+                            $select.append('<option value="' + item.id + '">' + item.total + '</option>');
+                        });
+                    }
+                    enableSelect($select);
+                    validateAllSelects();
+                },
+                error: function () {
+                    $('#combo3').html('<option value="">Error al cargar</option>');
+                    enableSelect($('#combo3'));
+                    validateAllSelects();
+                }
+            });
+        }
+    });
+</script>

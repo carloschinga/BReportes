@@ -1,0 +1,84 @@
+.nav-link {
+  color: black !important;
+  /* Asegura que el texto sea visible */
+}
+
+.topito {
+  margin-bottom: 10px;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: 0.1rem;
+  display: none;
+  position: absolute;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+.fas {
+  transition: transform 0.2s ease-in-out;
+}
+
+#custom-footer {
+  background-color: #f8f9fc;
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid #e3e6f0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 -0.15rem 0.25rem rgba(46, 125, 50, 0.08);
+  /* Sombra verde suave */
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.footer-info-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-info-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #5a5c69;
+  background-color: #e8f5e9;
+  /* Fondo verde claro */
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.35rem;
+  border-left: 3px solid #2e7d32;
+  /* Acento verde oscuro */
+  transition: all 0.3s ease;
+  /* Transición suave */
+}
+
+.footer-info-badge:hover {
+  background-color: #d0e9d2;
+  /* Verde un poco más intenso al hover */
+}
+
+.footer-info-badge i {
+  color: #2e7d32;
+  /* Íconos verdes */
+  font-size: 0.9rem;
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: #689f38;
+  /* Texto verde */
+}

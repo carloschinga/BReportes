@@ -1,0 +1,72 @@
+<style>
+    .turno-border {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+</style>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Apertura de Caja</h5>
+    </div>
+    <div class="card-body">
+        <div class="form-group col-md-3">
+            <label for="secuencia">Secuencia:</label>
+            <input type="text" class="form-control" id="secuencia">
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="caja">Caja:</label>
+                    <select class="form-control" id="caja">
+                        <option value="1" selected>Caja 1</option>
+                        <option value="2">Caja 2</option>
+                        <option value="3">Caja 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cajero">Cajero:</label>
+                    <select class="form-control" id="cajero">
+                        <option value="1" selected>Cajero 1</option>
+                        <option value="2">Cajero 2</option>
+                        <option value="3">Cajero 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="montoInicial">Monto Inicial:</label>
+                    <input type="number" class="form-control" id="montoInicial" step="0.01">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group turno-border">
+                    <label>Información de Turno:</label>
+                    <div class="form-group">
+                        <label for="turno">Turno:</label>
+                        <select class="form-control" id="turno">
+                            <option value="1" selected>Turno 1</option>
+                            <option value="2">Turno 2</option>
+                            <option value="3">Turno 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="desde">Desde:</label>
+                        <input type="datetime-local" class="form-control" id="desde">
+                    </div>
+                    <div class="form-group">
+                        <label for="hasta">Hasta:</label>
+                        <input type="datetime-local" class="form-control" id="hasta">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="observacion">Observación:</label>
+            <textarea class="form-control" id="observacion" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" id="btnAperturaCaja"><i class="fas fa-unlock"></i> Aperturar Caja</button>
+        </div>
+    </div>
+
+</div>
