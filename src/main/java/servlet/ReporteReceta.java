@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package servlet;
+package pe.bartolito.clinica.servlet;
 
 import dao.JpaPadre;
 import java.io.IOException;
@@ -53,11 +53,18 @@ public class ReporteReceta extends HttpServlet {
             return;
         }
 
-        HttpSession session = request.getSession(false);
+            // --- 🔑 Validar token primero ---
+        String token = request.getParameter("token"); // viene en la URL
+        if (token == null || token.isEmpty()) {
+            sendErrorResponse(response, "Token requerido", HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+            
+        /*HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("empr") == null) {
             sendErrorResponse(response, "Sesión no válida", HttpServletResponse.SC_UNAUTHORIZED);
             return;
-        }
+        }*/
 
         Connection cn = null;
         EntityManager em = null;

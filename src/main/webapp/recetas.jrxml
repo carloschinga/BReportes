@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recetas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="00eb5747-bdbc-46d7-be51-a35a63566567">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recetas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" isIgnorePagination="true" uuid="00eb5747-bdbc-46d7-be51-a35a63566567">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.jrdax"/>
 	<parameter name="actomedico" class="java.lang.String"/>
@@ -119,19 +119,39 @@ FROM "HechRecetasCli" rece
 		<property name="com.jaspersoft.studio.field.name" value="check1"/>
 		<property name="com.jaspersoft.studio.field.label" value="check1"/>
 	</field>
-	<field name="COLUMN_25" class="java.lang.Integer">
+	<field name="DniMedico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DniMedico"/>
+		<property name="com.jaspersoft.studio.field.label" value="DniMedico"/>
+	</field>
+	<field name="Concent" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Concent"/>
+		<property name="com.jaspersoft.studio.field.label" value="Concent"/>
+	</field>
+	<field name="FormaFarm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="FormaFarm"/>
+		<property name="com.jaspersoft.studio.field.label" value="FormaFarm"/>
+	</field>
+	<field name="Duracion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Duracion"/>
+		<property name="com.jaspersoft.studio.field.label" value="Duracion"/>
+	</field>
+	<field name="ViaAdmin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ViaAdmin"/>
+		<property name="com.jaspersoft.studio.field.label" value="ViaAdmin"/>
+	</field>
+	<field name="COLUMN_30" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="ActoMedico"/>
 		<property name="com.jaspersoft.studio.field.label" value="ActoMedico"/>
 	</field>
-	<field name="COLUMN_26" class="java.lang.Integer">
+	<field name="COLUMN_31" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="Coditm"/>
 		<property name="com.jaspersoft.studio.field.label" value="Coditm"/>
 	</field>
-	<field name="COLUMN_27" class="java.lang.Integer">
+	<field name="COLUMN_32" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="Prefactura"/>
 		<property name="com.jaspersoft.studio.field.label" value="Prefactura"/>
 	</field>
-	<field name="COLUMN_28" class="java.sql.Timestamp">
+	<field name="COLUMN_33" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="FechaAtencion"/>
 		<property name="com.jaspersoft.studio.field.label" value="FechaAtencion"/>
 	</field>
@@ -151,7 +171,7 @@ FROM "HechRecetasCli" rece
 		<property name="com.jaspersoft.studio.field.name" value="PriDia"/>
 		<property name="com.jaspersoft.studio.field.label" value="PriDia"/>
 	</field>
-	<field name="COLUMN_33" class="java.sql.Timestamp">
+	<field name="COLUMN_38" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="FechaRegistro"/>
 		<property name="com.jaspersoft.studio.field.label" value="FechaRegistro"/>
 	</field>
@@ -503,6 +523,15 @@ JR. ATAHUALPA 163 HUACHO - HUAURA]]></text>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rprecetasIndicaciones.jasper"]]></subreportExpression>
 			</subreport>
+			<image>
+				<reportElement x="43" y="31" width="70" height="70" uuid="3b4c119e-e7e8-4328-a5d3-17ec06acde45">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[new java.io.File("C:/firmas/"+ $F{NumdocId} + ".jpeg").exists() 
+    ? "C:/firmas/" + $F{NumdocId} + ".jpeg" 
+    : "C:/firmas/"+ "00000000.jpeg"]]></imageExpression>
+			</image>
 		</band>
 	</columnHeader>
 	<summary>
