@@ -226,7 +226,7 @@ $(document).ready(function () {
         if (response && response.data) {
           itemActual = response.data;
 
-          localStorage.setItem("codigoAntiguo", itemActual.codigo);
+          sessionStorage.setItem("codigoAntiguo", itemActual.codigo);
 
           $("#codigoItem").val(itemActual.codigo);
           $("#nombreItem").val(itemActual.nombre);
@@ -295,7 +295,7 @@ $(document).ready(function () {
   $("#btnGuardar").click(function () {
     const nombre = $("#nombreItem").val().trim();
     const padre = $("#padreItem").val();
-    const codiguoAntiguo = localStorage.getItem("codigoAntiguo");
+    const codiguoAntiguo = sessionStorage.getItem("codigoAntiguo");
     const codigoNuevo = $("#codigoItem").val();
     const cambioCodigo = codiguoAntiguo !== codigoNuevo;
 

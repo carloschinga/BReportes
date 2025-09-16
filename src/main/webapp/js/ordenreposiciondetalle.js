@@ -53,7 +53,7 @@ $(document).ready(function () {
         }
     });
     $.fn.listar = function () {
-        let invnum = localStorage.getItem('ordenreposicion');
+        let invnum = sessionStorage.getItem('ordenreposicion');
         $.getJSON("CRUDFaOrdenReposicionDetalle", {opcion: 1, invnum: invnum}, function (data) {
             if (data.resultado === "ok") {
                 if (tabla) {
@@ -129,7 +129,7 @@ $(document).ready(function () {
 
     // Guardar producto nuevo
     $('#saveAddProducto').on('click', function () {
-        let invnum = localStorage.getItem('ordenreposicion');
+        let invnum = sessionStorage.getItem('ordenreposicion');
         var codpro = $('#addCodpro').val();
         var cante = $('#addCante').val();
         var cantf = $('#addCantf').val();
@@ -177,7 +177,7 @@ $(document).ready(function () {
         var codpro = $('#editCodpro').val();
         var cante = $('#editCante').val();
         var cantf = $('#editCantf').val();
-        let invnum = localStorage.getItem('ordenreposicion');
+        let invnum = sessionStorage.getItem('ordenreposicion');
         var numitm = $('#editNumitm').val();
         if (codpro !== null && codpro !== undefined && codpro !== "") {
             if (cante !== "" || cantf !== "") {
@@ -206,7 +206,7 @@ $(document).ready(function () {
         }
     });
     $('#example tbody').on('click', '.delete-btn', function () {
-        let invnum = localStorage.getItem('ordenreposicion');
+        let invnum = sessionStorage.getItem('ordenreposicion');
         let numitm = String($(this).data("numitm"));
         if (confirm("Estas seguro que quieres eliminar esta solicitud")) {
             $.getJSON("CRUDFaOrdenReposicionDetalle?opcion=4", {invnum: invnum, numitm: numitm}, function (data) {

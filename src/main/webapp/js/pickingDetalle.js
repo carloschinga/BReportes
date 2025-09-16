@@ -71,7 +71,7 @@ $(document).ready(() => {
     // Actualizar título
     updateTitle: function () {
       $("#titulo, #titulo2").text(
-        "Picking y Despacho: " + localStorage.getItem("pik_destino")
+        "Picking y Despacho: " + sessionStorage.getItem("pik_destino")
       );
     },
 
@@ -92,11 +92,11 @@ $(document).ready(() => {
           type: "GET",
           data: (d) => ({
             opcion: 36,
-            fechainicio: localStorage.getItem("pik_fecini"),
-            fechafin: localStorage.getItem("pik_fecfin"),
-            sec: localStorage.getItem("pik_sec"),
-            siscod: localStorage.getItem("pik_siscod"),
-            orden: localStorage.getItem("orden"),
+            fechainicio: sessionStorage.getItem("pik_fecini"),
+            fechafin: sessionStorage.getItem("pik_fecfin"),
+            sec: sessionStorage.getItem("pik_sec"),
+            siscod: sessionStorage.getItem("pik_siscod"),
+            orden: sessionStorage.getItem("orden"),
             _: Date.now(),
           }),
           cache: false,
@@ -136,7 +136,7 @@ $(document).ready(() => {
           console.log("DataTable inicializada correctamente");
           this.config.fecini = json?.fecha || null;
           if (this.config.fecini) {
-            localStorage.setItem("pik_fecinicheck", this.config.fecini);
+            sessionStorage.setItem("pik_fecinicheck", this.config.fecini);
           }
 
           $("#picking-table_processing").hide();
@@ -519,7 +519,7 @@ $(document).ready(() => {
       const codpro = $button.data("codpro");
       const codlot = $button.data("codlot");
       const secuencia = $button.data("invnum");
-      const siscod = localStorage.getItem("pik_siscod");
+      const siscod = sessionStorage.getItem("pik_siscod");
 
       console.log(
         `Iniciando picking para: ${codpro} - Lote: ${codlot} - Secuencia: ${secuencia}`
@@ -882,8 +882,8 @@ $(document).ready(() => {
     // Imprimir
     imprimir: function () {
       const val = String($("#impresion-input").val().trim());
-      const sec = localStorage.getItem("pik_sec");
-      const siscod = localStorage.getItem("pik_siscod");
+      const sec = sessionStorage.getItem("pik_sec");
+      const siscod = sessionStorage.getItem("pik_siscod");
 
       console.log(`Solicitando impresión para bulto: ${val}`);
 
@@ -919,8 +919,8 @@ $(document).ready(() => {
     handleOrdenChange: function () {
       const nuevaOrden = $("#orden").val();
       console.log(`Cambiando orden a: ${nuevaOrden}`);
-      localStorage.setItem("orden", nuevaOrden);
-      localStorage.setItem("scroll", 0);
+      sessionStorage.setItem("orden", nuevaOrden);
+      sessionStorage.setItem("scroll", 0);
       $("#contenido").load("pickingDetalle.html");
     },
 
@@ -938,7 +938,7 @@ $(document).ready(() => {
         const codlot = $("#Lote").text();
         const codpro = $("#codigo").text();
         const secuencia = $("#Secuencia").text();
-        const fecini = localStorage.getItem("pik_fecinicheck");
+        const fecini = sessionStorage.getItem("pik_fecinicheck");
 
         if (isQuitarCheck) {
           this.sendPickData(codlot, codpro, secuencia, fecini, 0, 0, []);
@@ -1168,7 +1168,7 @@ $(document).ready(() => {
         success: (data) => {
           if (data.resultado === "ok") {
             $button.prop("disabled", false);
-            localStorage.setItem("pik_fecinicheck", data.fecha);
+            sessionStorage.setItem("pik_fecinicheck", data.fecha);
             $("#modalPicking").modal("hide");
             this.config.currentTable.ajax.reload();
           } else if (data.mensaje === "yaenviado") {

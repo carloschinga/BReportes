@@ -8,8 +8,8 @@ $(document).ready(function () {
   let completado = false;
   let productData = [];
   let productTable;
-  let caja = localStorage.getItem("caja_caja");
-  let orden = localStorage.getItem("caja_orden");
+  let caja = sessionStorage.getItem("caja_caja");
+  let orden = sessionStorage.getItem("caja_orden");
   let datosParaEnviar = []; //productos normales
   let datosExtraParaEnviar = []; //productos extra agregados
   let jsonEliminados = []; //productos extra eliminados
@@ -26,14 +26,14 @@ $(document).ready(function () {
   };
   $.fn.validarSession();
   $("#titulo").text(
-    "Recepción de Picking - Bulto: " + localStorage.getItem("caja_caja")
+    "Recepción de Picking - Bulto: " + sessionStorage.getItem("caja_caja")
   );
   $("#titulo2").text(
-    "Recepción de Picking - Bulto: " + localStorage.getItem("caja_caja")
+    "Recepción de Picking - Bulto: " + sessionStorage.getItem("caja_caja")
   );
   $.fn.listarsecuencias = function () {
-    let caja = localStorage.getItem("caja_caja");
-    let orden = localStorage.getItem("caja_orden");
+    let caja = sessionStorage.getItem("caja_caja");
+    let orden = sessionStorage.getItem("caja_orden");
     $.getJSON(
       "picking",
       { opcion: 48, caja: caja, orden: orden },
@@ -601,8 +601,8 @@ $(document).ready(function () {
       differentProducts.length === 0
     ) {
       // Si no hay diferencias, muestra el mensaje de igualdad
-      let caja = localStorage.getItem("caja_caja");
-      let orden = localStorage.getItem("caja_orden");
+      let caja = sessionStorage.getItem("caja_caja");
+      let orden = sessionStorage.getItem("caja_orden");
       $.ajax({
         url: "picking?opcion=15&ord=" + orden + "&caja=" + caja,
         type: "POST",
@@ -1088,7 +1088,7 @@ $(document).ready(function () {
     if (checkenvio === undefined || checkenvio === "") {
       checkenvio = "N";
     }
-    let caja = localStorage.getItem("caja_caja");
+    let caja = sessionStorage.getItem("caja_caja");
     $.getJSON(
       "picking",
       {

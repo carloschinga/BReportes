@@ -15,8 +15,8 @@ $(document).ready(function () {
 
 
     let today = new Date().toISOString().slice(0, 10);
-    let pik_fecini = localStorage.getItem('caja_fecini');
-    let pik_fecfin = localStorage.getItem('caja_fecfin');
+    let pik_fecini = sessionStorage.getItem('caja_fecini');
+    let pik_fecfin = sessionStorage.getItem('caja_fecfin');
     if (pik_fecini === undefined || pik_fecini === "" || pik_fecini === null) {
         $('#inputFechaInicio').val(today);
         $('#inputFechaFin').val(today);
@@ -98,8 +98,8 @@ $(document).ready(function () {
     $("#inprimirfec").click(function () {
         let fechainicio = $("#inputFechaInicio").val();
         let fechafin = $("#inputFechaFin").val();
-        localStorage.setItem('caja_fecini', fechainicio);
-        localStorage.setItem('caja_fecfin', fechafin);
+        sessionStorage.setItem('caja_fecini', fechainicio);
+        sessionStorage.setItem('caja_fecfin', fechafin);
 
         $.fn.listarsecuencias();
     });

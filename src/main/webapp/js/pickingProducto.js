@@ -15,8 +15,8 @@ if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
 $(document).ready(function () {
     $('html, body').scrollTop(0);
     let fecini;
-    if (localStorage.getItem('pik_fecinicheck') === "" || localStorage.getItem('pik_fecinicheck') === undefined) {
-        //localStorage.setItem('pik_fecinicheck', fecini);
+    if (sessionStorage.getItem('pik_fecinicheck') === "" || sessionStorage.getItem('pik_fecinicheck') === undefined) {
+        //sessionStorage .setItem('pik_fecinicheck', fecini);
     }
     $.fn.validarSession = function () {
         $.getJSON("validarsesion", function (data) {
@@ -29,10 +29,10 @@ $(document).ready(function () {
         });
     };
     $.fn.validarSession();
-    let codlot = localStorage.getItem('pik_codlot');
-    let codpro = localStorage.getItem('pik_codpro');
-    let siscod = localStorage.getItem('pik_siscod');
-    let secuencia = localStorage.getItem('pik_secuencia');
+    let codlot = sessionStorage.getItem('pik_codlot');
+    let codpro = sessionStorage.getItem('pik_codpro');
+    let siscod = sessionStorage.getItem('pik_siscod');
+    let secuencia = sessionStorage.getItem('pik_secuencia');
     $.getJSON("picking", {codlot: codlot, codpro: codpro, siscod: siscod, opcion: 4, secuencia: secuencia}, function (data) {
         if (data.resultado === "ok") {
 
@@ -94,8 +94,8 @@ $(document).ready(function () {
                 });
             }
             fecini = data.fecha;
-            if (localStorage.getItem('pik_fecinicheck') === "" || localStorage.getItem('pik_fecinicheck') === undefined) {
-                localStorage.setItem('pik_fecinicheck', fecini);
+            if (sessionStorage.getItem('pik_fecinicheck') === "" || sessionStorage.getItem('pik_fecinicheck') === undefined) {
+                sessionStorage.setItem('pik_fecinicheck', fecini);
             }
             if (data.data.check1 === "S") {
                 $("#confean13").text("OK");
@@ -131,9 +131,9 @@ $(document).ready(function () {
         }
     });
     $("#confean13").click(function () {
-        let codlot = localStorage.getItem('pik_codlot');
-        let codpro = localStorage.getItem('pik_codpro');
-        let secuencia = localStorage.getItem('pik_secuencia');
+        let codlot = sessionStorage.getItem('pik_codlot');
+        let codpro = sessionStorage.getItem('pik_codpro');
+        let secuencia = sessionStorage.getItem('pik_secuencia');
         let ean13 = $("#EAN13").val().toString();
         let input = $("#EAN13input").val().toString();
         if (ean13 === input || $("#confean13").text() === "OK") {
@@ -159,9 +159,9 @@ $(document).ready(function () {
             console.log(input);
             if (ean13 === input && $("#confean13").text() !== "OK") {
 
-                let codlot = localStorage.getItem('pik_codlot');
-                let codpro = localStorage.getItem('pik_codpro');
-                let secuencia = localStorage.getItem('pik_secuencia');
+                let codlot = sessionStorage.getItem('pik_codlot');
+                let codpro = sessionStorage.getItem('pik_codpro');
+                let secuencia = sessionStorage.getItem('pik_secuencia');
                 $.getJSON("picking", {codlot: codlot, codpro: codpro, opcion: 5, secuencia: secuencia}, function (data) {
                     if (data.resultado === "ok") {
                         $("#contenido").load('pickingProducto.html');
@@ -185,10 +185,10 @@ $(document).ready(function () {
         //let cantf = $("#cantf").val().toString();
 
 
-        let codlot = localStorage.getItem('pik_codlot');
-        let codpro = localStorage.getItem('pik_codpro');
-        let secuencia = localStorage.getItem('pik_secuencia');
-        fecini = localStorage.getItem('pik_fecinicheck');
+        let codlot = sessionStorage.getItem('pik_codlot');
+        let codpro = sessionStorage.getItem('pik_codpro');
+        let secuencia = sessionStorage.getItem('pik_secuencia');
+        fecini = sessionStorage.getItem('pik_fecinicheck');
         let cajasData = [];
         let entra = true;
         $('.caja-entry').each(function (index) {

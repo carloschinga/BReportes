@@ -47,169 +47,147 @@ public class ReporteCierreCaja extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        EntityManager em = null;
-        Connection cn = null;
-        JpaPadre DAO = null;
+        //try (PrintWriter out = response.getWriter()) {
+        String token = request.getParameter("token");
+        String respuestaEndPoint = "";
+        //String usu = "";
+
         ServletOutputStream out = null;
-
         try {
-            String token = request.getParameter("token");
 
-            // ===== Validación contra endpoint de autenticación =====
-            boolean tokenValido = false;
-            int usecod = 0;
-            int siscod = 0;
-            String username = null;
+            URL url = new URL("http://181.224.248.20:8080/bauth/auth/getUser"); // Reemplaza con tu URL real
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
 
-            try {
-                URL url = new URL("http://181.224.248.20:8080/bauth/auth/getUser");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true);
+            // 2. Enviar credenciales al endpoint
+            String requestBody = "{\"token\":\"" + token + "\"}";
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
 
-                String requestBody = "{\"token\":\"" + token + "\"}";
-                try (OutputStream os = conn.getOutputStream()) {
-                    byte[] input = requestBody.getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                }
+            // 3. Leer respuesta del endpoint
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                    StringBuilder responseSb = new StringBuilder();
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        responseSb.append(responseLine.trim());
+                    }
+                    respuestaEndPoint = responseSb.toString();
 
-                int responseCode = conn.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-                        StringBuilder responseSb = new StringBuilder();
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            responseSb.append(line.trim());
+                    // 4. Parsear JSON y validar
+                    JSONObject data = new JSONObject(respuestaEndPoint); // Usamos org.json.JSONObject
+                    //if (usua.getString("resultado").equals("OK")) {
+                    if (data != null) {
+
+                        // 5. Configurar sesión con los datos del endpoint
+                        EntityManager em = null;
+                        Connection cn = null;
+                        JpaPadre DAO = null;
+
+                        // ===== Validación contra endpoint de autenticación =====
+                        String usecod = data.get("usecod").toString();
+                        String siscod = data.get("siscod").toString();
+
+                        String username = null;
+
+                        // ===== Validación de parámetros =====
+                        //String siscodParam = request.getParameter("siscod");
+                        String fecha1 = request.getParameter("fecha1");
+                        String fecha2 = request.getParameter("fecha2");
+                        String invnumAper = request.getParameter("invnum_aper");
+                        //String usecodParam = request.getParameter("usecod");
+                        String formato = request.getParameter("tipo");
+
+                        if (siscod == null || fecha1 == null || fecha2 == null || invnumAper == null || usecod == null || formato == null) {
+                            sendJsonError(response, "Faltan parámetros requeridos");
+                            return;
                         }
 
-                        JSONObject json = new JSONObject(responseSb.toString());
-                        tokenValido = true;
-                        usecod = json.getInt("usecod");
-                        siscod = json.getInt("siscod");
-                        username = json.getString("useusr");
+                        // ===== Conexión a BD =====
+                        DAO = new JpaPadre("a"); // ⚠️ cambia "a" por tu persistence-unit
+                        em = DAO.getEntityManager();
+                        em.getTransaction().begin();
+                        cn = em.unwrap(Connection.class);
+
+                        // ===== Plantilla Jasper =====
+                        String reportFileName = "/conta/reporte_cajaresumen.jasper"; // ⚠️ ajusta la ruta
+                        InputStream reportStream = getServletContext().getResourceAsStream(reportFileName);
+                        if (reportStream == null) {
+                            throw new IOException("No se encontró el archivo: " + reportFileName);
+                        }
+
+                        // ===== Parámetros Jasper =====
+                        HashMap<String, Object> paramMap = new HashMap<>();
+                        paramMap.put("P_siscod", Integer.parseInt(siscod));
+                        paramMap.put("P_fecha1", fecha1);
+                        paramMap.put("P_fecha2", fecha2);
+                        paramMap.put("P_invnum_aper", Integer.parseInt(invnumAper));
+                        paramMap.put("P_usecod", Integer.parseInt(usecod));
+                        paramMap.put("cajero", username);
+
+                        String basePath = getServletContext().getRealPath("/");
+                        paramMap.put("rutalogo", basePath + "/img/logo5.jpg");
+                        paramMap.put("rutalogo2", basePath + "/img/logo3.jpg");
+
+                        JasperReportsContext ctx = DefaultJasperReportsContext.getInstance();
+                        ctx.setProperty("net.sf.jasperreports.export.character.encoding", "UTF-8");
+                        ctx.setProperty("net.sf.jasperreports.query.timeout", "600");
+
+                        JasperPrint jasperPrint = JasperFillManager.getInstance(ctx).fill(reportStream, paramMap, cn);
+
+                        if (em.getTransaction().isActive()) {
+                            em.getTransaction().commit();
+                        }
+
+                        // ===== Exportación =====
+                        out = response.getOutputStream();
+                        if ("pdf".equalsIgnoreCase(formato)) {
+                            response.setContentType("application/pdf");
+                            response.setHeader("Content-Disposition", "inline; filename=ReporteCierreCaja.pdf");
+                            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+                        } else if ("xlsx".equalsIgnoreCase(formato)) {
+                            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                            response.setHeader("Content-Disposition", "attachment; filename=ReporteCaja.xlsx");
+
+                            JRXlsxExporter exporter = new JRXlsxExporter();
+                            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(out));
+
+                            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                            configuration.setOnePagePerSheet(false);
+                            configuration.setRemoveEmptySpaceBetweenRows(true);
+                            configuration.setDetectCellType(true);
+                            configuration.setWhitePageBackground(false);
+                            exporter.setConfiguration(configuration);
+
+                            exporter.exportReport();
+                        } else {
+                            sendJsonError(response, "Formato no soportado: " + formato);
+                            return;
+                        }
+
                     }
-                } else {
-                    sendJsonError(response, "Error endpoint caído");
-                    return;
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                sendJsonError(response, "Error endpoint caído");
-                return;
-            }
-
-            if (!tokenValido) {
-                sendJsonError(response, "Token inválido");
-                return;
-            }
-
-            // ===== Validación de parámetros =====
-            String siscodParam = request.getParameter("siscod");
-            String fecha1 = request.getParameter("fecha1");
-            String fecha2 = request.getParameter("fecha2");
-            String invnumAper = request.getParameter("invnum_aper");
-            String usecodParam = request.getParameter("usecod");
-            String formato = request.getParameter("tipo");
-
-            if (siscodParam == null || fecha1 == null || fecha2 == null || invnumAper == null || usecodParam == null || formato == null) {
-                sendJsonError(response, "Faltan parámetros requeridos");
-                return;
-            }
-
-            // ===== Conexión a BD =====
-            DAO = new JpaPadre("a"); // ⚠️ cambia "a" por tu persistence-unit
-            em = DAO.getEntityManager();
-            em.getTransaction().begin();
-            cn = em.unwrap(Connection.class);
-
-            // ===== Plantilla Jasper =====
-            String reportFileName = "/conta/reporte_cajaresumen.jasper"; // ⚠️ ajusta la ruta
-            InputStream reportStream = getServletContext().getResourceAsStream(reportFileName);
-            if (reportStream == null) {
-                throw new IOException("No se encontró el archivo: " + reportFileName);
-            }
-
-            // ===== Parámetros Jasper =====
-            HashMap<String, Object> paramMap = new HashMap<>();
-            paramMap.put("P_siscod", Integer.parseInt(siscodParam));
-            paramMap.put("P_fecha1", fecha1);
-            paramMap.put("P_fecha2", fecha2);
-            paramMap.put("P_invnum_aper", Integer.parseInt(invnumAper));
-            paramMap.put("P_usecod", Integer.parseInt(usecodParam));
-            paramMap.put("cajero", username);
-
-            String basePath = getServletContext().getRealPath("/");
-            paramMap.put("rutalogo", basePath + "/img/logo5.jpg");
-            paramMap.put("rutalogo2", basePath + "/img/logo3.jpg");
-
-            JasperReportsContext ctx = DefaultJasperReportsContext.getInstance();
-            ctx.setProperty("net.sf.jasperreports.export.character.encoding", "UTF-8");
-            ctx.setProperty("net.sf.jasperreports.query.timeout", "600");
-
-            JasperPrint jasperPrint = JasperFillManager.getInstance(ctx).fill(reportStream, paramMap, cn);
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().commit();
-            }
-
-            // ===== Exportación =====
-            out = response.getOutputStream();
-            if ("pdf".equalsIgnoreCase(formato)) {
-                response.setContentType("application/pdf");
-                response.setHeader("Content-Disposition", "inline; filename=ReporteCierreCaja.pdf");
-                JasperExportManager.exportReportToPdfStream(jasperPrint, out);
-            } else if ("xlsx".equalsIgnoreCase(formato)) {
-                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                response.setHeader("Content-Disposition", "attachment; filename=ReporteCaja.xlsx");
-
-                JRXlsxExporter exporter = new JRXlsxExporter();
-                exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(out));
-
-                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-                configuration.setOnePagePerSheet(false);
-                configuration.setRemoveEmptySpaceBetweenRows(true);
-                configuration.setDetectCellType(true);
-                configuration.setWhitePageBackground(false);
-                exporter.setConfiguration(configuration);
-
-                exporter.exportReport();
             } else {
-                sendJsonError(response, "Formato no soportado: " + formato);
-                return;
+                System.err.println("Error HTTP: " + responseCode);
+                out.print("{\"resultado\":\"error\",\"mensaje\":\"Codigo de endpoint diferente a 200\"}");
             }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            if (!response.isCommitted()) {
-                sendJsonError(response, ex.getMessage());
-            }
-            if (em != null && em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar error de conexión (ej: endpoint caído)
+            out.print("{\"resultado\":\"error\",\"mensaje\":\"Endpoint caido\"}");
         } finally {
-            try {
-                if (cn != null && !cn.isClosed()) {
-                    cn.close();
-                }
-            } catch (Exception ignore) {
-            }
-            try {
-                if (em != null && em.isOpen()) {
-                    em.close();
-                }
-            } catch (Exception ignore) {
-            }
-            try {
-                if (out != null) {
-                    out.flush();
-                }
-            } catch (Exception ignore) {
-            }
+            //out.print(respuestaEndPoint);
         }
+
+        //}
+        ////////////////////
     }
 
     private void sendJsonError(HttpServletResponse response, String mensaje) throws IOException {

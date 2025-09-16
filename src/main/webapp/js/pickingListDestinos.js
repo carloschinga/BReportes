@@ -33,7 +33,7 @@ $(document).ready(function () {
     $.fn.validarSession();
     let fechainicio = "";
     let fechafin = "";
-    let sec = localStorage.getItem('pik_sec');
+    let sec = sessionStorage.getItem('pik_sec');
     $("#nombre").text("Picking y Despacho Numero: " + sec);
 
 
@@ -168,7 +168,7 @@ $(document).ready(function () {
      } else if (id === '') {
      } else {
      let siscod = String($(this).data("codigo"));
-     let sec = localStorage.getItem('pik_sec');
+     let sec = sessionStorage.getItem('pik_sec');
      $('#lista button').prop('disabled', true);
      $('#lista select').prop('disabled', true);
      $.getJSON("picking", {usu: id, siscod: siscod, sec: sec, opcion: 8}, function (data) {
@@ -223,16 +223,16 @@ $(document).ready(function () {
      */
     $("#picking-table").on("click", ".establecimiento-btn", function () {
         console.log("codigo:" + $(this).data("codigo"));
-        localStorage.setItem('pik_destino', $(this).data("destino"));
-        localStorage.setItem('pik_siscod', $(this).data("codigo"));
-        localStorage.setItem('scroll', 0);
+        sessionStorage.setItem('pik_destino', $(this).data("destino"));
+        sessionStorage.setItem('pik_siscod', $(this).data("codigo"));
+        sessionStorage.setItem('scroll', 0);
         $("#contenido").load('pickingDetalle.html');
     });
     $("#back-button").click(function () {
         $("#contenido").load('pickingList.html');
     });
     $("#lista").on("click", ".cerrar-btn", function () {
-        let sec = localStorage.getItem('pik_sec');
+        let sec = sessionStorage.getItem('pik_sec');
         if (confirm('¿Estás seguro de que deseas cerrar el picking de esta OT? al confirmar se cerrara todo picking y se tomara como que ya se estara trabajando el translado, Se llenara los reportes de Cajas y aparecera esta OT en los establecimientos destino. Este proceso no es reversible')) {
             $.getJSON("picking", {opcion: 14, orden: sec}, function (data) {
                 if (data.resultado === "ok") {

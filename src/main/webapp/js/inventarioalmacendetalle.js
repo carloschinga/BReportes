@@ -7,13 +7,13 @@ $(document).ready(function () {
   let cambio = false;
   let sup = false;
   let tabla;
-  let sesi = localStorage.getItem("inventarioestadoalmacen");
+  let sesi = sessionStorage.getItem("inventarioestadoalmacen");
   if (sesi) {
     estado = sesi;
   }
-  let codinv = localStorage.getItem("inventariocodinv");
-  let codinvcab = localStorage.getItem("inventariocodinvcab");
-  let codalm = localStorage.getItem("inventariocodalm");
+  let codinv = sessionStorage.getItem("inventariocodinv");
+  let codinvcab = sessionStorage.getItem("inventariocodinvcab");
+  let codalm = sessionStorage.getItem("inventariocodalm");
 
   function verificarFoto(codinvcab, codinv) {
     return new Promise((resolve) => {
@@ -191,7 +191,7 @@ $(document).ready(function () {
   $("#tabla").on("click", ".ajuste", function () {
     let codinv = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinv);
+    sessionStorage.setItem("inventariocodinvalm", codinv);
 
     $("#contenido").load("inventarioajuste.html");
   });
@@ -199,7 +199,7 @@ $(document).ready(function () {
   $("#tabla").on("click", ".consolidado", function () {
     let codinv = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinv);
+    sessionStorage.setItem("inventariocodinvalm", codinv);
 
     $("#contenido").load("consolidadoinventarioalmacen.html");
   });
@@ -248,14 +248,14 @@ $(document).ready(function () {
   $("#tabla").on("click", ".usu", function () {
     const codinvalm = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinvalm);
+    sessionStorage.setItem("inventariocodinvalm", codinvalm);
 
     $("#contenido").load("inventariousuario.html");
   });
   $("#tabla").on("click", ".entrar", function () {
     const codinvalm = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinvalm);
+    sessionStorage.setItem("inventariocodinvalm", codinvalm);
 
     $("#contenido").load("inventarioproductos.html");
   });
@@ -522,16 +522,16 @@ $(document).ready(function () {
     });
   });
   $("#consolidado").click(function () {
-    localStorage.setItem("inventariocodinv", codinv);
-    localStorage.setItem("inventariocodalm", codalm);
-    localStorage.setItem("inventarioant", "almacen");
+    sessionStorage.setItem("inventariocodinv", codinv);
+    sessionStorage.setItem("inventariocodalm", codalm);
+    sessionStorage.setItem("inventarioant", "almacen");
 
     $("#contenido").load("consolidadoinventarioagrupado.html");
   });
   $("#consolidadoproducto").click(function () {
-    localStorage.setItem("inventariocodinv", codinv);
-    localStorage.setItem("inventariocodalm", codalm);
-    localStorage.setItem("inventarioant", "almacen");
+    sessionStorage.setItem("inventariocodinv", codinv);
+    sessionStorage.setItem("inventariocodalm", codalm);
+    sessionStorage.setItem("inventarioant", "almacen");
 
     $("#contenido").load("consolidadoinventarioproducto.html");
   });

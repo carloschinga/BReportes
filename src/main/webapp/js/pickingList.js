@@ -10,8 +10,8 @@ $(document).ready(function () {
         });
     };
     let today = new Date().toISOString().slice(0, 10);
-    let pik_fecini = localStorage.getItem('pik_fecini');
-    let pik_fecfin = localStorage.getItem('pik_fecfin');
+    let pik_fecini = sessionStorage.getItem('pik_fecini');
+    let pik_fecfin = sessionStorage.getItem('pik_fecfin');
     if (pik_fecini === undefined || pik_fecini === "" || pik_fecini === null) {
         $('#inputFechaInicio').val(today);
         $('#inputFechaFin').val(today);
@@ -131,9 +131,9 @@ $(document).ready(function () {
         let sec = $('#secuencia').val();
         //fechainicio !== "" || fechafin !== ""
         if (sec !== "") {
-            localStorage.setItem('pik_sec', sec);
-            localStorage.setItem('pik_fecini', "");
-            localStorage.setItem('pik_fecfin', "");
+            sessionStorage.setItem('pik_sec', sec);
+            sessionStorage.setItem('pik_fecini', "");
+            sessionStorage.setItem('pik_fecfin', "");
             let url = 'pickingListDestinos.html';
             $("#contenido").load(url);
         } else {
@@ -147,9 +147,9 @@ $(document).ready(function () {
         let sec = $(this).data('id');
         //fechainicio !== "" || fechafin !== ""
         if (sec !== "") {
-            localStorage.setItem('pik_sec', sec);
-            localStorage.setItem('pik_fecini', fechainicio);
-            localStorage.setItem('pik_fecfin', fechafin);
+            sessionStorage.setItem('pik_sec', sec);
+            sessionStorage.setItem('pik_fecini', fechainicio);
+            sessionStorage.setItem('pik_fecfin', fechafin);
             let url = 'pickingListDestinos.html';
             $("#contenido").load(url);
         } else {

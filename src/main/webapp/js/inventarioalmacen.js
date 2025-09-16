@@ -3,11 +3,11 @@ $(document).ready(function () {
   let cambio = false;
   let sup = false;
   let tabla;
-  let sesi = localStorage.getItem("inventarioestadoalmacen");
+  let sesi = sessionStorage.getItem("inventarioestadoalmacen");
   if (sesi) {
     estado = sesi;
   }
-  let codinv = localStorage.getItem("inventariocodinv");
+  let codinv = sessionStorage.getItem("inventariocodinv");
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -158,7 +158,7 @@ $(document).ready(function () {
   $("#tabla").on("click", ".ajuste", function () {
     let codinv = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinv);
+    sessionStorage.setItem("inventariocodinvalm", codinv);
 
     $("#contenido").load("inventarioajuste.html");
   });
@@ -166,7 +166,7 @@ $(document).ready(function () {
   $("#tabla").on("click", ".consolidado", function () {
     let codinv = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinv);
+    sessionStorage.setItem("inventariocodinvalm", codinv);
 
     $("#contenido").load("consolidadoinventarioalmacen.html");
   });
@@ -211,7 +211,7 @@ $(document).ready(function () {
   $("#tabla").on("click", ".usu", function () {
     const codinvalm = $(this).data("codinvalm");
 
-    localStorage.setItem("inventariocodinvalm", codinvalm);
+    sessionStorage.setItem("inventariocodinvalm", codinvalm);
 
     $("#contenido").load("inventariousuario.html");
   });
@@ -219,8 +219,8 @@ $(document).ready(function () {
     const codinvalm = $(this).data("codinvcab");
     const codalm = $(this).data("codalm");
 
-    localStorage.setItem("inventariocodinvcab", codinvalm);
-    localStorage.setItem("inventariocodalm", codalm);
+    sessionStorage.setItem("inventariocodinvcab", codinvalm);
+    sessionStorage.setItem("inventariocodalm", codalm);
 
     $("#contenido").load("inventarioalmacendetalle.html");
   });
