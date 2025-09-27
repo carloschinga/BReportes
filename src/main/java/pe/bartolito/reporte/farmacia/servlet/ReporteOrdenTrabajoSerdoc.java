@@ -89,7 +89,7 @@ public class ReporteOrdenTrabajoSerdoc extends HttpServlet {
                             // 5. Cargamos datos localmente
                             int codbar = usua.getInt("usecod");
                             String logi = usua.getString("useusr");
-                            String username = usua.getString("useusr");
+                            String username = usua.getString("usenam");
                             String empr = "a";
                             String de = "b";
                             int siscod = usua.getInt("siscod");
