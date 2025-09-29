@@ -5,11 +5,14 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.jrdax"/>
 	<parameter name="actomedico" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT concat('dx  ',diacod,' - ',diades) as diag
+		<![CDATA[SELECT 
+    CONCAT('dx ', diag.diacod, ' - ', diag.diades) AS diag
 FROM "HechRecetasCli" rece
-	inner join "HechDiagnosRecetasCli" diag ON 
-	 rece."ActoMedico" = diag."ActoMedico" where rece.ActoMedico= $P{actomedico} 
-	 group by diacod,diades]]>
+INNER JOIN "HechDiagnosRecetasCli" diag 
+    ON rece."ActoMedico" = diag."ActoMedico" 
+WHERE rece."ActoMedico" = $P{actomedico} 
+GROUP BY diag.diacod, diag.diades;
+]]>
 	</queryString>
 	<field name="diag" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="diag"/>

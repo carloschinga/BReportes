@@ -148,19 +148,27 @@ FROM "HechRecetasCli" rece
 		<property name="com.jaspersoft.studio.field.name" value="ViaAdmin"/>
 		<property name="com.jaspersoft.studio.field.label" value="ViaAdmin"/>
 	</field>
-	<field name="COLUMN_30" class="java.lang.Integer">
+	<field name="Diacod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Diacod"/>
+		<property name="com.jaspersoft.studio.field.label" value="Diacod"/>
+	</field>
+	<field name="Diades" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Diades"/>
+		<property name="com.jaspersoft.studio.field.label" value="Diades"/>
+	</field>
+	<field name="COLUMN_32" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="ActoMedico"/>
 		<property name="com.jaspersoft.studio.field.label" value="ActoMedico"/>
 	</field>
-	<field name="COLUMN_31" class="java.lang.Integer">
+	<field name="COLUMN_33" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="Coditm"/>
 		<property name="com.jaspersoft.studio.field.label" value="Coditm"/>
 	</field>
-	<field name="COLUMN_32" class="java.lang.Integer">
+	<field name="COLUMN_34" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="Prefactura"/>
 		<property name="com.jaspersoft.studio.field.label" value="Prefactura"/>
 	</field>
-	<field name="COLUMN_33" class="java.sql.Timestamp">
+	<field name="COLUMN_35" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="FechaAtencion"/>
 		<property name="com.jaspersoft.studio.field.label" value="FechaAtencion"/>
 	</field>
@@ -168,7 +176,7 @@ FROM "HechRecetasCli" rece
 		<property name="com.jaspersoft.studio.field.name" value="DiaCod"/>
 		<property name="com.jaspersoft.studio.field.label" value="DiaCod"/>
 	</field>
-	<field name="Diades" class="java.lang.String">
+	<field name="COLUMN_37" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="Diades"/>
 		<property name="com.jaspersoft.studio.field.label" value="Diades"/>
 	</field>
@@ -180,7 +188,7 @@ FROM "HechRecetasCli" rece
 		<property name="com.jaspersoft.studio.field.name" value="PriDia"/>
 		<property name="com.jaspersoft.studio.field.label" value="PriDia"/>
 	</field>
-	<field name="COLUMN_38" class="java.sql.Timestamp">
+	<field name="COLUMN_40" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="FechaRegistro"/>
 		<property name="com.jaspersoft.studio.field.label" value="FechaRegistro"/>
 	</field>

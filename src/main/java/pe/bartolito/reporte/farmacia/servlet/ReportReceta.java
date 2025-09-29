@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package pe.bartolito.clinica.servlet;
+package pe.bartolito.reporte.farmacia.servlet;
 
 import dao.JpaPadre;
 import java.io.IOException;
@@ -38,8 +38,8 @@ import pe.bartolito.clinica.dao.HechRecetasCliJpaController;
  *
  * @author LOQ
  */
-@WebServlet(name = "ReporteReceta", urlPatterns = {"/ReporteReceta"})
-public class ReporteReceta extends HttpServlet {
+@WebServlet(name = "RerportReceta", urlPatterns = {"/reportreceta"})
+public class ReportReceta extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,13 +53,6 @@ public class ReporteReceta extends HttpServlet {
             return;
         }
 
-            // --- 🔑 Validar token primero ---
-        String token = request.getParameter("token"); // viene en la URL
-        if (token == null || token.isEmpty()) {
-            sendErrorResponse(response, "Token requerido", HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-            
         /*HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("empr") == null) {
             sendErrorResponse(response, "Sesión no válida", HttpServletResponse.SC_UNAUTHORIZED);

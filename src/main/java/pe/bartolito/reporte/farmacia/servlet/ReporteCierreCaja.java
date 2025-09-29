@@ -100,11 +100,11 @@ public class ReporteCierreCaja extends HttpServlet {
                         //String siscodParam = request.getParameter("siscod");
                         String fecha1 = request.getParameter("fecha1");
                         String fecha2 = request.getParameter("fecha2");
-                        String invnumAper = request.getParameter("invnum_aper");
+                        //String invnumAper = request.getParameter("invnum_aper");
                         //String usecodParam = request.getParameter("usecod");
                         String formato = request.getParameter("tipo");
 
-                        if (siscod == null || fecha1 == null || fecha2 == null || invnumAper == null || usecod == null || formato == null) {
+                        if (siscod == null || fecha1 == null || fecha2 == null || usecod == null || formato == null) {
                             sendJsonError(response, "Faltan parámetros requeridos");
                             return;
                         }
@@ -127,7 +127,7 @@ public class ReporteCierreCaja extends HttpServlet {
                         paramMap.put("P_siscod", Integer.parseInt(siscod));
                         paramMap.put("P_fecha1", fecha1);
                         paramMap.put("P_fecha2", fecha2);
-                        paramMap.put("P_invnum_aper", Integer.parseInt(invnumAper));
+                        paramMap.put("P_invnum_aper", 0);
                         paramMap.put("P_usecod", Integer.parseInt(usecod));
                         paramMap.put("cajero", username);
 
